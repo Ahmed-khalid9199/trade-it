@@ -73,7 +73,19 @@ input {
   border: 2px solid transparent;
 }
 
-a {
-  text-decoration: none !important;
-  color: inherit !important;
+.invalid {
+  border-color: red !important;
 }
+
+.was-validated .no__feedback:valid {
+  background-image: none;
+}
+
+.was-validated .no__feedback:invalid {
+  background-image: none;
+}
+
+/* a {
+  text-decoration: none;
+  color: inherit;
+} */

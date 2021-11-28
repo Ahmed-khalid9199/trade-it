@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "./components/layout/Layout";
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 import { Route, Switch } from "react-router-dom";
 import PrivateRoute from "./components/PrivateRoute";
+import { useDispatch } from "react-redux";
+import { userActions } from "./store/user";
 
 const App = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    var user = localStorage.getItem("user");
+    if (user) {
+      user = JSON.parse(user);
+      console.log(user);
+
+      dispatch(userActions.login(user));
+    }
+  }, [dispatch]);
   return (
     <>
       <Switch>
         {/* public routes go here */}
         <Route path="/login" exact component={Login} />
+        <Route path="/register" exact component={Register} />
 
         <PrivateRoute path="/">
           {/* private routes go here */}

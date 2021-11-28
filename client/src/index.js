@@ -10,7 +10,7 @@ import "./assets/css/theme.css";
 import "./assets/css/index.css";
 import App from "./App";
 
-document.title = "Project name";
+document.title = "Trade It";
 
 ReactDOM.render(
   <Provider store={store}>
