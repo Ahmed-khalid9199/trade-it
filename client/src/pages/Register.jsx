@@ -24,6 +24,7 @@ const Register = () => {
         `${process.env.REACT_APP_SERVER_URL}/getuser`,
         { username }
       );
+      console.log("checking username");
       setUsernameIsValid(response.data.length === 0);
     }, 500);
     return () => {
@@ -41,7 +42,7 @@ const Register = () => {
       return;
     }
     // send req
-    if (passIsValid) {
+    if (passIsValid && usernameIsValid) {
       const hash = await bcrypt.hash(password, 8);
       const USER = {
         username,
