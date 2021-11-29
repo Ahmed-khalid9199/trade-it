@@ -8,6 +8,7 @@ import { Route, Switch } from "react-router-dom";
 // import PrivateRoute from "./components/PrivateRoute";
 import { useDispatch } from "react-redux";
 import { userActions } from "./store/user";
+import "./app.css";
 
 const App = () => {
   const dispatch = useDispatch();
