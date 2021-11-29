@@ -96,6 +96,7 @@ input {
   background-size: cover;
   position: fixed;
   opacity: 0.7;
+  z-index: 0;
 }
 
 .form {
@@ -103,6 +104,21 @@ input {
   border-radius: 3%;
   box-shadow: var(--box-shadow);
   margin-left: 40vw;
+}
+
+.slogan {
+  margin-left: 5vw;
+  margin-top: 40vh;
+  width: 500px;
+  color: rgb(0, 0, 0);
+  z-index: 1;
+  position: fixed;
+}
+
+.slogan h1 {
+  font-size: 70px;
+  z-index: 1;
+  color: #572e00;
 }
 
 /* a {

@@ -70,6 +70,10 @@ const Login = () => {
         style={{ backgroundImage: `url(${background})` }}
         className="background"
       ></div>
+      <div className="slogan">
+        <h1>Trade what you have, for what you need.</h1>
+      </div>
+
       <Row className="justify-content-center align-items-center vh-100 vw-100">
         <Card className="form" style={{ width: "25rem" }}>
           <Card.Body>
