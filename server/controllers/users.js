@@ -22,6 +22,24 @@ const getUser = async (req, res, next) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  console.log("rescieved");
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.body.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    res.status(200);
+    res.send(updatedUser);
+    console.log("done");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const login = async (req, res, next) => {
   try {
     console.log("login", req);
@@ -36,4 +54,5 @@ module.exports = {
   registerUser,
   getUser,
   login,
+  updateUser,
 };

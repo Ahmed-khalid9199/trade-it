@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom";
 
 import Dashboard from "../pages/Dashboard";
 import Post from "../pages/Post";
+import Profile from "../pages/Profile";
 import Chat from "./chat/Chat";
 import PrivateRoute from "./PrivateRoute";
 
@@ -14,6 +15,7 @@ const Routes = () => {
       <PrivateRoute path="/">
         <Route path="/post" exact component={Post} />
         <Route path="/chat" exact component={Chat} />
+        <Route path="/profile" exact component={Profile} />
       </PrivateRoute>
 
       <Route path="*">

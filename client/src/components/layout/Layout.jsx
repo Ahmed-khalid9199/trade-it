@@ -1,6 +1,6 @@
 import React from "react";
 import "./layout.css";
-import { Navbar } from "../topnav/TopNav";
+import { Navbar, Mininav } from "../topnav/TopNav";
 import Routes from "../Routes";
 import { Route } from "react-router-dom";
 
@@ -11,6 +11,8 @@ const Layout = () => {
         <div className={`layout`}>
           <div className="layout__content">
             <Navbar />
+            {/* <Mininav /> */}
+
             <div className="layout__content__main">
               <Routes />
             </div>

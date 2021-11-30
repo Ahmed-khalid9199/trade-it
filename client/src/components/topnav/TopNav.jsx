@@ -2,7 +2,7 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import logo from "../../assets/images/olx-logo1.png";
+import logo from "../../assets/images/olx.png";
 import { Link, useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
@@ -33,10 +33,13 @@ const Navbar = () => {
     );
   };
 
+  const profileHandler = () => {};
+
   return (
     <div>
       <AppBar>
         <Toolbar position="static" className="my-navbar">
+          {/* <div className="top-flex"> */}
           <Link to="/">
             <IconButton
               edge="start"
@@ -44,9 +47,10 @@ const Navbar = () => {
               color="inherit"
               aria-label="menu"
             >
-              <img src={logo} width="68px" height="48px" alt="olx-logo" />
+              <img src={logo} width="74px" height="52px" alt="olx-logo" />
             </IconButton>
           </Link>
+
           <MySelect
             placeholder="my location"
             isMulti={false}
@@ -57,14 +61,17 @@ const Navbar = () => {
             ]}
           />
           <div>
-            <i class="bx bx-search"></i>
+            <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i>
+
             <Form.Control
               size="md"
+              height="5px"
               type="email"
               placeholder="Search anything"
               className="top-search"
             />
           </div>
+
           <div className="dropdown">
             {user && !user.isAuthenticated && (
               <Dropdown className="user-dropdown">
@@ -73,7 +80,9 @@ const Navbar = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item>Profile</Dropdown.Item>
+                  <Link to="./profile">
+                    <Dropdown.Item>Profile</Dropdown.Item>
+                  </Link>
                   <Dropdown.Item>Settings</Dropdown.Item>
                   <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
                 </Dropdown.Menu>

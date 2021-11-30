@@ -6,6 +6,7 @@ const chatController = require("../controllers/chats");
 route.post("/register", userController.registerUser);
 route.post("/getuser", userController.getUser);
 route.post("/login", userController.login);
+route.post("/updateuser", userController.updateUser);
 
 route.post("/newchat", chatController.newChat);
 
