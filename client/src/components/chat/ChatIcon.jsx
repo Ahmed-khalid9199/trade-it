@@ -1,9 +1,16 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const ChatIcon = (props) => {
   return (
-    <a href="#" className="list-group-item list-group-item-action border-0">
-      <div className="d-flex align-items-start">
+    <Link
+      to={`/inbox/${props.chatId}`}
+      className={`list-group-item list-group-item-action border-0 ${
+        props.active ? "active-chat" : ""
+      }`}
+      // style={{ backgroundColor: "red" }}
+    >
+      <div className="d-flex align-items-start ">
+        {/* <div className={`${props.active ? "active-chat" : ""}`}></div> */}
         <img
           src={props.imgSrc}
           className="rounded-circle mr-1"
@@ -25,7 +32,7 @@ const ChatIcon = (props) => {
           ""
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 

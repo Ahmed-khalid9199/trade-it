@@ -14,8 +14,8 @@ const Routes = () => {
       <Route path="/" exact component={Dashboard} />
       <PrivateRoute path="/">
         <Route path="/post" exact component={Post} />
-        <Route path="/chat" exact component={Chat} />
         <Route path="/profile" exact component={Profile} />
+        <Route path="/inbox/:chatid" component={Chat} />
       </PrivateRoute>
 
       <Route path="*">
