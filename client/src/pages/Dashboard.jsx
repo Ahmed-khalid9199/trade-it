@@ -3,12 +3,14 @@ import picture from "../assets/images/trade-up.jpg";
 // import Fouter from "./comps/footer";
 import Cas from "../components/card/Cards";
 import Fouter from "../components/UI/footer";
-import "../app.css";
+// import { Mininav } from "../components/topnav/TopNav";
 
 const Dashboard = () => {
   return (
     <>
-      {" "}
+      {/* <div className="App">
+        <Mininav />
+      </div> */}
       <div>
         <center>
           {" "}
@@ -46,7 +48,7 @@ const Dashboard = () => {
             borderRight: "2px solid #ddd",
           }}
         >
-          <h1>Trade up by FALCON</h1>
+          <h1>Trade It By Inside Brackets</h1>
           <h3>Trade What You Have For What You Want!!!</h3>
         </div>
         <div style={{ width: "33.3%" }}>

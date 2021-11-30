@@ -36,7 +36,7 @@ function Post() {
   const classes = useStyles();
   return (
     <>
-      <div>
+      {/* <div>
         <AppBar>
           <Toolbar position="static" style={{ backgroundColor: "#eeeeee" }}>
             <Link to="/">
@@ -47,7 +47,7 @@ function Post() {
             </Link>
           </Toolbar>
         </AppBar>
-      </div>
+      </div> */}
       <div style={style}>
         <center>
           <h1></h1>

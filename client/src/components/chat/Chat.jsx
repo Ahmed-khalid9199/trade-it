@@ -53,11 +53,9 @@ const Chat = () => {
   };
 
   return (
-    <div className="container p-0">
-      <h1 className="h3 mb-3">Messages</h1>
+    <div className="test">
       <div className="card chat__body">
         <div className="row g-0">
-          {/* <Col className="col-12 col-lg-5 col-xl-3 border-right"> */}
           <Col className="col-3 chat__sidebar border-right">
             <div className="px-4 d-none d-md-block">
               <div className="d-flex align-items-center">
@@ -127,8 +125,8 @@ const Chat = () => {
               </div>
             </div>
 
-            <div className="flex-grow-0 py-3 px-4 border-top">
-              <div className="input-group">
+            <div className="flex-grow-0 py-3 px-4 border-top ">
+              <div className="input-group chat-input">
                 <Form.Control
                   as="textarea"
                   placeholder="Type message here..."
