@@ -102,3 +102,7 @@
   font-size: 100px;
   opacity: 0.8;
 }
+
+.active-chat {
+  background-color: rgba(189, 189, 189, 0.452) !important;
+}

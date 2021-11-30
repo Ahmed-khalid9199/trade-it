@@ -1,57 +1,15 @@
 import React from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import IconButton from "@material-ui/core/IconButton";
-import logo from "../assets/images/olx-logo.png";
-import { Link } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Avatar from "@material-ui/core/Avatar";
 import { Form, Button, Card, Row, Col } from "react-bootstrap";
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  small: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-  },
-}));
 
 const style = {
   margin: "3% 20%",
   padding: "25px",
 };
-const select = {
-  fontSize: "18px",
-  padding: "5px",
-};
+
 function Post() {
-  const classes = useStyles();
   return (
     <>
-      {/* <div>
-        <AppBar>
-          <Toolbar position="static" style={{ backgroundColor: "#eeeeee" }}>
-            <Link to="/">
-              {" "}
-              <IconButton edge="start" color="inherit" aria-label="menu">
-                <img src={logo} width="68px" height="48px" alt="olx-logo" />
-              </IconButton>
-            </Link>
-          </Toolbar>
-        </AppBar>
-      </div> */}
       <div style={style}>
-        <center>
-          <h1></h1>
-        </center>
         <Card>
           <Card.Body>
             <Form>

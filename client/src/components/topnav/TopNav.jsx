@@ -57,7 +57,7 @@ const Navbar = () => {
             ]}
           />
           <div>
-            <i class="bx bx-search"></i>
+            <i className="bx bx-search"></i>
             <Form.Control
               size="md"
               type="email"
@@ -84,7 +84,7 @@ const Navbar = () => {
                   </Dropdown.Item>
                   <Dropdown.Item
                     onClick={() => {
-                      history.push("/inbox");
+                      history.push("/inbox/thread");
                     }}
                   >
                     Inbox

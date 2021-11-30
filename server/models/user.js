@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
       require: true,
       enum: ["customer", "admin"],
     },
-    profile_picture: { data: Buffer, contentType: String },
+    imgSrc: { data: Buffer, contentType: String },
     date_of_birth: {
       type: Date,
     },
