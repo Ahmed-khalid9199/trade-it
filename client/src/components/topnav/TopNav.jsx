@@ -79,14 +79,16 @@ const Navbar = () => {
                 </Dropdown.Menu>
               </Dropdown>
             )}
-            {user && user.isAuthenticated && (
-              <Button variant="primary">Log in</Button>
-            )}
 
             {/* <Link to="./post">
                   <Button variant="outline-success">+Post New Product</Button>
                 </Link> */}
           </div>
+          {!user && (
+            <Link to="/login">
+              <Button variant="primary">Log in</Button>{" "}
+            </Link>
+          )}
         </Toolbar>
       </AppBar>
     </div>
