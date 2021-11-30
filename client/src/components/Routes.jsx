@@ -13,7 +13,7 @@ const Routes = () => {
       <Route path="/" exact component={Dashboard} />
       <PrivateRoute path="/">
         <Route path="/post" exact component={Post} />
-        <Route path="/chat" exact component={Chat} />
+        <Route path="/inbox" component={Chat} />
       </PrivateRoute>
 
       <Route path="*">

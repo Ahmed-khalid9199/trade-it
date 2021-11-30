@@ -1,8 +1,11 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const ChatIcon = (props) => {
   return (
-    <a href="#" className="list-group-item list-group-item-action border-0">
+    <Link
+      to={`/inbox/${props.chatId}`}
+      className="list-group-item list-group-item-action border-0"
+    >
       <div className="d-flex align-items-start">
         <img
           src={props.imgSrc}
@@ -25,7 +28,7 @@ const ChatIcon = (props) => {
           ""
         )}
       </div>
-    </a>
+    </Link>
   );
 };
 

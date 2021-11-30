@@ -39,7 +39,7 @@
 .chat-messages {
   display: flex;
   flex-direction: column;
-  max-height: 72vh;
+  max-height: 66vh;
   min-height: 66vh;
   overflow-y: scroll;
 }
@@ -92,4 +92,13 @@
 }
 .border-top {
   border-top: 1px solid #dee2e6 !important;
+}
+
+.welcome-box {
+  max-height: 86vh;
+  min-height: 86vh;
+}
+.welcome-chat {
+  font-size: 100px;
+  opacity: 0.8;
 }

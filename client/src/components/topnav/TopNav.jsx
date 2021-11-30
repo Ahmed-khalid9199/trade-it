@@ -74,6 +74,22 @@ const Navbar = () => {
 
                 <Dropdown.Menu>
                   <Dropdown.Item>Profile</Dropdown.Item>
+
+                  <Dropdown.Item
+                    onClick={() => {
+                      history.push("/post");
+                    }}
+                  >
+                    Post new Ad
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      history.push("/inbox");
+                    }}
+                  >
+                    Inbox
+                  </Dropdown.Item>
+
                   <Dropdown.Item>Settings</Dropdown.Item>
                   <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
