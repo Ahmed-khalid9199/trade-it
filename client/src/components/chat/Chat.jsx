@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./chat.css";
 import { Col, Form, Button, Card, Row } from "react-bootstrap";
 import Message from "./Message";
@@ -40,6 +40,7 @@ const Chat = () => {
   const [currentChat, setCurrentChat] = useState();
   const [onlineUsers, setOnlineUsers] = useState([]);
   const params = useParams();
+  const scrollRef = useRef();
 
   const { user } = useSelector((state) => state.user);
 
@@ -116,6 +117,17 @@ const Chat = () => {
       message: result.data,
     });
   };
+  // scroll to bottom
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
+  // send text on enter
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  };
   return (
     <div className="test">
       <Card className="chat__body">
@@ -180,14 +192,16 @@ const Chat = () => {
                 <div className="chat-messages p-4">
                   {messages &&
                     messages.map((item, index) => (
-                      <Message
-                        key={index}
-                        src={user._id === item.sender ? avatar : otherImg}
-                        sender={item.sender}
-                        time={moment(item.createdAt).format("h:mm")}
-                        text={item.text}
-                        self={user._id === item.sender}
-                      />
+                      <div ref={scrollRef}>
+                        <Message
+                          key={index}
+                          src={user._id === item.sender ? avatar : otherImg}
+                          sender={item.sender}
+                          time={moment(item.createdAt).format("h:mm")}
+                          text={item.text}
+                          self={user._id === item.sender}
+                        />
+                      </div>
                     ))}
                 </div>
               </div>
@@ -197,6 +211,7 @@ const Chat = () => {
                   <Form.Control
                     as="textarea"
                     placeholder="Type message here..."
+                    onKeyDown={handleKeyDown}
                     onChange={(e) => setText(e.currentTarget.value)}
                     value={text}
                   />
