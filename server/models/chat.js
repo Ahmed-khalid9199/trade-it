@@ -4,11 +4,11 @@ const chatSchema = mongoose.Schema(
   {
     ad1: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Advertisements",
+      ref: "Product",
     },
     ad2: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Advertisements",
+      ref: "Product",
     },
     lastText: String,
     members: [

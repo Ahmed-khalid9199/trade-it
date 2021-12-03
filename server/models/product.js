@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const adSchema = new mongoose.Schema(
+const productSchema = new mongoose.Schema(
   {
     title: String,
     description: String,
@@ -25,4 +25,4 @@ const adSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model("Advertisement", adSchema);
+module.exports = mongoose.model("Product", productSchema);

@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
       enum: ["customer", "admin"],
     },
     imgSrc: { data: Buffer, contentType: String },
-    date_of_birth: {
+    dob: {
       type: Date,
     },
     phoneNumber: {
@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema(
       required: true,
     },
     street: String,
-    provice: String,
+    province: String,
     city: String,
     cnic: String,
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
@@ -33,11 +33,11 @@ const userSchema = new mongoose.Schema(
       rating: Number,
       writer_id: mongoose.Schema.Types.ObjectId,
     },
-    advertisements: [
+    products: [
       {
         _id: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Advertisement",
+          ref: "Product",
         },
       },
     ],

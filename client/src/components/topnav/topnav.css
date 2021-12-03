@@ -1,7 +1,7 @@
 .my-navbar {
   display: flex;
   justify-content: space-between;
-  background-color: whitesmoke;
+  background-color: rgb(233, 180, 133);
 }
 
 .dropdown {
@@ -42,7 +42,7 @@ i {
 }
 
 .my-card:hover {
-  box-shadow: rgba(149, 157, 165, 0.5) 0px 8px 24px;
+  box-shadow: rgba(243, 155, 83, 0.5) 0px 8px 24px;
   transform: scale(1.01);
   transition: transform 0.5s ease 0.1s;
 }
@@ -55,4 +55,10 @@ i {
 .card-img {
   border-top-left-radius: 15px !important;
   border-top-right-radius: 15px !important;
+}
+
+.top-flex {
+  display: flex;
+  justify-content: space-around;
+  /* grid-template-columns: 1fr, 3fr, 6fr; */
 }

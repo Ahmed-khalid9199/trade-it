@@ -22,6 +22,24 @@ const getUser = async (req, res, next) => {
   }
 };
 
+const updateUser = async (req, res) => {
+  try {
+    console.log("update user:", req.body);
+    User.findByIdAndUpdate(
+      req.body.id,
+      {
+        $set: req.body,
+      },
+      { new: true }
+    ).then((result) => {
+      console.log(result);
+      res.status(200).send(result);
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const login = async (req, res, next) => {
   try {
     console.log("login", req.body);
@@ -36,4 +54,5 @@ module.exports = {
   registerUser,
   getUser,
   login,
+  updateUser,
 };
