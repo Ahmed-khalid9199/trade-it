@@ -23,18 +23,18 @@ const getUser = async (req, res, next) => {
 };
 
 const updateUser = async (req, res) => {
-  console.log("rescieved");
   try {
-    const updatedUser = await User.findByIdAndUpdate(
+    console.log("update user:", req.body);
+    User.findByIdAndUpdate(
       req.body.id,
       {
         $set: req.body,
       },
       { new: true }
-    );
-    res.status(200);
-    res.send(updatedUser);
-    console.log("done");
+    ).then((result) => {
+      console.log(result);
+      res.status(200).send(result);
+    });
   } catch (error) {
     console.log(error);
   }

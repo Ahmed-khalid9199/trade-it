@@ -86,7 +86,7 @@ class las extends Component {
                   <li id="ftli">
                     <img
                       src="https://statics.olx.com.pk/external/base/img/appstore.png"
-                      alt="olximage"
+                      alt="trade-it"
                     />{" "}
                     <img
                       src="https://statics.olx.com.pk/external/base/img/playstore.png"

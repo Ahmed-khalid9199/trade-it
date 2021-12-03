@@ -2,24 +2,33 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
-import { Row, Col, Button, Form, InputGroup, Card } from "react-bootstrap";
+import {
+  Row,
+  Col,
+  Button,
+  Form,
+  InputGroup,
+  Card,
+  Image,
+} from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Message from "../components/UI/Message";
 import MyModal from "../components/modals/MyModal";
 import moment from "moment";
 import "./Profile.css";
+import bcrypt from "bcryptjs";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const [validated, setValidated] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [firstName, setFirstName] = useState(user ? user.first_name : "");
-  const [lastName, setLastName] = useState(user ? user.last_name : "");
+  const [firstName, setFirstName] = useState(user ? user.firstName : "");
+  const [lastName, setLastName] = useState(user ? user.lastName : "");
   const [dateOfBirth, setDateOfBirth] = useState(
-    user.date_of_birth ? moment(user.date_of_birth).format("YYYY-MM-DD") : ""
+    user.dob ? moment(user.dob).format("YYYY-MM-DD") : ""
   );
-  const [phone, setPhone] = useState(user ? user.phone_number : "");
+  const [phone, setPhone] = useState(user ? user.phoneNumber : "");
   const [street, setStreet] = useState(user ? user.street : "");
   const [province, setProvince] = useState(user ? user.province : "");
   const [city, setCity] = useState(user ? user.city : "");
@@ -28,6 +37,34 @@ const Profile = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
 
+  const passwordChangeHandler = async (e) => {
+    e.preventDefault();
+    const passCheck = await bcrypt.compare(oldPassword, user.password);
+    if (!oldPassword && !newPassword && !confirmPassword) {
+      setError("Please fill all fields");
+      // } else if (oldPassword !== user.password) {
+      //   setError("Old Password is Not Correct");
+    } else if (!passCheck) {
+      setError(oldPassword);
+    } else if (newPassword !== confirmPassword) {
+      setError("Confirm Password is not same");
+    } else {
+      setShowModal(false);
+      const hash = await bcrypt.hash(newPassword, 8);
+      await axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
+          id: user._id,
+          password: hash,
+        })
+        .then((response) => {
+          let data = response.data;
+          dispatch(userActions.login(data));
+          localStorage.setItem("user", JSON.stringify(data));
+          console.log("updated User", response);
+        });
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
@@ -35,14 +72,13 @@ const Profile = () => {
     if (form.checkValidity() === true) {
       if (user) {
         console.log("value", firstName, lastName, dateOfBirth, phone);
-        setShowModal(false);
         await axios
-          .post(`${process.env.REACT_APP_BACKEND_URL}/updateuser`, {
+          .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
             id: user._id,
-            first_name: firstName,
-            last_name: lastName,
-            date_of_birth: dateOfBirth,
-            phone_number: phone,
+            firstName: firstName,
+            lastName: lastName,
+            dob: dateOfBirth,
+            phoneNumber: phone,
             street: street,
             province: province,
             city: city,
@@ -60,6 +96,7 @@ const Profile = () => {
   const closeCloseModel = () => {
     setShowModal(false);
   };
+  console.log("user", user);
 
   return (
     <>
@@ -71,16 +108,24 @@ const Profile = () => {
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row className="m-3">
                 <h3>Personal Info</h3>
+
+                <Image src="holder.js/171x180" roundedCircle />
+                <Form.Control
+                  type="file"
+                  aria-describedby="inputGroupPrepend"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  required
+                />
                 <Form.Group as={Col} md="6">
-                  <Form.Label>First Name</Form.Label>
+                  <Form.Label>First Name </Form.Label>
                   <InputGroup hasValidation>
                     <Form.Control
                       type="text"
                       placeholder="First Name"
                       aria-describedby="inputGroupPrepend"
-                      // value={firstName}
-                      // onChange={(e) => setFirstName(e.target.value)}
-                      // onBlur={() => onChangeHandler()}
+                      value={firstName}
+                      defaultValue={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
                       required
                     />
                     <Form.Control.Feedback type="invalid">
@@ -94,8 +139,8 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Last Name"
-                    //   value={lastName}
-                    //   onChange={(e) => setLastName(e.target.value)}
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -108,8 +153,8 @@ const Profile = () => {
                   <Form.Label>Date of Birth</Form.Label>
                   <Form.Control
                     type="date"
-                    //   value={dateOfBirth}
-                    //   onChange={(e) => setDateOfBirth(e.target.value)}
+                    value={dateOfBirth}
+                    onChange={(e) => setDateOfBirth(e.target.value)}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -126,8 +171,8 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Phone"
-                    //   value={phone}
-                    //   onChange={(e) => setPhone(e.target.value)}
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -139,8 +184,9 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Street"
-                    //   value={address}
-                    //   onChange={(e) => setAddress(e.target.value)}
+                    defaultValue={street}
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -152,8 +198,9 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="Province"
-                    //   value={address}
-                    //   onChange={(e) => setAddress(e.target.value)}
+                    defaultValue={province}
+                    value={province}
+                    onChange={(e) => setProvince(e.target.value)}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -165,8 +212,9 @@ const Profile = () => {
                   <Form.Control
                     type="text"
                     placeholder="City"
-                    //   value={address}
-                    //   onChange={(e) => setAddress(e.target.value)}
+                    defaultValue={city}
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
                     required
                   />
                   <Form.Control.Feedback type="invalid">
@@ -182,7 +230,7 @@ const Profile = () => {
                         textDecoration: "underline",
                         cursor: "pointer",
                       }}
-                      // onClick={() => setShowModal(true)}
+                      onClick={() => setShowModal(true)}
                     >
                       Change Password
                     </p>
@@ -192,7 +240,6 @@ const Profile = () => {
                     show={showModal}
                     heading="Change Password"
                     onClose={closeCloseModel}
-                    style={{ width: "auto" }}
                   >
                     <Row className="justify-content-center">
                       <Row className="mt-3">
@@ -202,8 +249,8 @@ const Profile = () => {
                           <Form.Control
                             type="password"
                             placeholder="Old Password"
-                            //   value={oldPassword}
-                            //   onChange={(e) => setOldPassword(e.target.value)}
+                            value={oldPassword}
+                            onChange={(e) => setOldPassword(e.target.value)}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -217,8 +264,8 @@ const Profile = () => {
                           <Form.Control
                             type="password"
                             placeholder="New Password"
-                            //   value={newPassword}
-                            //   onChange={(e) => setNewPassword(e.target.value)}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -232,8 +279,8 @@ const Profile = () => {
                           <Form.Control
                             type="password"
                             placeholder="Confirm Password"
-                            //   value={confirmPassword}
-                            //   onChange={(e) => setConfirmPassword(e.target.value)}
+                            value={confirmPassword}
+                            onChange={(e) => setConfirmPassword(e.target.value)}
                             required
                           />
                           <Form.Control.Feedback type="invalid">
@@ -243,7 +290,9 @@ const Profile = () => {
                       </Row>
                     </Row>
                     <Row className="mx-5 mt-3">
-                      <Button>Change Password</Button>
+                      <Button onClick={passwordChangeHandler}>
+                        Change Password
+                      </Button>
                     </Row>
                   </MyModal>
                 </Row>
@@ -252,7 +301,7 @@ const Profile = () => {
               <hr />
               <div className="edit-button">
                 <Button type="submit" className="edit-button-1">
-                  Edit form
+                  Edit Profile
                 </Button>
               </div>
             </Form>
