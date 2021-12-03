@@ -11,14 +11,12 @@ const chatSchema = mongoose.Schema(
       ref: "Advertisements",
     },
     lastText: String,
-    user1: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-    user2: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
+    members: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     unRead: {
       type: Number,
       default: 0,

@@ -24,7 +24,7 @@ const getUser = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    console.log("login", req);
+    console.log("login", req.body);
     const result = await User.find(req.body).select("username password -_id");
     res.status(200).send(result);
   } catch (err) {

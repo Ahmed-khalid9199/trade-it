@@ -28,7 +28,7 @@ let guid = () => {
   );
 };
 
-console.log(guid());
+// console.log(guid());
 //"c2181edf-041b-0a61-3651-79d671fa3db7"
 
 var cas = [

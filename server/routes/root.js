@@ -9,6 +9,7 @@ route.post("/login", userController.login);
 
 route.post("/newchat", chatController.newChat);
 route.get("/getchats/:user", chatController.getChats);
+route.get("/getchat/:chatid", chatController.getChat);
 route.post("/sendmessage", chatController.newMessage);
 
 module.exports = route;

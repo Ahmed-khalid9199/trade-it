@@ -6,6 +6,9 @@ const mongoose = require("mongoose");
 const { createServer } = require("http");
 const rootRoutes = require("./routes/root");
 
+const { Server } = require("socket.io");
+const { getUser, removeUser, addUser, getUsers } = require("./util/chatUsers");
+
 const app = express();
 const httpServer = createServer(app);
 
@@ -38,6 +41,36 @@ app.use(
 
 // routes
 app.use("/", rootRoutes);
+
+// sockets
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+  },
+});
+io.on("connection", (socket) => {
+  //take userId and socketId from user
+  socket.on("addUser", (username) => {
+    addUser(username, socket.id);
+    io.emit("getUsers", getUsers());
+  });
+
+  //send and get message
+  socket.on("sendMessage", ({ receiverId, message }) => {
+    const user = getUser(receiverId);
+    if (user) {
+      io.to(user.socketId).emit("getMessage", message);
+      console.log(message);
+    }
+  });
+
+  //when disconnect
+  socket.on("disconnect", () => {
+    console.log("a user disconnected!");
+    removeUser(socket.id);
+    io.emit("getUsers", getUsers());
+  });
+});
 
 httpServer.listen(process.env.PORT || 8800, () =>
   console.log("Api is running")

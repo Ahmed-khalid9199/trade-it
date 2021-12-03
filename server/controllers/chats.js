@@ -22,15 +22,14 @@ const newMessage = async (req, res, next) => {
     res.status(500).send(err.message);
   }
 };
-
+// get chats for ibox sidebar
+// {$or:[{region: "NA"},{sector:"Some Sector"}]}
 const getChats = async (req, res, next) => {
   try {
     console.log("get chats");
     const result = await Chat.find({
-      user1: req.params.user,
-    })
-      .populate("user1", { username: 1 })
-      .populate("user2", { username: 1, imgSrc: 1, email: 1 });
+      members: req.params.user,
+    }).populate("members");
     console.log(result);
     res.status(200).send(result);
   } catch (err) {
@@ -39,4 +38,25 @@ const getChats = async (req, res, next) => {
   }
 };
 
-module.exports = { newChat, newMessage, getChats };
+// get chat and its messages
+const getChat = async (req, res, next) => {
+  try {
+    const chatId = req.params.chatid;
+    console.log("get chat", chatId);
+    var chat = await Chat.findById(chatId).populate("members", {
+      username: 1,
+    });
+    const messages = await Message.find({ chat: chatId })
+      .sort({
+        createdAt: -1,
+      })
+      .limit(50);
+    messages.reverse();
+    res.status(200).send({ chat, messages });
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send(err.message);
+  }
+};
+
+module.exports = { newChat, newMessage, getChats, getChat };
