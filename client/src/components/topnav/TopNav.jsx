@@ -40,6 +40,7 @@ const Navbar = () => {
       <AppBar>
         <Toolbar position="static" className="my-navbar">
           {/* <div className="top-flex"> */}
+
           <Link to="/">
             <IconButton
               edge="start"
@@ -60,17 +61,16 @@ const Navbar = () => {
               { label: "Islamabad ", value: "islamabad" },
             ]}
           />
-          <div>
-            <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i>
 
-            <Form.Control
-              size="md"
-              height="5px"
-              type="email"
-              placeholder="Search anything"
-              className="top-search"
-            />
-          </div>
+          <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i>
+
+          <Form.Control
+            size="md"
+            height="5px"
+            type="email"
+            placeholder="Search anything"
+            className="top-search"
+          />
 
           <div className="dropdown">
             {user && !user.isAuthenticated && (

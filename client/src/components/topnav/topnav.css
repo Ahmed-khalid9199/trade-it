@@ -3,6 +3,10 @@
   justify-content: space-between;
   background-color: rgb(233, 180, 133);
 }
+.my {
+  display: flex;
+  justify-content: space-arround;
+}
 
 .dropdown {
   width: 50px;
