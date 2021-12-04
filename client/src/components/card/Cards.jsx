@@ -87,18 +87,20 @@ const Cards = ({ loadMore, setShowLoadMore }) => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getproducts/${products.length}`)
       .then((result) => {
-        setProducts((prev) => [...prev, result.data.products]);
+        console.log("data", result.data);
+        setProducts((prev) => [...prev, ...result.data.products]);
         setShowLoadMore(result.data.remainingProducts !== 0);
       })
       .catch((err) => {
         console.log(err);
       });
   }, [loadMore]);
+  console.log(products);
   return (
     <div
       style={{ display: "grid", gridTemplateColumns: "auto auto auto auto" }}
     >
-      {products.map((cas) => (
+      {products.map((product) => (
         <Card
           className="my-card"
           style={{
@@ -107,13 +109,13 @@ const Cards = ({ loadMore, setShowLoadMore }) => {
             border: "dark",
           }}
         >
-          <Card.Img className="card-img" src={cas.shot} />
+          <Card.Img className="card-img" src={product.images[0]} />
 
           <Card.Body>
-            <Card.Title>{cas.title}</Card.Title>
+            <Card.Title>{product.title}</Card.Title>
             <hr />
-            <Card.Text className="">{cas.location}</Card.Text>
-            <Card.Text className="">{cas.subtitle}</Card.Text>
+            <Card.Text className="">{product.description}</Card.Text>
+            <Card.Text className="">{product.subtitle}</Card.Text>
           </Card.Body>
         </Card>
       ))}

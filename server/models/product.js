@@ -4,7 +4,7 @@ const productSchema = new mongoose.Schema(
   {
     title: String,
     description: String,
-    productPictures: [String],
+    images: [String],
     tags: [String],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     activityStatus: {

@@ -17,6 +17,7 @@ import MyModal from "../components/modals/MyModal";
 import moment from "moment";
 import "./Profile.css";
 import bcrypt from "bcryptjs";
+import PreviewImage from "../components/preview/PreviewImage";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
@@ -69,28 +70,27 @@ const Profile = () => {
     event.preventDefault();
     const form = event.currentTarget;
     setValidated(true);
+    console.log("inside submit", form.checkValidity());
     if (form.checkValidity() === true) {
-      if (user) {
-        console.log("value", firstName, lastName, dateOfBirth, phone);
-        await axios
-          .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
-            id: user._id,
-            firstName: firstName,
-            lastName: lastName,
-            dob: dateOfBirth,
-            phoneNumber: phone,
-            street: street,
-            province: province,
-            city: city,
-          })
-          .then((response) => {
-            let data = response.data;
-            dispatch(userActions.login(data));
-            localStorage.setItem("user", JSON.stringify(data));
-            console.log("updated User", response.data);
-          });
-        console.log("edit submit");
-      }
+      console.log("value", firstName, lastName, dateOfBirth, phone);
+      await axios
+        .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
+          id: user._id,
+          firstName: firstName,
+          lastName: lastName,
+          dob: dateOfBirth,
+          phoneNumber: phone,
+          street: street,
+          province: province,
+          city: city,
+        })
+        .then((response) => {
+          let data = response.data;
+          dispatch(userActions.login(data));
+          localStorage.setItem("user", JSON.stringify(data));
+          console.log("updated User", response.data);
+        });
+      console.log("edit submit");
     }
   };
   const closeCloseModel = () => {
@@ -108,14 +108,14 @@ const Profile = () => {
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row className="m-3">
                 <h3>Personal Info</h3>
-
-                <Image src="holder.js/171x180" roundedCircle />
+                <PreviewImage />
+                {/* <Image src="holder.js/171x180" roundedCircle />
                 <Form.Control
                   type="file"
-                  aria-describedby="inputGroupPrepend"
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                />
+                  // aria-describedby="inputGroupPrepend"
+                  // onChange={(e) => setFirstName(e.target.value)}
+                  // required
+                /> */}
                 <Form.Group as={Col} md="6">
                   <Form.Label>First Name </Form.Label>
                   <InputGroup hasValidation>
