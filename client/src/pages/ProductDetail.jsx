@@ -56,9 +56,20 @@ const productDetail = () => {
               </div>
 
               <div class="preview col-md-6">
-                <h1 class="product-title">Men's shoes fashion</h1>
+                <Row>
+                  <Col>
+                    <h1 class="product-title">Men's shoes fashion</h1>
 
-                <span class="review-no">41 reviews</span>
+                    <span class="review-no">41 reviews</span>
+                    <Col></Col>
+                    <button class="add-to-cart btn btn-default" type="button">
+                      <i
+                        style={{ marginLeft: "-8px", marginTop: "-5px" }}
+                        class="bx bxs-heart"
+                      ></i>
+                    </button>
+                  </Col>
+                </Row>
                 <br />
                 <Card className="card-bg-white">
                   <h4 class="price">
@@ -131,12 +142,6 @@ const productDetail = () => {
                   Contact User
                 </Button>
                 <div></div>
-                <button class="add-to-cart btn btn-default" type="button">
-                  <i
-                    style={{ marginLeft: "-8px", marginTop: "-5px" }}
-                    class="bx bxs-heart"
-                  ></i>
-                </button>
               </div>
               <div class="details col-md-6"></div>
             </div>
