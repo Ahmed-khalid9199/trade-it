@@ -11,6 +11,7 @@ route.post("/updateuser", userController.updateUser);
 route.post("/newchat", chatController.newChat);
 route.get("/getchats/:user", chatController.getChats);
 route.get("/getchat/:chatid", chatController.getChat);
+route.put("/updatechat/:chatid", chatController.updateChat);
 route.post("/sendmessage", chatController.newMessage);
 
 module.exports = route;

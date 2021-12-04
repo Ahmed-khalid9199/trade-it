@@ -5,7 +5,7 @@ const Message = (props) => {
     <div
       className={`${
         props.self ? "chat-message-right" : "chat-message-left"
-      } pb-4`}
+      }  pb-4`}
     >
       <div>
         <img
@@ -20,10 +20,11 @@ const Message = (props) => {
       <div
         className={`flex-shrink-1 bg-light ${
           props.self ? "right-message-body" : "left-message-body"
-        } rounded py-2 px-3 mr-3`}
+        } ${props.blocked ? "offensive-message" : ""} rounded py-2 px-3 mr-3`}
       >
         {props.text}
       </div>
+      {props.blocked && <p className="offensive-warning">{props.blocked}</p>}
     </div>
   );
 };

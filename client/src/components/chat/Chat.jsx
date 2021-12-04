@@ -17,47 +17,59 @@ import { io } from "socket.io-client";
 import moment from "moment";
 
 let socket = null;
-// const chats = [
-//   {
-//     imgSrc: "https://bootdey.com/img/Content/avatar/avatar5.png",
-//     title: "Vanessa Tucker",
-//     badge: 5,
-//     _id: "123",
-//   },
-//   {
-//     imgSrc: "https://bootdey.com/img/Content/avatar/avatar3.png",
-//     title: "Sharon Lessman",
-//     badge: 0,
-//     _id: "124",
-//   },
-// ];
+
 const otherImg = "https://bootdey.com/img/Content/avatar/avatar5.png";
 
 const Chat = () => {
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const [chats, setChats] = useState([]);
-  const [currentChat, setCurrentChat] = useState();
+  const [currentChat, setCurrentChat] = useState(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const params = useParams();
   const scrollRef = useRef();
 
-  const { user } = useSelector((state) => state.user);
+  const [newMessage, setNewMessage] = useState("");
 
+  const { user } = useSelector((state) => state.user);
   // recieve message
   useEffect(() => {
     socket = io(`${process.env.REACT_APP_SERVER_URL}`);
     socket.on("getMessage", (message) => {
-      console.log("getMessage", message);
-      setMessages((prev) => [...prev, message]);
+      setNewMessage(message);
     });
-  }, []);
+  }, [user.username]);
 
+  useEffect(() => {
+    const chatOpened = currentChat?.members.some(
+      (item) => item._id === newMessage.sender
+    );
+    if (newMessage && chatOpened) {
+      setMessages((prev) => [...prev, newMessage]);
+    } else {
+      // set unread chats
+      // setChats((prev) =>
+      //   prev.map((item) => {
+      //     const targetChat = item.members.some(
+      //       (item) => item._id === newMessage.sender
+      //     );
+      //     if (targetChat) {
+      //       axios.put(
+      //         `${process.env.REACT_APP_SERVER_URL}/updatechat/${item._id}`,
+      //         { unRead: item.unRead + 1 }
+      //       );
+      //       return { ...item, unRead: item.unRead + 1 };
+      //     } else {
+      //       return item;
+      //     }
+      //   })
+      // );
+    }
+  }, [newMessage, currentChat]);
   useEffect(() => {
     socket.emit("addUser", user.username);
     socket.on("getUsers", (users) => {
       setOnlineUsers(users.map((item) => item.username));
-      console.log("emit online users", users);
     });
   }, [user]);
 
@@ -68,7 +80,12 @@ const Chat = () => {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/getchat/${params.chatid}`)
         .then(({ data }) => {
-          setCurrentChat(data.chat);
+          setCurrentChat({
+            ...data.chat,
+            title: data.chat.members.find(
+              (item) => item.uername !== user.username
+            ).username,
+          });
           setMessages(data.messages);
         })
         .catch((err) => console.log(err));
@@ -84,7 +101,7 @@ const Chat = () => {
           title: item.members.find((item) => item.username !== user.username)
             .username,
           imgSrc: avatar,
-          badge: item.unRead,
+          badge: 0,
           ...item,
         }));
         setChats(newChats);
@@ -117,6 +134,7 @@ const Chat = () => {
       message: result.data,
     });
   };
+
   // scroll to bottom
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -144,6 +162,7 @@ const Chat = () => {
                 </div>
               </div>
             </div>
+            <hr />
 
             <div key={onlineUsers} className="current-chats">
               {chats &&
@@ -153,12 +172,10 @@ const Chat = () => {
                       key={index}
                       imgSrc={otherImg}
                       title={item.title}
-                      badge={item.badge}
+                      badge={0}
                       chatId={item._id}
                       active={item._id === params.chatid}
-                      online={chats.some((chat) =>
-                        onlineUsers.includes(chat.title)
-                      )}
+                      online={onlineUsers.includes(item.title)}
                     />
                   );
                 })}
@@ -200,6 +217,7 @@ const Chat = () => {
                           time={moment(item.createdAt).format("h:mm")}
                           text={item.text}
                           self={user._id === item.sender}
+                          // blocked={"this message is offensive"}
                         />
                       </div>
                     ))}
