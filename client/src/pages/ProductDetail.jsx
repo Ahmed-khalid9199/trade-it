@@ -98,7 +98,12 @@ const productDetail = () => {
                       <h3>Faraz Irfan</h3>
                       <h4>Member Scince:</h4>
                       <h5>January 5, 2021</h5>
-                      <Button>Contact User</Button>
+                      <div style={{ display: "flex" }}>
+                        <Button>Contact User</Button>
+                        <Button style={{ backgroundColor: "Red" }}>
+                          Go to user Profile
+                        </Button>
+                      </div>
                     </Col>
                   </Row>
                 </Card>
@@ -143,12 +148,6 @@ const productDetail = () => {
                 </h5>
               </div>
 
-              <div class="action">
-                <Button class="add-to-cart btn btn-default" type="button">
-                  Contact User
-                </Button>
-                <div></div>
-              </div>
               <div class="details col-md-6"></div>
             </div>
           </div>

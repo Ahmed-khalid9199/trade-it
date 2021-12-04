@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import "./MyProfile.css";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const MyProfile = () => {
   const { user } = useSelector((state) => state.user);
@@ -32,7 +33,10 @@ const MyProfile = () => {
         <div class="container-fluid d-flex align-items-center">
           <div class="row">
             <div>
-              <Button> Edit profile</Button>
+              <Link to="./profile">
+                {" "}
+                <Button>Edit profile</Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -75,7 +79,7 @@ const MyProfile = () => {
                       </div>
                       <div>
                         <span class="heading">10</span>
-                        <span class="description">Photos</span>
+                        <span class="description">Products</span>
                       </div>
                       <div>
                         <span class="heading">89</span>
@@ -96,15 +100,18 @@ const MyProfile = () => {
                     {user.street + "," + user.city}
                   </div>
                   <div class="h5 mt-4">
-                    <i class="ni business_briefcase-24 mr-2"></i>Solution
-                    Manager - Creative Tim Officer
+                    <i class="ni business_briefcase-24 mr-2"></i>
+                    {user.phoneNumber}
                   </div>
-                  <div>University of Computer Science</div>
+                  <div style={{ color: "black" }}>
+                    Comsats University Project
+                  </div>
                   <hr class="my-4" />
                   <p style={{ color: "black" }}>
                     Ryan — the name taken by Melbourne-raised, Brooklyn-based
                     Nick Murphy — writes, performs and records all of his own
                     music.
+                    {user.reviews}
                   </p>
                   <a href="#">Show more</a>
                 </div>
