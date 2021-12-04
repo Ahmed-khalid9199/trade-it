@@ -4,18 +4,19 @@ const productSchema = new mongoose.Schema(
   {
     title: String,
     description: String,
-    productPictures: [{ data: Buffer, contentType: String }],
+    productPictures: [String],
     tags: [String],
-    likes: Number,
+    likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     activityStatus: {
       type: String,
       required: true,
       enum: ["active", "deactive", "traded"],
+      default: "active",
     },
-    tradeInfo: { customer1: {}, customer2: {} },
+    tradeInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     category: {
       type: String,
-      enum: ["Electorincs", "Households"],
+      enum: ["Electorincs", "Households", "Miscellaneous"],
       default: "Miscellaneous",
     },
     yearOfManufacture: Date,
