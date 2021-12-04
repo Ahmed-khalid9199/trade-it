@@ -17,10 +17,6 @@ const chatSchema = mongoose.Schema(
         ref: "User",
       },
     ],
-    unRead: {
-      type: Number,
-      default: 0,
-    },
   },
   {
     timestamps: true,

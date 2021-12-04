@@ -12,6 +12,7 @@ const messageSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
+    blocked: String,
     read: Date,
   },
   {

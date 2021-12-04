@@ -60,4 +60,16 @@ const getChat = async (req, res, next) => {
   }
 };
 
-module.exports = { newChat, newMessage, getChats, getChat };
+const updateChat = async (req, res, next) => {
+  try {
+    const chatId = req.params.chatid;
+    console.log("update chat", chatId);
+    const chat = await Chat.findByIdAndUpdate(chatId, { $set: req.body });
+    res.status(200).send(chat);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send(err.message);
+  }
+};
+
+module.exports = { newChat, newMessage, getChats, getChat, updateChat };
