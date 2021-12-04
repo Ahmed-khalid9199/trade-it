@@ -67,7 +67,7 @@ img {
 
 .card {
   margin-bottom: auto;
-  background: #eee;
+  background: rgb(225, 229, 230);
   padding: 10px;
   line-height: 2.5em;
   border-radius: 15px;
@@ -126,8 +126,8 @@ img {
 .product-title {
   margin-top: 0;
 }
-.card-bg-white {
-  background-color: rgb(255, 255, 255);
+.card-bg1 {
+  background-color: rgb(201, 213, 224);
 }
 .size {
   margin-right: 10px;

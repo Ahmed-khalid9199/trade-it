@@ -7,6 +7,7 @@ import Post from "../pages/Post";
 import ProductDetail from "../pages/ProductDetail";
 import EditProduct from "../pages/EditProduct";
 import Profile from "../pages/Profile";
+import MyProfile from "../pages/MyProfile";
 import Chat from "./chat/Chat";
 import PrivateRoute from "./PrivateRoute";
 
@@ -19,6 +20,7 @@ const Routes = () => {
         <Route path="/productdetail" exact component={ProductDetail} />
         <Route path="/editproduct" exact component={EditProduct} />
         <Route path="/profile" exact component={Profile} />
+        <Route path="/myprofile" exact component={MyProfile} />
         <Route path="/inbox/:chatid" component={Chat} />
       </PrivateRoute>
 

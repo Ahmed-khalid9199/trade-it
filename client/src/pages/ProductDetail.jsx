@@ -71,7 +71,7 @@ const productDetail = () => {
                   </Col>
                 </Row>
                 <br />
-                <Card className="card-bg-white">
+                <Card style={{ backgroundColor: "rgb(201, 213, 224)" }}>
                   <h4 class="price">
                     current price: <span>$180</span>
                   </h4>
@@ -85,13 +85,15 @@ const productDetail = () => {
                     </div>
                   </div>
                 </Card>
-                <Card className="card-bg-white">
+                <br />
+                <Card style={{ backgroundColor: "rgb(201, 213, 224)" }}>
                   <Row>
                     <Col>
                       <div class="tab-pane active" id="pic-1">
                         <img src="http://placekitten.com/400/252" />
                       </div>
                     </Col>
+                    <br />
                     <Col>
                       <h3>Faraz Irfan</h3>
                       <h4>Member Scince:</h4>
@@ -104,8 +106,12 @@ const productDetail = () => {
               <div>
                 <br />
               </div>
-              <hr />
-              <hr />
+              <hr
+                style={{
+                  width: "135vh",
+                  marginLeft: "20px",
+                }}
+              />
 
               <div class="details" col-md-6>
                 <p class="product-description">
