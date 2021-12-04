@@ -1,40 +1,39 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import picture from "../assets/images/trade-up.jpg";
-// import Fouter from "./comps/footer";
-import Cas from "../components/card/Cards";
-import Fouter from "../components/UI/footer";
+import Cards from "../components/card/Cards";
+import Footer from "../components/UI/footer";
 import { Link } from "react-router-dom";
-// import { Mininav } from "../components/topnav/TopNav";
+
+import axios from "axios";
 
 const Dashboard = () => {
+  const [loadMore, setLoadMore] = useState(null);
+  const [showLoadMore, setShowLoadMore] = useState(false);
+
   return (
     <>
-      {/* <div className="App">
-        <Mininav />
-      </div> */}
       <div>
         <center>
-          {" "}
-          <img
-            src={picture}
-            alt="trade up"
-            className="cover"
-            // height="250"
-            // width="1600"
-          />
+          <img src={picture} alt="trade up" className="cover" />
         </center>
       </div>
       <div style={{ margin: "6% 4%" }}>
         <h2>Top Recommendation </h2>
-        <Cas />
+        <Cards loadMore={loadMore} setShowLoadMore={setShowLoadMore} />
       </div>
-      <div>
-        <center>
-          <Link to="#">
-            <button id="loadmore">Load More</button>
-          </Link>
-        </center>
-      </div>
+      {showLoadMore && (
+        <div>
+          <center>
+            <button
+              onClick={() => {
+                setLoadMore(Math.random());
+              }}
+            >
+              Load More
+            </button>
+          </center>
+        </div>
+      )}
       <div style={{ display: "flex" }}>
         <div colSpan="2" style={{ width: "33.3%" }}>
           <img
@@ -74,7 +73,7 @@ const Dashboard = () => {
           />
         </div>
       </div>
-      <Fouter />
+      <Footer />
     </>
   );
 };
