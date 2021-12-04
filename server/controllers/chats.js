@@ -50,7 +50,8 @@ const getChat = async (req, res, next) => {
       .sort({
         createdAt: -1,
       })
-      .limit(50);
+      .limit(50)
+      .skip(0);
     messages.reverse();
     res.status(200).send({ chat, messages });
   } catch (err) {
