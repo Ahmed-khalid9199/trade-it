@@ -101,7 +101,6 @@ const Chat = () => {
           title: item.members.find((item) => item.username !== user.username)
             .username,
           imgSrc: avatar,
-          badge: 0,
           ...item,
         }));
         setChats(newChats);
@@ -115,24 +114,30 @@ const Chat = () => {
     if (!text) {
       return;
     }
+
+    // check profanity
+    // const profanity = axios.post("", text);
+    const { blocked, tag } = { blocked: false, tag: "not offensive" };
     const tempMessage = {
       text: text,
       sender: user._id,
       chat: currentChat._id,
+      blocked,
+      tag,
     };
+    // send req (save in database) and emit on socket.
+    axios.post(`${process.env.REACT_APP_SERVER_URL}/sendmessage`, tempMessage);
     setText("");
     setMessages((prev) => [...prev, tempMessage]);
-    // send req (save in database) and emit on socket.
-    const result = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL}/sendmessage`,
-      tempMessage
-    );
-    socket.emit("sendMessage", {
-      receiverId: currentChat.members.find((member) => {
-        return member._id !== user._id;
-      }).username,
-      message: result.data,
-    });
+    if (!blocked) {
+      socket.emit("sendMessage", {
+        receiverId: currentChat.members.find((member) => {
+          return member._id !== user._id;
+        }).username,
+        // message: result.data,
+        message: tempMessage,
+      });
+    }
   };
 
   // scroll to bottom
@@ -208,19 +213,23 @@ const Chat = () => {
               <div className="position-relative">
                 <div className="chat-messages p-4">
                   {messages &&
-                    messages.map((item, index) => (
-                      <div ref={scrollRef}>
-                        <Message
-                          key={index}
-                          src={user._id === item.sender ? avatar : otherImg}
-                          sender={item.sender}
-                          time={moment(item.createdAt).format("h:mm")}
-                          text={item.text}
-                          self={user._id === item.sender}
-                          // blocked={"this message is offensive"}
-                        />
-                      </div>
-                    ))}
+                    messages
+                      .filter(
+                        (item) => !(user._id !== item.sender && item.blocked)
+                      )
+                      .map((item, index) => (
+                        <div ref={scrollRef}>
+                          <Message
+                            key={index}
+                            src={user._id === item.sender ? avatar : otherImg}
+                            sender={item.sender}
+                            time={moment(item.createdAt).format("h:mm")}
+                            text={item.text}
+                            self={user._id === item.sender}
+                            blocked={item.blocked ? item.tag : ""}
+                          />
+                        </div>
+                      ))}
                 </div>
               </div>
 

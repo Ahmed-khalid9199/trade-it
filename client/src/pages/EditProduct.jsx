@@ -1,7 +1,4 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { userActions } from "../store/user";
 import {
   Row,
   Col,
@@ -11,12 +8,6 @@ import {
   Card,
   Image,
 } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import Message from "../components/UI/Message";
-import MyModal from "../components/modals/MyModal";
-import moment from "moment";
-import "./Profile.css";
-import bcrypt from "bcryptjs";
 import TextArea from "../components/UI/TextArea";
 
 const EditProduct = () => {

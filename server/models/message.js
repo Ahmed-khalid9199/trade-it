@@ -12,7 +12,8 @@ const messageSchema = mongoose.Schema(
       ref: "User",
       required: true,
     },
-    blocked: String,
+    blocked: Boolean,
+    tag: String,
     read: Date,
   },
   {
