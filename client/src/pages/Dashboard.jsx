@@ -4,7 +4,6 @@ import Cards from "../components/card/Cards";
 import Footer from "../components/UI/footer";
 import { Link } from "react-router-dom";
 
-import axios from "axios";
 
 const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(null);
