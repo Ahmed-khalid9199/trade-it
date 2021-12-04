@@ -7,10 +7,8 @@ const ChatIcon = (props) => {
       className={`list-group-item list-group-item-action border-0 ${
         props.active ? "active-chat" : ""
       }`}
-      // style={{ backgroundColor: "red" }}
     >
       <div className="d-flex align-items-start ">
-        {/* <div className={`${props.active ? "active-chat" : ""}`}></div> */}
         <img
           src={props.imgSrc}
           className="rounded-circle mr-1"
@@ -21,9 +19,7 @@ const ChatIcon = (props) => {
 
         <div style={{ paddingLeft: "5px" }} className="flex-grow-1 ml-3">
           {props.title}
-          {/* <div className="small">
-              <span className="fas fa-circle chat-offline"></span> Offline
-            </div> */}
+          {props.online && <div className="chat-online"></div>}
         </div>
 
         {props.badge > 0 ? (
