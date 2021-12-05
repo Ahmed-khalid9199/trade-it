@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import "./ProductDetail.css";
+import "./ProductDetail.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
@@ -58,10 +58,10 @@ const ProductDetail = () => {
               <div class="preview col-md-6">
                 <div class="preview-pic tab-content">
                   <div class="tab-pane active" id="pic-1">
-                    <img src={product.images[0]} />
+                    <img src={product && product.images[0]} />
                   </div>
                 </div>
-                {product.images.length > 1 && (
+                {product && product.images.length > 1 && (
                   <ul class="preview-thumbnail nav nav-tabs">
                     {product.images.map((item, index) => {
                       return (
@@ -79,7 +79,7 @@ const ProductDetail = () => {
               <div class="preview col-md-6">
                 <Row>
                   <Col>
-                    <h1 class="product-title">{product.title}</h1>
+                    <h1 class="product-title">{product && product.title}</h1>
 
                     <span class="review-no">41 reviews</span>
                     <Col></Col>
@@ -145,7 +145,7 @@ const ProductDetail = () => {
               <div class="details" col-md-6>
                 <p class="product-description">
                   <h2>Description:</h2>
-                  {product.description}
+                  {product && product.description}
                   {/* Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
                   cubilia sem sem! Repudiandae et! Massa senectus enim minim
                   sociosqu delectus posuere. */}

@@ -17,15 +17,16 @@ function Post() {
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
   const [pictures, setPictures] = useState([]);
-  const [firstName, setFirstName] = useState(user ? user.firstName : "");
-  const [phone, setPhone] = useState(user ? user.phoneNumber : "");
-  const [city, setCity] = useState(user ? user.city : "");
-  const [street, setStreet] = useState(user ? user.street : "");
+
   const dispatch = useDispatch();
 
   let history = useHistory();
 
   const { user } = useSelector((state) => state.user);
+  const [firstName, setFirstName] = useState(user ? user.firstName : "");
+  const [phone, setPhone] = useState(user ? user.phoneNumber : "");
+  const [city, setCity] = useState(user ? user.city : "");
+  const [street, setStreet] = useState(user ? user.street : "");
 
   const onDrop = (picture) => {
     setPictures((prev) => {

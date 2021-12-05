@@ -46,9 +46,9 @@ const Profile = () => {
       // } else if (oldPassword !== user.password) {
       //   setError("Old Password is Not Correct");
     } else if (!passCheck) {
-      setError(oldPassword);
+      setError("Old Password is Not Correct");
     } else if (newPassword !== confirmPassword) {
-      setError("Confirm Password is not same");
+      setError("Confirm Password is not same as new password");
     } else {
       setShowModal(false);
       const hash = await bcrypt.hash(newPassword, 8);
