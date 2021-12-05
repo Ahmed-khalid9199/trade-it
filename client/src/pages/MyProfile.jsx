@@ -3,9 +3,11 @@ import { Card, Button, Row, Col } from "react-bootstrap";
 // import "./MyProfile.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { useParams } from "react-router";
 
 const MyProfile = () => {
   const { user } = useSelector((state) => state.user);
+  const params = useParams();
 
   return (
     <div class="main-content">
@@ -16,7 +18,7 @@ const MyProfile = () => {
       >
         <div class="container-fluid">
           {/* <!-- Brand --> */}
-          <h2>{user.firstName + " " + user.lastName}</h2>
+          {user.firstName && <h2>{user.firstName + " " + user.lastName}</h2>}
           {/* <!-- Form --> */}
 
           {/* <!-- User --> */}
@@ -30,16 +32,18 @@ const MyProfile = () => {
         {/* <!-- Mask --> */}
         <span class="mask bg-gradient-default opacity-8"></span>
         {/* <!-- Header container --> */}
-        <div class="container-fluid d-flex align-items-center">
-          <div class="row">
-            <div>
-              <Link to="./profile">
-                {" "}
-                <Button>Edit profile</Button>
-              </Link>
+        {params.userid === user._id && (
+          <div class="container-fluid d-flex align-items-center">
+            <div class="row">
+              <div>
+                <Link to="/editprofile">
+                  {" "}
+                  <Button>Edit profile</Button>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <br />
       {/* <!-- Page content --> */}
