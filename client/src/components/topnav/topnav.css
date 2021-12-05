@@ -54,6 +54,9 @@ i {
   border-radius: 15px !important;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin: 10px;
+  max-height: 500px !important;
+  min-height: 500px !important;
+  max-width: 320px;
 }
 
 .card-img {

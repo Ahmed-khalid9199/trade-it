@@ -73,8 +73,7 @@ function Post() {
       `${process.env.REACT_APP_SERVER_URL}/post`,
       Product
     );
-    // history.replace("/");
-    console.log("response", response);
+    history.replace("/");
   };
   return (
     <>

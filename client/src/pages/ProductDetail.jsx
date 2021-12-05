@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./ProductDetail.css";
+// import "./ProductDetail.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
@@ -8,6 +8,8 @@ import { useParams } from "react-router";
 import { useSelector } from "react-redux";
 
 import { useHistory } from "react-router-dom";
+
+import avatar from "../assets/images/avatar.png";
 
 const ProductDetail = () => {
   const { user } = useSelector((state) => state.user);
@@ -56,54 +58,28 @@ const ProductDetail = () => {
               <div class="preview col-md-6">
                 <div class="preview-pic tab-content">
                   <div class="tab-pane active" id="pic-1">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-2">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-3">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-4">
-                    <img src="http://placekitten.com/400/252" />
-                  </div>
-                  <div class="tab-pane" id="pic-5">
-                    <img src="http://placekitten.com/400/252" />
+                    <img src={product.images[0]} />
                   </div>
                 </div>
-                <ul class="preview-thumbnail nav nav-tabs">
-                  <li class="active">
-                    <a data-target="#pic-1" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-2" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-3" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-4" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                  <li>
-                    <a data-target="#pic-5" data-toggle="tab">
-                      <img src="http://placekitten.com/200/126" />
-                    </a>
-                  </li>
-                </ul>
+                {product.images.length > 1 && (
+                  <ul class="preview-thumbnail nav nav-tabs">
+                    {product.images.map((item, index) => {
+                      return (
+                        <li class="active">
+                          <a data-target={`#pic-${index}`} data-toggle="tab">
+                            <img src={item} />
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
 
               <div class="preview col-md-6">
                 <Row>
                   <Col>
-                    <h1 class="product-title">Men's shoes fashion</h1>
+                    <h1 class="product-title">{product.title}</h1>
 
                     <span class="review-no">41 reviews</span>
                     <Col></Col>
@@ -135,7 +111,7 @@ const ProductDetail = () => {
                   <Row>
                     <Col>
                       <div class="tab-pane active" id="pic-1">
-                        <img src="http://placekitten.com/400/252" />
+                        <img src={avatar} />
                       </div>
                     </Col>
                     <br />
@@ -169,9 +145,10 @@ const ProductDetail = () => {
               <div class="details" col-md-6>
                 <p class="product-description">
                   <h2>Description:</h2>
-                  Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
+                  {product.description}
+                  {/* Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
                   cubilia sem sem! Repudiandae et! Massa senectus enim minim
-                  sociosqu delectus posuere.
+                  sociosqu delectus posuere. */}
                 </p>
 
                 <p class="vote">

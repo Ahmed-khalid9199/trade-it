@@ -65,13 +65,13 @@ img {
   animation-duration: 0.3s;
 }
 
-/* .card {
+.card {
   margin-bottom: auto;
   background: rgb(225, 229, 230);
   padding: 10px;
   line-height: 2.5em;
   border-radius: 15px;
-} */
+}
 
 @media screen and (min-width: 997px) {
   .wrapper {
