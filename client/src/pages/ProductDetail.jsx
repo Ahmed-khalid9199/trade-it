@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "./ProductDetail.css";
+// import "./ProductDetail.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
@@ -120,7 +120,9 @@ const ProductDetail = () => {
                       <h4>Member Scince:</h4>
                       <h5>January 5, 2021</h5>
                       <div style={{ display: "flex" }}>
-                        <Button onClick={openInbox}>Contact User</Button>
+                        {product && product.owner !== user._id && (
+                          <Button onClick={openInbox}>Contact User</Button>
+                        )}
                         <Button
                           onClick={openUserProfile}
                           style={{ backgroundColor: "Red" }}
