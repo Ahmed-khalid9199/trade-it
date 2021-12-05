@@ -74,8 +74,6 @@ function Post() {
       `${process.env.REACT_APP_SERVER_URL}/post`,
       Product
     );
-    // history.replace("/");
-    console.log("response", response);
 
     await axios
       .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
@@ -92,6 +90,7 @@ function Post() {
         console.log("updated User", response.data);
       });
     console.log("edit submit");
+    history.replace("/");
   };
 
   return (
