@@ -118,6 +118,7 @@ const Chat = () => {
     // check profanity
     // const profanity = axios.post("", text);
     const { blocked, tag } = { blocked: false, tag: "not offensive" };
+    
     const tempMessage = {
       text: text,
       sender: user._id,
