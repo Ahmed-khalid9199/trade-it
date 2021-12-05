@@ -1,7 +1,52 @@
-import React from "react";
-// import "./ProductDetail.css";
+import React, { useEffect, useState } from "react";
+import "./ProductDetail.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
-const productDetail = () => {
+
+import axios from "axios";
+import { useParams } from "react-router";
+
+import { useSelector } from "react-redux";
+
+import { useHistory } from "react-router-dom";
+
+const ProductDetail = () => {
+  const { user } = useSelector((state) => state.user);
+
+  const params = useParams();
+  const [product, setProduct] = useState(null);
+
+  const history = useHistory();
+
+  const openInbox = async () => {
+    // create new chat with user
+    const { data } = await axios.post(
+      `${process.env.REACT_APP_SERVER_URL}/newchat`,
+      {
+        members: [user._id, product.owner],
+        products: [params.productId],
+      }
+    );
+    console.log("new chat", data);
+    // redirect to inbox
+    history.push(`/inbox/${data._id}`);
+  };
+
+  const openUserProfile = async () => {
+    history.push(`/profile/${product.owner}`);
+  };
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/getproduct/${params.productid}`)
+      .then(({ data }) => {
+        console.log("get product", data);
+        setProduct(data);
+      })
+      .catch((err) => {
+        console.log("get product crashed", err);
+      });
+  }, []);
+
   return (
     <Row>
       <div class="container">
@@ -99,8 +144,11 @@ const productDetail = () => {
                       <h4>Member Scince:</h4>
                       <h5>January 5, 2021</h5>
                       <div style={{ display: "flex" }}>
-                        <Button>Contact User</Button>
-                        <Button style={{ backgroundColor: "Red" }}>
+                        <Button onClick={openInbox}>Contact User</Button>
+                        <Button
+                          onClick={openUserProfile}
+                          style={{ backgroundColor: "Red" }}
+                        >
                           Go to user Profile
                         </Button>
                       </div>
@@ -157,4 +205,4 @@ const productDetail = () => {
   );
 };
 
-export default productDetail;
+export default ProductDetail;

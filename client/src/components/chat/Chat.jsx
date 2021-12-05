@@ -41,31 +41,13 @@ const Chat = () => {
   }, [user.username]);
 
   useEffect(() => {
-    const chatOpened = currentChat?.members.some(
-      (item) => item._id === newMessage.sender
-    );
+    const chatOpened = currentChat?._id === newMessage.chat;
+
     if (newMessage && chatOpened) {
       setMessages((prev) => [...prev, newMessage]);
-    } else {
-      // set unread chats
-      // setChats((prev) =>
-      //   prev.map((item) => {
-      //     const targetChat = item.members.some(
-      //       (item) => item._id === newMessage.sender
-      //     );
-      //     if (targetChat) {
-      //       axios.put(
-      //         `${process.env.REACT_APP_SERVER_URL}/updatechat/${item._id}`,
-      //         { unRead: item.unRead + 1 }
-      //       );
-      //       return { ...item, unRead: item.unRead + 1 };
-      //     } else {
-      //       return item;
-      //     }
-      //   })
-      // );
     }
   }, [newMessage, currentChat]);
+
   useEffect(() => {
     socket.emit("addUser", user.username);
     socket.on("getUsers", (users) => {
@@ -117,8 +99,13 @@ const Chat = () => {
 
     // check profanity
     // const profanity = axios.post("", text);
-    const { blocked, tag } = { blocked: false, tag: "not offensive" };
-    
+
+    const { data } = await axios.post("http://localhost:8081/", {
+      text,
+    });
+    const { blocked, tag } = data;
+    console.log("profanity res", blocked, tag);
+
     const tempMessage = {
       text: text,
       sender: user._id,

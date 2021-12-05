@@ -13,12 +13,13 @@ const productSchema = new mongoose.Schema(
       enum: ["active", "deactive", "traded"],
       default: "active",
     },
-    tradeInfo: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     category: {
       type: String,
       enum: ["Electorincs", "Households", "Miscellaneous"],
       default: "Miscellaneous",
     },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    tradedWith: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     yearOfManufacture: Date,
   },
   {

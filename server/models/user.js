@@ -33,14 +33,6 @@ const userSchema = new mongoose.Schema(
       rating: Number,
       writer_id: mongoose.Schema.Types.ObjectId,
     },
-    products: [
-      {
-        _id: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
-        },
-      },
-    ],
   },
   {
     timestamps: true,

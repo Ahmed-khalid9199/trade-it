@@ -17,5 +17,6 @@ route.post("/sendmessage", chatController.newMessage);
 
 route.post("/post", productController.addProduct);
 route.get("/getproducts/:offset", productController.getProducts);
+route.get("/getproduct/:productid", productController.getProduct);
 
 module.exports = route;

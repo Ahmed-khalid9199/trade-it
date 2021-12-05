@@ -119,7 +119,11 @@
 }
 .offensive-warning {
   color: rgb(255, 93, 93) !important;
-  position: relative;
-  top: 70px;
-  right: -50px;
+}
+
+.error__message {
+  padding-right: 45px;
+  margin-top: -20px;
+  display: flex;
+  justify-content: end;
 }
