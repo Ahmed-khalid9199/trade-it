@@ -1,5 +1,5 @@
 import React from "react";
-import "./ProductDetail.css";
+// import "./ProductDetail.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 const productDetail = () => {
   return (

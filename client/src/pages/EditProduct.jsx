@@ -1,7 +1,4 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { userActions } from "../store/user";
 import {
   Row,
   Col,
