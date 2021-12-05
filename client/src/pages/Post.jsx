@@ -3,25 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Form, Button, Card, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import FileBase64 from "react-file-base64";
 import ImageUploader from "react-images-upload";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  small: {
-    width: theme.spacing(3),
-    height: theme.spacing(3),
-  },
-  large: {
-    width: theme.spacing(10),
-    height: theme.spacing(10),
-  },
-}));
 
 const style = {
   margin: "3% 20%",
