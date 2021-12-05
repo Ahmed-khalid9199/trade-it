@@ -3,6 +3,7 @@ import { Form, Button, Card, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ImageUploader from "react-images-upload";
+import { useSelector } from "react-redux";
 
 const style = {
   margin: "3% 20%",
@@ -22,6 +23,8 @@ function Post() {
   const [passIsValid, setPassIsValid] = useState(true);
   const [pictures, setPictures] = useState([]);
   let history = useHistory();
+
+  const { user } = useSelector((state) => state.user);
 
   const onDrop = (picture) => {
     setPictures((prev) => {
@@ -64,6 +67,7 @@ function Post() {
       title,
       description,
       images: urls,
+      owner: user._id,
     };
     const response = await axios.post(
       `${process.env.REACT_APP_SERVER_URL}/post`,

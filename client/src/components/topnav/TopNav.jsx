@@ -80,7 +80,13 @@ const Navbar = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
-                  <Dropdown.Item>Profile</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      history.push(`/profile/${user._id}`);
+                    }}
+                  >
+                    Profile
+                  </Dropdown.Item>
 
                   <Dropdown.Item
                     onClick={() => {
