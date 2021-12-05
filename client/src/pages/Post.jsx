@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ImageUploader from "react-images-upload";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { userActions } from "../store/user";
 
 const style = {
   margin: "3% 20%",
@@ -13,15 +15,14 @@ const style = {
 function Post() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [usernameIsValid, setUsernameIsValid] = useState(null);
-
-  const [email, setEmail] = useState("");
   const [validated, setValidated] = useState(false);
-
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [passIsValid, setPassIsValid] = useState(true);
   const [pictures, setPictures] = useState([]);
+  const [firstName, setFirstName] = useState(user ? user.firstName : "");
+  const [phone, setPhone] = useState(user ? user.phoneNumber : "");
+  const [city, setCity] = useState(user ? user.city : "");
+  const [street, setStreet] = useState(user ? user.street : "");
+  const dispatch = useDispatch();
+
   let history = useHistory();
 
   const { user } = useSelector((state) => state.user);
@@ -75,7 +76,24 @@ function Post() {
     );
     // history.replace("/");
     console.log("response", response);
+
+    await axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
+        id: user._id,
+        firstName: firstName,
+        phoneNumber: phone,
+        street: street,
+        city: city,
+      })
+      .then((response) => {
+        let data = response.data;
+        dispatch(userActions.login(data));
+        localStorage.setItem("user", JSON.stringify(data));
+        console.log("updated User", response.data);
+      });
+    console.log("edit submit");
   };
+
   return (
     <>
       <div style={style}>
@@ -128,29 +146,70 @@ function Post() {
 
               <Row>
                 <Col md>
-                  <Form.Group controlId="userName" className="mb-3">
-                    <Form.Label>Dislay Name</Form.Label>
-                    <Form.Control type="text" />
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>First Name </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="First Name"
+                      aria-describedby="inputGroupPrepend"
+                      value={firstName}
+                      defaultValue={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please choose a username.
+                    </Form.Control.Feedback>
+                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md>
-                  <Form.Group controlId="phoneNumber" className="mb-3">
-                    <Form.Label>Phone Number</Form.Label>
-                    <Form.Control type="text" />
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Phone #</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please provide a valid Email.
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
               <Row>
                 <Col md>
-                  <Form.Group controlId="streetAddress" className="mb-3">
+                  <Form.Group as={Col} md="6">
                     <Form.Label>Street</Form.Label>
-                    <Form.Control type="text" />
+                    <Form.Control
+                      type="text"
+                      placeholder="Street"
+                      defaultValue={street}
+                      value={street}
+                      onChange={(e) => setStreet(e.target.value)}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please provide a valid Street.
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col md>
-                  <Form.Group controlId="city" className="mb-3">
+                  <Form.Group as={Col} md="6">
                     <Form.Label>City</Form.Label>
-                    <Form.Control type="text" />
+                    <Form.Control
+                      type="text"
+                      placeholder="City"
+                      defaultValue={city}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please provide a valid City.
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>
