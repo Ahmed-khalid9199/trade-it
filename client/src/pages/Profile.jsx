@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
+import ImageUploader from "react-images-upload";
+
 import {
   Row,
   Col,
@@ -37,7 +39,29 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
+  const [pictures, setPictures] = useState([]);
 
+  const onDrop = (picture) => {
+    setPictures((prev) => {
+      return prev.concat(picture);
+    });
+  };
+
+  const uploadImages = async (files) => {
+    var urls = [];
+    for (const file of Object.entries(files)) {
+      console.log("file", file[1]);
+      var avatarData = new FormData();
+      avatarData.append("file", file[1]);
+      avatarData.append("upload_preset", "czwbybpu");
+      var data = await axios.post(
+        "https://api.cloudinary.com/v1_1/dmwkic1oe/image/upload",
+        avatarData
+      );
+      urls = [...urls, data.data.secure_url];
+    }
+    return urls;
+  };
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
     const passCheck = await bcrypt.compare(oldPassword, user.password);
@@ -70,7 +94,11 @@ const Profile = () => {
     event.preventDefault();
     const form = event.currentTarget;
     setValidated(true);
+
     console.log("inside submit", form.checkValidity());
+    console.log("picture", pictures);
+    const urls = await uploadImages(pictures);
+    console.log("urls", urls);
     if (form.checkValidity() === true) {
       console.log("value", firstName, lastName, dateOfBirth, phone);
       await axios
@@ -83,6 +111,7 @@ const Profile = () => {
           street: street,
           province: province,
           city: city,
+          images: urls,
         })
         .then((response) => {
           let data = response.data;
@@ -108,7 +137,15 @@ const Profile = () => {
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row className="m-3">
                 <h3>Personal Info</h3>
-                <PreviewImage />
+                <ImageUploader
+                  withIcon={true}
+                  buttonText="Choose images"
+                  onChange={onDrop}
+                  imgExtension={[".jpg", ".gif", ".png", ".gif"]}
+                  maxFileSize={5242880}
+                  withPreview={true}
+                />
+                {/* <PreviewImage onChange={onDrop} /> */}
                 {/* <Image src="holder.js/171x180" roundedCircle />
                 <Form.Control
                   type="file"
