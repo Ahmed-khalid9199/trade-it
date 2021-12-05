@@ -126,7 +126,7 @@ input {
   color: #572e00;
 }
 
-/* a {
-  text-decoration: none;
-  color: inherit;
-} */
+a {
+  text-decoration: underline;
+  color: rgb(4, 0, 255);
+}

@@ -123,7 +123,10 @@ const Login = () => {
                   Login
                 </Button>
                 <Card.Subtitle className="mb-2 text-muted">
-                  New User? <Card.Link href="/register">register</Card.Link>
+                  New User?{" "}
+                  <Card.Link className="link" href="/register">
+                    register
+                  </Card.Link>
                 </Card.Subtitle>
               </div>
             </Form>

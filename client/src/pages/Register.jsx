@@ -149,7 +149,9 @@ const Register = () => {
                 </Button>
                 <Card.Subtitle className="mb-2 text-muted">
                   Already have an account?{" "}
-                  <Card.Link href="/login">login</Card.Link>
+                  <Card.Link className="link" href="/login">
+                    login
+                  </Card.Link>
                 </Card.Subtitle>
               </div>
             </Form>
