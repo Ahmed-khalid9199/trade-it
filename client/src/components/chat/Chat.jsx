@@ -97,9 +97,7 @@ const Chat = () => {
       return;
     }
 
-    // check profanity
-    // const profanity = axios.post("", text);
-
+    // check profanity\
     const { data } = await axios.post("http://localhost:8081/", {
       text,
     });
@@ -139,6 +137,11 @@ const Chat = () => {
       sendMessage();
     }
   };
+
+  // disconnect user on unmount
+
+  useEffect(() => () => socket.emit("logout"), []);
+
   return (
     <div className="test">
       <Card className="chat__body">

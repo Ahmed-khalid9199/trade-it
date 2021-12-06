@@ -70,6 +70,11 @@ io.on("connection", (socket) => {
     removeUser(socket.id);
     io.emit("getUsers", getUsers());
   });
+  socket.on("logout", () => {
+    console.log("a user logged out!");
+    removeUser(socket.id);
+    io.emit("getUsers", getUsers());
+  });
 });
 
 httpServer.listen(process.env.PORT || 8800, () =>
