@@ -11,6 +11,8 @@ import { useHistory } from "react-router-dom";
 
 import avatar from "../assets/images/avatar.png";
 
+import moment from "moment";
+
 const ProductDetail = () => {
   const { user } = useSelector((state) => state.user);
 
@@ -18,13 +20,13 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
 
   const history = useHistory();
-
+  console.log(product);
   const openInbox = async () => {
     // create new chat with user
     const { data } = await axios.post(
       `${process.env.REACT_APP_SERVER_URL}/newchat`,
       {
-        members: [user._id, product.owner],
+        members: [user._id, product.owner._id],
         products: [params.productId],
       }
     );
@@ -34,7 +36,7 @@ const ProductDetail = () => {
   };
 
   const openUserProfile = async () => {
-    history.push(`/profile/${product.owner}`);
+    history.push(`/profile/${product.owner._id}`);
   };
 
   useEffect(() => {
@@ -102,7 +104,10 @@ const ProductDetail = () => {
                       <h6>Shah Aalam Market</h6>
                     </div>
                     <div>
-                      <h6>Posted 2hours ago</h6>
+                      <h6>
+                        {product &&
+                          moment(product.createdAt).format("MMMM D, YYYY")}
+                      </h6>
                     </div>
                   </div>
                 </Card>
@@ -110,17 +115,37 @@ const ProductDetail = () => {
                 <Card style={{ backgroundColor: "rgb(201, 213, 224)" }}>
                   <Row>
                     <Col>
-                      <div class="tab-pane active" id="pic-1">
-                        <img src={avatar} alt="profile" />
+                      <div
+                        class="tab-pane active product-owner-img-container"
+                        id="pic-1"
+                      >
+                        <img
+                          className="product-owner-img"
+                          src={
+                            product && product.owner.imgSrc
+                              ? product.owner.imgSrc
+                              : avatar
+                          }
+                          alt="profile"
+                        />
                       </div>
                     </Col>
                     <br />
                     <Col>
-                      <h3>Faraz Irfan</h3>
+                      <h3>
+                        {product && product.owner.firstName
+                          ? `${product.owner.firstName} ${product.owner.lastName}`
+                          : product.owner.username}
+                      </h3>
                       <h4>Member Scince:</h4>
-                      <h5>January 5, 2021</h5>
+                      <h5>
+                        {product &&
+                          moment(product.owner.createdAt).format(
+                            "MMMM D, YYYY"
+                          )}
+                      </h5>
                       <div style={{ display: "flex" }}>
-                        {product && product.owner !== user._id && (
+                        {product && product.owner._id !== user._id && (
                           <Button onClick={openInbox}>Contact User</Button>
                         )}
                         <Button

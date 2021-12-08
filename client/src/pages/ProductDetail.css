@@ -221,4 +221,11 @@ img {
   }
 }
 
+.product-owner-img-container {
+  width: 250px;
+}
+.product-owner-img {
+  object-fit: cover;
+}
+
 /*# sourceMappingURL=style.css.map */

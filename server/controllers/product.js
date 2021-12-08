@@ -33,7 +33,9 @@ const getProducts = async (req, res, next) => {
 const getProduct = async (req, res, next) => {
   try {
     console.log("Get Product", req.params.productid);
-    const result = await product.findById(req.params.productid);
+    const result = await product
+      .findById(req.params.productid)
+      .populate("owner");
     res.status(200).send(result);
   } catch (err) {
     console.log(err);

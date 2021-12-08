@@ -112,7 +112,7 @@ const Navbar = () => {
                         history.push("/editprofile");
                       }}
                     >
-                      Edit Prfile
+                      Edit Profile
                     </Dropdown.Item>
                     <Dropdown.Item onClick={logoutHandler}>
                       Logout
