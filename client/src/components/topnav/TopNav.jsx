@@ -85,7 +85,7 @@ const Navbar = () => {
                       history.push(`/profile/${user._id}`);
                     }}
                   >
-                    Profile
+                    My Profile
                   </Dropdown.Item>
 
                   <Dropdown.Item
@@ -103,7 +103,13 @@ const Navbar = () => {
                     Inbox
                   </Dropdown.Item>
 
-                  <Dropdown.Item>Settings</Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => {
+                      history.push("/editprofile");
+                    }}
+                  >
+                    Edit Profile
+                  </Dropdown.Item>
                   <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
