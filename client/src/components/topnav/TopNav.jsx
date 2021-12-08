@@ -76,7 +76,11 @@ const Navbar = () => {
               {user && !user.isAuthenticated && (
                 <Dropdown className="user-dropdown">
                   <Dropdown.Toggle>
-                    <img src={avatar} className="avatar" alt="" />
+                    <img
+                      src={user.imgSrc ? user.imgSrc : avatar}
+                      className="avatar"
+                      alt=""
+                    />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
@@ -103,7 +107,13 @@ const Navbar = () => {
                       Inbox
                     </Dropdown.Item>
 
-                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        history.push("/editprofile");
+                      }}
+                    >
+                      Edit Prfile
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={logoutHandler}>
                       Logout
                     </Dropdown.Item>
