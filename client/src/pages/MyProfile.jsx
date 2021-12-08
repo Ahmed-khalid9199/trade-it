@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
-// import "./MyProfile.css";
+import "./MyProfile.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
@@ -18,13 +18,11 @@ const MyProfile = () => {
         class="navbar navbar-top navbar-expand-md navbar-dark"
         id="navbar-main"
       >
-        <div class="container-fluid">
-          {/* <!-- Brand --> */}
-          {user.firstName && <h2>{user.firstName + " " + user.lastName}</h2>}
-          {/* <!-- Form --> */}
+        {/* <!-- Brand --> */}
+        {/* {user.firstName && <h2>{user.firstName + " " + user.lastName}</h2>} */}
+        {/* <!-- Form --> */}
 
-          {/* <!-- User --> */}
-        </div>
+        {/* <!-- User --> */}
       </nav>
       {/* <!-- Header --> */}
       <div
