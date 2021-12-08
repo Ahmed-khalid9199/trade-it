@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-// import "./ProductDetail.css";
+import "./ProductDetail.css";
 import { Card, Button, Row, Col } from "react-bootstrap";
 
 import axios from "axios";
@@ -52,7 +52,7 @@ const ProductDetail = () => {
   return (
     <Row>
       <div class="container">
-        <div class="card">
+        <div class="product_card">
           <div class="container-fliud">
             <div class="wrapper row">
               <div class="preview col-md-6">
