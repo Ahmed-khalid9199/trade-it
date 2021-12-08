@@ -17,6 +17,7 @@ const getProducts = async (req, res, next) => {
     const offset = parseInt(req.params.offset);
     const products = await product
       .find()
+      .populate("owner")
       .sort({ createdAt: -1 })
       .limit(50)
       .skip(offset);
