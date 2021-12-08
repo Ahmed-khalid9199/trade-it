@@ -51,7 +51,7 @@ const MyProfile = () => {
         {/* <!-- Mask --> */}
         <span class="mask bg-gradient-default opacity-8"></span>
         {/* <!-- Header container --> */}
-        {params.userid === user._id && (
+        {currUser && params.userid === currUser._id && (
           <div class="container-fluid d-flex align-items-center">
             <div class="row">
               <div>
