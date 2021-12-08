@@ -50,7 +50,7 @@ const ProductDetail = () => {
         console.log("get product crashed", err);
       });
   }, [params.productid]);
-
+  console.log(product);
   return (
     <Row>
       <div class="container">
@@ -132,11 +132,14 @@ const ProductDetail = () => {
                     </Col>
                     <br />
                     <Col>
-                      <h3>
-                        {product && product.owner.firstName
-                          ? `${product.owner.firstName} ${product.owner.lastName}`
-                          : product.owner.username}
-                      </h3>
+                      {product && product.owner.firstName ? (
+                        <h3>
+                          {`${product.owner.firstName} ${product.owner.lastName}`}
+                        </h3>
+                      ) : (
+                        <h3>product.owner.username</h3>
+                      )}
+
                       <h4>Member Scince:</h4>
                       <h5>
                         {product &&
