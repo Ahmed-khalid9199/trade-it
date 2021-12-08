@@ -48,8 +48,12 @@ const Cards = ({ loadMore, setShowLoadMore }) => {
                   Math.min(125, product.description.length)
                 )}...`}
               </Card.Text>
-              <Card.Text>{`${product.owner.street}, ${product.owner.province}, ${product.owner.city}`}</Card.Text>
-              <Card.Text>{moment(product.createdAt).fromNow()}</Card.Text>
+              <Card.Text
+                style={{ color: "black", fontWeight: "bold" }}
+              >{`${product.owner.street}, ${product.owner.city}`}</Card.Text>
+              <Card.Text style={{ color: "grey" }}>
+                {moment(product.createdAt).fromNow()}
+              </Card.Text>
             </Card.Body>
           </Card>
         </Link>
