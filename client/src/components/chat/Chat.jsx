@@ -32,6 +32,8 @@ const Chat = () => {
   const [newMessage, setNewMessage] = useState("");
 
   const { user } = useSelector((state) => state.user);
+
+  console.log(currentChat);
   // recieve message
   useEffect(() => {
     socket = io(`${process.env.REACT_APP_SERVER_URL}`);
@@ -62,11 +64,13 @@ const Chat = () => {
       axios
         .get(`${process.env.REACT_APP_SERVER_URL}/getchat/${params.chatid}`)
         .then(({ data }) => {
+          const other = data.chat.members.find(
+            (item) => item.uername !== user.username
+          );
           setCurrentChat({
             ...data.chat,
-            title: data.chat.members.find(
-              (item) => item.uername !== user.username
-            ).username,
+            title: other.username,
+            imgSrc: other.imgSrc ? other.imgSrc : otherImg,
           });
           setMessages(data.messages);
         })
@@ -98,11 +102,11 @@ const Chat = () => {
     }
 
     // check profanity\
-    const { data } = await axios.post("http://localhost:8081/", {
-      text,
-    });
-    const { blocked, tag } = data;
-    console.log("profanity res", blocked, tag);
+    // const { data } = await axios.post("http://localhost:8081/", {
+    //   text,
+    // });
+    // const { blocked, tag } = data;
+    const { blocked, tag } = { blocked: false, tag: "not offensive" };
 
     const tempMessage = {
       text: text,
@@ -163,10 +167,13 @@ const Chat = () => {
             <div key={onlineUsers} className="current-chats">
               {chats &&
                 chats.map((item, index) => {
+                  const other = item.members.find(
+                    (i) => i.uername !== user.username
+                  );
                   return (
                     <ChatIcon
                       key={index}
-                      imgSrc={otherImg}
+                      imgSrc={other.imgSrc ? other.imgSrc : otherImg}
                       title={item.title}
                       badge={0}
                       chatId={item._id}
@@ -184,9 +191,13 @@ const Chat = () => {
                 <div className=" d-flex align-items-center py-1">
                   <div className="position-relative">
                     <img
-                      src="https://bootdey.com/img/Content/avatar/avatar5.png"
-                      className="rounded-circle mr-1"
-                      alt="Sharon Lessman"
+                      src={
+                        currentChat && currentChat.imgSrc
+                          ? currentChat.imgSrc
+                          : otherImg
+                      }
+                      className="rounded-circle mr-1 chat-img"
+                      alt={currentChat && currentChat.title}
                       width="40"
                       height="40"
                     />
@@ -212,7 +223,15 @@ const Chat = () => {
                         <div ref={scrollRef}>
                           <Message
                             key={index}
-                            src={user._id === item.sender ? avatar : otherImg}
+                            src={
+                              user._id === item.sender
+                                ? user.imgSrc
+                                  ? user.imgSrc
+                                  : avatar
+                                : currentChat.imgSrc
+                                ? currentChat.imgSrc
+                                : otherImg
+                            }
                             sender={item.sender}
                             time={moment(item.createdAt).format("h:mm")}
                             text={item.text}

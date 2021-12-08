@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./PreviewImage.css";
 
-const PreviewImage = () => {
+const PreviewImage = ({ setUploadImg, img }) => {
   const [profileImg, setProfileImg] = useState(
-    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+    img
+      ? img
+      : "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
   );
-
   const imageHandler = async (e) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -13,6 +14,7 @@ const PreviewImage = () => {
         setProfileImg(reader.result);
       }
     };
+    setUploadImg(e.target.files[0]);
     reader.readAsDataURL(e.target.files[0]);
   };
   return (
@@ -29,7 +31,7 @@ const PreviewImage = () => {
       />
       <div className="label">
         <label className="image-upload" htmlFor="input">
-          Add New Profile Picture
+          Upload Profile Picture
         </label>
       </div>
     </div>

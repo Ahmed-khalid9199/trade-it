@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema(
       require: true,
       enum: ["customer", "admin"],
     },
-    imgSrc: { data: Buffer, contentType: String },
+    imgSrc: String,
     dob: {
       type: Date,
     },

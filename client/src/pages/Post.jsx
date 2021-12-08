@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState } from "react";
 import { Form, Button, Card, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -71,10 +71,7 @@ function Post() {
       images: urls,
       owner: user._id,
     };
-    const response = await axios.post(
-      `${process.env.REACT_APP_SERVER_URL}/post`,
-      Product
-    );
+    await axios.post(`${process.env.REACT_APP_SERVER_URL}/post`, Product);
 
     await axios
       .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {

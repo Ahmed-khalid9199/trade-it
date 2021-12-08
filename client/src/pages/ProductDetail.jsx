@@ -47,7 +47,7 @@ const ProductDetail = () => {
       .catch((err) => {
         console.log("get product crashed", err);
       });
-  }, []);
+  }, [params.productid]);
 
   return (
     <Row>
@@ -58,7 +58,7 @@ const ProductDetail = () => {
               <div class="preview col-md-6">
                 <div class="preview-pic tab-content">
                   <div class="tab-pane active" id="pic-1">
-                    <img src={product && product.images[0]} />
+                    <img src={product && product.images[0]} alt="product" />
                   </div>
                 </div>
                 {product && product.images.length > 1 && (
@@ -66,9 +66,9 @@ const ProductDetail = () => {
                     {product.images.map((item, index) => {
                       return (
                         <li class="active">
-                          <a data-target={`#pic-${index}`} data-toggle="tab">
-                            <img src={item} />
-                          </a>
+                          <div data-target={`#pic-${index}`} data-toggle="tab">
+                            <img src={item} alt="item" />
+                          </div>
                         </li>
                       );
                     })}
@@ -111,7 +111,7 @@ const ProductDetail = () => {
                   <Row>
                     <Col>
                       <div class="tab-pane active" id="pic-1">
-                        <img src={avatar} />
+                        <img src={avatar} alt="profile" />
                       </div>
                     </Col>
                     <br />

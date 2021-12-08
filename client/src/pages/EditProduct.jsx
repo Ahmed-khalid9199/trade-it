@@ -1,23 +1,10 @@
 import React, { useState } from "react";
-import {
-  Row,
-  Col,
-  Button,
-  Form,
-  InputGroup,
-  Card,
-  Image,
-} from "react-bootstrap";
-import { useSelector } from "react-redux";
-import Message from "../components/UI/Message";
-import MyModal from "../components/modals/MyModal";
-import moment from "moment";
+import { Row, Col, Button, Form, Card } from "react-bootstrap";
 import "./EditProduct.css";
-import bcrypt from "bcryptjs";
 import TextArea from "../components/UI/TextArea";
 
 const EditProduct = () => {
-  const [validated, setValidated] = useState(false);
+  const [validated] = useState(false);
   const handleSubmit = async (event) => {};
 
   return (

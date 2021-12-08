@@ -138,7 +138,7 @@ const MyProfile = () => {
                     music.
                     {currUser && currUser.reviews}
                   </p>
-                  <a href="#">Show more</a>
+                  <p>Show more</p>
                 </div>
               </div>
             </div>
