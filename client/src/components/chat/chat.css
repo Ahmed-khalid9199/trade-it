@@ -127,3 +127,7 @@
   display: flex;
   justify-content: end;
 }
+
+.chat-img {
+  object-fit: cover;
+}

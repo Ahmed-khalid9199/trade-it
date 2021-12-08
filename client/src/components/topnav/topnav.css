@@ -32,7 +32,9 @@ i {
 
 .avatar {
   max-width: 100%;
+  width: 100%;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .dropdown-toggle::after {

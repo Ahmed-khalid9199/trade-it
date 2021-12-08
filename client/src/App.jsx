@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { userActions } from "./store/user";
 import "./app.css";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const App = () => {
   const dispatch = useDispatch();
 
@@ -25,6 +28,17 @@ const App = () => {
         <Route path="/register" exact component={Register} />
         <Layout />
       </Switch>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </>
   );
 };

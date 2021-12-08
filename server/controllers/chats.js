@@ -45,6 +45,7 @@ const getChat = async (req, res, next) => {
     console.log("get chat", chatId);
     var chat = await Chat.findById(chatId).populate("members", {
       username: 1,
+      imgSrc: 1,
     });
     const messages = await Message.find({ chat: chatId })
       .sort({

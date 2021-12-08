@@ -11,7 +11,7 @@ const ChatIcon = (props) => {
       <div className="d-flex align-items-start ">
         <img
           src={props.imgSrc}
-          className="rounded-circle mr-1"
+          className="rounded-circle mr-1 chat-img"
           alt={props.title}
           width="40"
           height="40"

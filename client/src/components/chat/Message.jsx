@@ -11,7 +11,7 @@ const Message = (props) => {
         <div>
           <img
             src={props.src}
-            className="rounded-circle mr-1"
+            className="rounded-circle mr-1 chat-img"
             alt={props.from}
             width="40"
             height="40"

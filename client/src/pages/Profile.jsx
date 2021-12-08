@@ -2,15 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
-import {
-  Row,
-  Col,
-  Button,
-  Form,
-  InputGroup,
-  Card,
-  Image,
-} from "react-bootstrap";
+import { Row, Col, Button, Form, InputGroup, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Message from "../components/UI/Message";
 import MyModal from "../components/modals/MyModal";
@@ -18,6 +10,10 @@ import moment from "moment";
 import "./Profile.css";
 import bcrypt from "bcryptjs";
 import PreviewImage from "../components/preview/PreviewImage";
+
+import { toast } from "react-toastify";
+
+import { useHistory } from "react-router";
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
@@ -37,6 +33,12 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
+
+  const [uploadImg, setUploadImg] = useState(
+    user && user.imgSrc ? user.imgSrc : null
+  );
+
+  const history = useHistory();
 
   const passwordChangeHandler = async (e) => {
     e.preventDefault();
@@ -66,13 +68,32 @@ const Profile = () => {
     }
   };
 
+  const uploadImgHandler = async () => {
+    if (!uploadImg) {
+      return "";
+    } else if (uploadImg === user.imgSrc) {
+      return user.imgSrc;
+    }
+    var url = "";
+    console.log("file", uploadImg);
+    var profileImages = new FormData();
+    profileImages.append("file", uploadImg);
+    profileImages.append("upload_preset", "czwbybpu");
+    var data = await axios.post(
+      "https://api.cloudinary.com/v1_1/dmwkic1oe/image/upload",
+      profileImages
+    );
+    url = data.data.secure_url;
+    return url;
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const form = event.currentTarget;
     setValidated(true);
-    console.log("inside submit", form.checkValidity());
     if (form.checkValidity() === true) {
       console.log("value", firstName, lastName, dateOfBirth, phone);
+      const imgSrc = await uploadImgHandler();
       await axios
         .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
           id: user._id,
@@ -83,20 +104,29 @@ const Profile = () => {
           street: street,
           province: province,
           city: city,
+          imgSrc,
         })
         .then((response) => {
           let data = response.data;
           dispatch(userActions.login(data));
           localStorage.setItem("user", JSON.stringify(data));
           console.log("updated User", response.data);
+          toast.success("User updated", {
+            position: "bottom-right",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+          history.push("/");
         });
-      console.log("edit submit");
     }
   };
   const closeCloseModel = () => {
     setShowModal(false);
   };
-  console.log("user", user);
 
   return (
     <>
@@ -108,14 +138,7 @@ const Profile = () => {
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <Row className="m-3">
                 <h3>Personal Info</h3>
-                <PreviewImage />
-                {/* <Image src="holder.js/171x180" roundedCircle />
-                <Form.Control
-                  type="file"
-                  // aria-describedby="inputGroupPrepend"
-                  // onChange={(e) => setFirstName(e.target.value)}
-                  // required
-                /> */}
+                <PreviewImage setUploadImg={setUploadImg} img={user.imgSrc} />
                 <Form.Group as={Col} md="6">
                   <Form.Label>First Name </Form.Label>
                   <InputGroup hasValidation>
