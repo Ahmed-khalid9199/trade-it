@@ -1,7 +1,11 @@
 .my-navbar {
   display: flex;
   justify-content: space-between;
-  background-color: rgb(85, 141, 192);
+  background-color: rgb(111, 168, 221);
+}
+.nav-justify {
+  display: flex;
+  justify-content: space-between;
 }
 .my {
   display: flex;
@@ -14,6 +18,11 @@
 
 .top-search {
   width: 500px !important;
+  height: 50px !important;
+  margin-top: 10px;
+}
+.top-select {
+  margin-top: 15px;
 }
 
 i {

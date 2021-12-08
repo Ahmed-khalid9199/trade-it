@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import "./MyProfile.css";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
+import axios from "axios";
 
 import avatar from "../assets/images/avatar.png";
 
 const MyProfile = () => {
   const { user } = useSelector((state) => state.user);
   const params = useParams();
+  const [currUser, setCurrUser] = useState(null);
+
+  useEffect(() => {
+    let data = "";
+    axios
+      .post(`${process.env.REACT_APP_SERVER_URL}/getuser`, {
+        _id: params.userid,
+      })
+      .then(({ data }) => {
+        console.log("get user", data);
+        setCurrUser(data[0]);
+      })
+      .catch((err) => {
+        console.log("get user crashed", err);
+      });
+  }, []);
 
   return (
     <div class="main-content">
@@ -19,7 +36,9 @@ const MyProfile = () => {
         id="navbar-main"
       >
         {/* <!-- Brand --> */}
-        {/* {user.firstName && <h2>{user.firstName + " " + user.lastName}</h2>} */}
+
+        <h1 style={{ color: "black" }}>{currUser && currUser.firstName}</h1>
+
         {/* <!-- Form --> */}
 
         {/* <!-- User --> */}
@@ -91,18 +110,23 @@ const MyProfile = () => {
                 </div>
                 <div class="text-center">
                   <h3>
-                    {user.username}
+                    {currUser && currUser.username}
                     <span class="font-weight-light">
-                      , {user.likes === 0 ? user.likes : "No likes yet"}
+                      ,{" "}
+                      {currUser && currUser.likes === 0
+                        ? currUser && currUser.likes
+                        : "No likes yet"}
                     </span>
                   </h3>
                   <div class="h5 font-weight-300">
                     <i class="ni location_pin mr-2"></i>
-                    {user.street + "," + user.city}
+                    {currUser &&
+                      currUser.street + "," + currUser &&
+                      currUser.city}
                   </div>
                   <div class="h5 mt-4">
                     <i class="ni business_briefcase-24 mr-2"></i>
-                    {user.phoneNumber}
+                    {currUser && currUser.phoneNumber}
                   </div>
                   <div style={{ color: "black" }}>
                     Comsats University Project
@@ -112,7 +136,7 @@ const MyProfile = () => {
                     Ryan — the name taken by Melbourne-raised, Brooklyn-based
                     Nick Murphy — writes, performs and records all of his own
                     music.
-                    {user.reviews}
+                    {currUser && currUser.reviews}
                   </p>
                   <a href="#">Show more</a>
                 </div>

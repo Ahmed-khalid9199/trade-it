@@ -2,7 +2,7 @@ import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
-import logo from "../../assets/images/olx.png";
+import logo from "../../assets/images/olx-logo1.png";
 import { Link, useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
@@ -39,85 +39,88 @@ const Navbar = () => {
     <div>
       <AppBar>
         <Toolbar position="static" className="my-navbar">
-          {/* <div className="top-flex"> */}
+          <div className="col-8 nav-justify">
+            {/* <div className="top-flex"> */}
 
-          <Link to="/">
-            <IconButton
-              edge="start"
-              className="menuButton"
-              color="inherit"
-              aria-label="menu"
-            >
-              <img src={logo} width="74px" height="52px" alt="olx-logo" />
-            </IconButton>
-          </Link>
+            <Link to="/">
+              <IconButton
+                edge="start"
+                className="menuButton"
+                color="inherit"
+                aria-label="menu"
+              >
+                <img src={logo} width="74px" height="52px" alt="olx-logo" />
+              </IconButton>
+            </Link>
+            <Form.Control
+              size="md"
+              type="email"
+              placeholder="Search anything"
+              className="top-search"
+            />
+            <MySelect
+              className="top-select"
+              placeholder="my location"
+              isMulti={false}
+              options={[
+                { label: "Karachi ", value: "karachi" },
+                { label: "Lahore ", value: "lahore" },
+                { label: "Islamabad ", value: "islamabad" },
+              ]}
+            />
 
-          <MySelect
-            placeholder="my location"
-            isMulti={false}
-            options={[
-              { label: "Karachi ", value: "karachi" },
-              { label: "Lahore ", value: "lahore" },
-              { label: "Islamabad ", value: "islamabad" },
-            ]}
-          />
+            {/* <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i> */}
+          </div>
+          <div>
+            <div className="dropdown">
+              {user && !user.isAuthenticated && (
+                <Dropdown className="user-dropdown">
+                  <Dropdown.Toggle>
+                    <img src={avatar} className="avatar" alt="" />
+                  </Dropdown.Toggle>
 
-          <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i>
+                  <Dropdown.Menu>
+                    <Dropdown.Item
+                      onClick={() => {
+                        history.push(`/profile/${user._id}`);
+                      }}
+                    >
+                      Profile
+                    </Dropdown.Item>
 
-          <Form.Control
-            size="md"
-            height="5px"
-            type="email"
-            placeholder="Search anything"
-            className="top-search"
-          />
+                    <Dropdown.Item
+                      onClick={() => {
+                        history.push("/post");
+                      }}
+                    >
+                      Post new Ad
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        history.push("/inbox/thread");
+                      }}
+                    >
+                      Inbox
+                    </Dropdown.Item>
 
-          <div className="dropdown">
-            {user && !user.isAuthenticated && (
-              <Dropdown className="user-dropdown">
-                <Dropdown.Toggle>
-                  <img src={avatar} className="avatar" alt="" />
-                </Dropdown.Toggle>
+                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item onClick={logoutHandler}>
+                      Logout
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
 
-                <Dropdown.Menu>
-                  <Dropdown.Item
-                    onClick={() => {
-                      history.push(`/profile/${user._id}`);
-                    }}
-                  >
-                    Profile
-                  </Dropdown.Item>
-
-                  <Dropdown.Item
-                    onClick={() => {
-                      history.push("/post");
-                    }}
-                  >
-                    Post new Ad
-                  </Dropdown.Item>
-                  <Dropdown.Item
-                    onClick={() => {
-                      history.push("/inbox/thread");
-                    }}
-                  >
-                    Inbox
-                  </Dropdown.Item>
-
-                  <Dropdown.Item>Settings</Dropdown.Item>
-                  <Dropdown.Item onClick={logoutHandler}>Logout</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
-
-            {/* <Link to="./post">
+              {/* <Link to="./post">
                   <Button variant="outline-success">+Post New Product</Button>
                 </Link> */}
+            </div>
+            {!user && (
+              <Link to="/login">
+                <Button variant="primary">Log in</Button>{" "}
+              </Link>
+            )}
           </div>
-          {!user && (
-            <Link to="/login">
-              <Button variant="primary">Log in</Button>{" "}
-            </Link>
-          )}
         </Toolbar>
       </AppBar>
     </div>

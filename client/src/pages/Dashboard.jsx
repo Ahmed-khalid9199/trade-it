@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import picture from "../assets/images/2.jpg";
+import picture from "../assets/images/trade-up.jpg";
 import Cards from "../components/card/Cards";
 import Footer from "../components/UI/footer";
 import { Link } from "react-router-dom";
