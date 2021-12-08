@@ -76,7 +76,11 @@ const Navbar = () => {
               {user && !user.isAuthenticated && (
                 <Dropdown className="user-dropdown">
                   <Dropdown.Toggle>
-                    <img src={avatar} className="avatar" alt="" />
+                    <img
+                      src={user.imgSrc ? user.imgSrc : avatar}
+                      className="avatar"
+                      alt=""
+                    />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
