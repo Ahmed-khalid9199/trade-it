@@ -107,7 +107,13 @@ const Navbar = () => {
                       Inbox
                     </Dropdown.Item>
 
-                    <Dropdown.Item>Settings</Dropdown.Item>
+                    <Dropdown.Item
+                      onClick={() => {
+                        history.push("/editprofile");
+                      }}
+                    >
+                      Edit Prfile
+                    </Dropdown.Item>
                     <Dropdown.Item onClick={logoutHandler}>
                       Logout
                     </Dropdown.Item>
