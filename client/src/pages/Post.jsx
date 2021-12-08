@@ -38,12 +38,12 @@ function Post() {
     var urls = [];
     for (const file of Object.entries(files)) {
       console.log("file", file[1]);
-      var avatarData = new FormData();
-      avatarData.append("file", file[1]);
-      avatarData.append("upload_preset", "czwbybpu");
+      var productImages = new FormData();
+      productImages.append("file", file[1]);
+      productImages.append("upload_preset", "czwbybpu");
       var data = await axios.post(
         "https://api.cloudinary.com/v1_1/dmwkic1oe/image/upload",
-        avatarData
+        productImages
       );
       urls = [...urls, data.data.secure_url];
     }
