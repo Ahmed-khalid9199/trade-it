@@ -18,6 +18,11 @@ const productSchema = new mongoose.Schema(
       enum: ["Electorincs", "Households", "Miscellaneous"],
       default: "Miscellaneous",
     },
+    city: {
+      type: String,
+      enum: ["Lahore", "Karachi", "Islamabad"],
+      default: "Lahore",
+    },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     tradedWith: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     yearOfManufacture: Date,

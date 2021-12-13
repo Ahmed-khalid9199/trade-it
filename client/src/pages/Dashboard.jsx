@@ -3,18 +3,33 @@ import picture from "../assets/images/trade-up.jpg";
 import Cards from "../components/card/Cards";
 import Footer from "../components/UI/footer";
 import { Link } from "react-router-dom";
+import MySelect from "../components/UI/MySelect";
 
 const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(null);
   const [showLoadMore, setShowLoadMore] = useState(false);
+  const [selectedLocation, setSelectedLocation] = useState([]);
 
   return (
     <>
       <div style={{ width: "100vw" }}>
         <img src={picture} alt="trade it" className="cover" />
       </div>
+      <MySelect
+        className="top-select"
+        placeholder="my location"
+        value={selectedLocation}
+        // onChange={searchByFilter}
+        isMulti={false}
+        options={[
+          { label: "Karachi ", value: "karachi" },
+          { label: "Lahore ", value: "lahore" },
+          { label: "Islamabad ", value: "islamabad" },
+        ]}
+      />
       <div style={{ margin: "6% 4%" }}>
         <h2>Top Recommendation </h2>
+
         <Cards loadMore={loadMore} setShowLoadMore={setShowLoadMore} />
       </div>
       {showLoadMore && (

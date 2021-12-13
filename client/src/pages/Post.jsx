@@ -14,6 +14,7 @@ const style = {
 
 function Post() {
   const [title, setTitle] = useState("");
+  // const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
   const [pictures, setPictures] = useState([]);
@@ -102,7 +103,19 @@ function Post() {
               </center>
               <hr />
               <Card.Title>Product Info</Card.Title>
-
+              {/* <MySelect
+                label="City:"
+                isMulti={false}
+                value={lstatus}
+                defaultValue={{ label: "Booked ", value: "booked" }}
+                onChange={setLstatus}
+                options={[
+                  { label: "Booked ", value: "booked" },
+                  { label: "Ongoing ", value: "ongoing" },
+                  { label: "Delivered ", value: "delivered" },
+                  { label: "Canceled", value: "canceled" },
+                ]}
+              /> */}
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Add title *</Form.Label>
                 <Form.Control

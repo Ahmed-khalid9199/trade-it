@@ -17,7 +17,7 @@
 }
 
 .top-search {
-  width: 500px !important;
+  width: 800px !important;
   height: 50px !important;
   margin-top: 10px;
 }
@@ -81,4 +81,9 @@ i {
   display: flex;
   justify-content: space-around;
   /* grid-template-columns: 1fr, 3fr, 6fr; */
+}
+
+.icon {
+  z-index: 1;
+  margin-left: 750px !important;
 }

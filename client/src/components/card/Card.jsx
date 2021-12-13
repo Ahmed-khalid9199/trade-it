@@ -3,7 +3,6 @@ import "./card.css";
 import Modal from "react-modal";
 import { Navbar, Mininav } from "./navbar";
 import Footer from "./footer";
- 
 
 class Card extends React.Component {
   constructor(props) {

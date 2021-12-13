@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
@@ -7,7 +7,7 @@ import { Link, useHistory } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import MySelect from "../UI/MySelect";
+// import MySelect from "../UI/MySelect";
 import "./topnav.css";
 
 import { Dropdown } from "react-bootstrap";
@@ -21,6 +21,7 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+  // const [selectedLocation, setSelectedLocation] = useState([]);
 
   const logoutHandler = () => {
     dispatch(
@@ -41,7 +42,6 @@ const Navbar = () => {
         <Toolbar position="static" className="my-navbar">
           <div className="col-8 nav-justify">
             {/* <div className="top-flex"> */}
-
             <Link to="/">
               <IconButton
                 edge="start"
@@ -57,18 +57,22 @@ const Navbar = () => {
               type="email"
               placeholder="Search anything"
               className="top-search"
-            />
-            <MySelect
+            />{" "}
+            <div className="icon">
+              <i class="bx bx-search"></i>
+            </div>
+            {/* <MySelect
               className="top-select"
               placeholder="my location"
+              value={selectedLocation}
+              onChange={searchByFilter}
               isMulti={false}
               options={[
                 { label: "Karachi ", value: "karachi" },
                 { label: "Lahore ", value: "lahore" },
                 { label: "Islamabad ", value: "islamabad" },
               ]}
-            />
-
+            /> */}
             {/* <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i> */}
           </div>
           <div>
