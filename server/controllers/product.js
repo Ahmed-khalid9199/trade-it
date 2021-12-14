@@ -131,6 +131,39 @@ const getMyProducts = async (req, res, next) => {
     res.status(500).send({ msg: err.message });
   }
 };
+const likeProduct = async (req, res, next) => {
+  try {
+    console.log("like product", req.params.productid);
+    const productid = req.params.productid;
+    const userid = req.params.userid;
+    const removeLikes = await product.updateOne(
+      { _id: productid, likes: userid },
+      {
+        $pull: {
+          likes: userid,
+        },
+      }
+    );
+    console.log(removeLikes.nModified);
+    if (removeLikes.nModified) {
+      console.log("removed");
+      const newProduct = await product.findById(productid);
+      res.status(200).send(newProduct);
+    } else {
+      console.log("added");
+
+      const newProduct = await product.findOneAndUpdate(
+        { _id: productid },
+        { $push: { likes: userid } },
+        { new: true }
+      );
+      res.status(200).send(newProduct);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: err.message });
+  }
+};
 
 module.exports = {
   addProduct,
@@ -141,4 +174,5 @@ module.exports = {
   updateProduct,
   getSearchedProducts,
   getTestFilter,
+  likeProduct,
 };

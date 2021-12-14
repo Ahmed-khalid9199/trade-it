@@ -21,14 +21,13 @@ const ProductDetail = () => {
   const [product, setProduct] = useState(null);
 
   const history = useHistory();
-  console.log(product);
   const openInbox = async () => {
     // create new chat with user
     const { data } = await axios.post(
       `${process.env.REACT_APP_SERVER_URL}/newchat`,
       {
         members: [user._id, product.owner._id],
-        products: [params.productId],
+        products: [params.productid],
       }
     );
     console.log("new chat", data);
@@ -51,7 +50,15 @@ const ProductDetail = () => {
         console.log("get product crashed", err);
       });
   }, [params.productid]);
-  console.log(product);
+
+  const likeHandler = async () => {
+    const result = await axios.put(
+      `${process.env.REACT_APP_SERVER_URL}/likeproduct/${product._id}/${user._id}`
+    );
+    console.log(result);
+    setProduct((prev) => ({ ...prev, likes: result.data.likes }));
+  };
+
   return (
     <Row>
       <div class="container">
@@ -84,18 +91,26 @@ const ProductDetail = () => {
                   <Col>
                     <h1 class="product-title">{product && product.title}</h1>
 
-                    <span class="review-no">41 reviews</span>
-                    <Col></Col>
-                    <button class="add-to-cart btn btn-default" type="button">
-                      <i
-                        style={{ marginLeft: "-8px", marginTop: "-5px" }}
-                        class="bx bxs-heart"
-                      ></i>
+                    <button class="btn like-btn" onClick={likeHandler}>
+                      {product && product.likes.includes(user._id) ? (
+                        <i class="bx bxs-heart like-icon"></i>
+                      ) : (
+                        <i class="bx bx-heart like-icon"></i>
+                      )}
                     </button>
+                    <span class="review-no">
+                      {product && product.likes.length} likes
+                    </span>
                   </Col>
                 </Row>
+
                 <br />
-                <Card style={{ backgroundColor: "rgb(201, 213, 224)" }}>
+                <Card
+                  style={{
+                    backgroundColor: "rgb(201, 213, 224)",
+                    padding: "10px",
+                  }}
+                >
                   <h4 class="price">
                     Seen rate: <span> 40%</span>
                   </h4>
@@ -113,7 +128,12 @@ const ProductDetail = () => {
                   </div>
                 </Card>
                 <br />
-                <Card style={{ backgroundColor: "rgb(201, 213, 224)" }}>
+                <Card
+                  style={{
+                    backgroundColor: "rgb(201, 213, 224)",
+                    padding: "10px",
+                  }}
+                >
                   <Row>
                     <Col>
                       <div

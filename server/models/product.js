@@ -7,6 +7,7 @@ const productSchema = new mongoose.Schema(
     images: [String],
     tags: [String],
     likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    seen: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
     activityStatus: {
       type: String,
       required: true,

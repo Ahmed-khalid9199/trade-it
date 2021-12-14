@@ -26,13 +26,6 @@ route.get(
   "/getSearchedProducts/:search",
   productController.getSearchedProducts
 );
-
-route.get("/test/:param1/:param2", (req, res) => {
-  console.log(req.params.param1, req.params.param2);
-  res.send({
-    p1: req.params.param1,
-    p2: req.params.param2,
-  });
-});
+route.put("/likeproduct/:productid/:userid", productController.likeProduct);
 
 module.exports = route;
