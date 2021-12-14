@@ -17,10 +17,10 @@ const Routes = () => {
       <Route path="/" exact component={Dashboard} />
       <Route path="/detail/:productid" exact component={ProductDetail} />
       <Route path="/profile/:userid" exact component={MyProfile} />
+      <Route path="/editproduct/:productid" exact component={EditProduct} />
 
       <PrivateRoute path="/">
         <Route path="/post" exact component={Post} />
-        <Route path="/editproduct" exact component={EditProduct} />
         <Route path="/editprofile" exact component={Profile} />
         <Route path="/inbox/:chatid" component={Chat} />
       </PrivateRoute>

@@ -18,5 +18,21 @@ route.post("/sendmessage", chatController.newMessage);
 route.post("/post", productController.addProduct);
 route.get("/getproducts/:offset", productController.getProducts);
 route.get("/getproduct/:productid", productController.getProduct);
+route.get("/getfilteredproducts/:city", productController.getFilteredProducts);
+route.get("/getmyproducts/:_id", productController.getMyProducts);
+route.post("/updateproduct/:_id", productController.updateProduct);
+route.post("/gettestfilter/:city/:search", productController.getTestFilter);
+route.get(
+  "/getSearchedProducts/:search",
+  productController.getSearchedProducts
+);
+
+route.get("/test/:param1/:param2", (req, res) => {
+  console.log(req.params.param1, req.params.param2);
+  res.send({
+    p1: req.params.param1,
+    p2: req.params.param2,
+  });
+});
 
 module.exports = route;

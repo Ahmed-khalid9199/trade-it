@@ -23,6 +23,7 @@ const MySelect = (props) => {
       {props.label && <label htmlFor={props.label}>{props.label}</label>}
       {props.icon && <i className={`icon ${props.icon}`}></i>}
       <Select
+        isClearable={true}
         options={props.options}
         className={`select ${props.className}`}
         value={props.value}

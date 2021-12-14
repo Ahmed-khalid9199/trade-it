@@ -1,18 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import IconButton from "@material-ui/core/IconButton";
 import logo from "../../assets/images/olx-logo1.png";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
-import MySelect from "../UI/MySelect";
+import { useSelector, useDispatch } from "react-redux";
+import { productsActions } from "../../store/products";
+import qs from "query-string";
+
+// import MySelect from "../UI/MySelect";
 import "./topnav.css";
 
 import { Dropdown } from "react-bootstrap";
 
-import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../store/user";
 
 import avatar from "../../assets/images/avatar.png";
@@ -21,6 +24,8 @@ const Navbar = () => {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+  const [selectedSearch, setSelectedSearch] = useState();
 
   const logoutHandler = () => {
     dispatch(
@@ -33,7 +38,19 @@ const Navbar = () => {
     );
   };
 
-  const profileHandler = () => {};
+  const SearchProducts = (event) => {
+    if (event.key === "Enter") {
+      if (selectedSearch) {
+        const queryParams = qs.parse(location.search);
+        const newQuery = { ...queryParams, search: selectedSearch };
+        history.push(`/?${qs.stringify(newQuery)}`);
+      } else {
+        const queryParams = qs.parse(location.search);
+        delete queryParams.search;
+        history.push(`/?${qs.stringify(queryParams)}`);
+      }
+    }
+  };
 
   return (
     <div>
@@ -41,7 +58,6 @@ const Navbar = () => {
         <Toolbar position="static" className="my-navbar">
           <div className="col-8 nav-justify">
             {/* <div className="top-flex"> */}
-
             <Link to="/">
               <IconButton
                 edge="start"
@@ -57,19 +73,17 @@ const Navbar = () => {
               type="email"
               placeholder="Search anything"
               className="top-search"
-            />
-            <MySelect
-              className="top-select"
-              placeholder="my location"
-              isMulti={false}
-              options={[
-                { label: "Karachi ", value: "karachi" },
-                { label: "Lahore ", value: "lahore" },
-                { label: "Islamabad ", value: "islamabad" },
-              ]}
+              value={selectedSearch}
+              onKeyDown={SearchProducts}
+              onChange={(e) => {
+                SearchProducts(e.target.value);
+                setSelectedSearch(e.target.value);
+              }}
             />
 
-            {/* <i class="bx bx-search" style={{ marginLeft: "-25px" }}></i> */}
+            <div className="icon">
+              <i class="bx bx-search"></i>
+            </div>
           </div>
           <div>
             <div className="dropdown">
