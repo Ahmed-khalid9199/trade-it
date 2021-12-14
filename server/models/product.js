@@ -20,8 +20,8 @@ const productSchema = new mongoose.Schema(
     },
     city: {
       type: String,
-      enum: ["Lahore", "Karachi", "Islamabad"],
-      default: "Lahore",
+      enum: ["lahore", "karachi", "islamabad"],
+      default: "lahore",
     },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     tradedWith: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

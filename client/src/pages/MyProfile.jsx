@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import "./MyProfile.css";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
+import { productsActions } from "../store/products";
+import Cards from "../components/card/Cards";
 
 import avatar from "../assets/images/avatar.png";
 
 const MyProfile = () => {
+  const [myProducts, setMyProducts] = useState("");
   const { user } = useSelector((state) => state.user);
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    let data = "";
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/getmyproducts/${params.userid}`)
+      .then((result) => {
+        console.log("user products", result.data);
+        setMyProducts(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     axios
       .post(`${process.env.REACT_APP_SERVER_URL}/getuser`, {
         _id: params.userid,
@@ -37,7 +50,9 @@ const MyProfile = () => {
       >
         {/* <!-- Brand --> */}
 
-        <h1 style={{ color: "black" }}>{currUser && currUser.firstName}</h1>
+        <h1 style={{ color: "black", marginLeft: "10px", fontSize: "50px" }}>
+          {currUser && currUser.firstName} {currUser && currUser.lastName}
+        </h1>
 
         {/* <!-- Form --> */}
 
@@ -153,23 +168,7 @@ const MyProfile = () => {
                 </div>
               </div>
               <br />
-              <Row>
-                <Col>
-                  <Card>HELLO</Card>{" "}
-                </Col>
-                <Col>
-                  <Card>HELLO</Card>
-                </Col>
-              </Row>
-              <br />
-              <Row>
-                <Col>
-                  <Card>HELLO</Card>{" "}
-                </Col>
-                <Col>
-                  <Card>HELLO</Card>
-                </Col>
-              </Row>
+              <Cards list={myProducts} />
             </div>
           </div>
         </div>

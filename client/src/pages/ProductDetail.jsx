@@ -12,6 +12,7 @@ import { useHistory } from "react-router-dom";
 import avatar from "../assets/images/avatar.png";
 
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 const ProductDetail = () => {
   const { user } = useSelector((state) => state.user);
@@ -96,7 +97,7 @@ const ProductDetail = () => {
                 <br />
                 <Card style={{ backgroundColor: "rgb(201, 213, 224)" }}>
                   <h4 class="price">
-                    current price: <span>$180</span>
+                    Seen rate: <span> 40%</span>
                   </h4>
 
                   <div className="space-between">
@@ -133,20 +134,20 @@ const ProductDetail = () => {
                     <br />
                     <Col>
                       {product && product.owner.firstName ? (
-                        <h3>
+                        <h1>
                           {`${product.owner.firstName} ${product.owner.lastName}`}
-                        </h3>
+                        </h1>
                       ) : (
-                        <h3>product.owner.username</h3>
+                        <h1>product.owner.username</h1>
                       )}
 
-                      <h4>Member Scince:</h4>
-                      <h5>
+                      <h2>Member Since:</h2>
+                      <h2>
                         {product &&
                           moment(product.owner.createdAt).format(
                             "MMMM D, YYYY"
                           )}
-                      </h5>
+                      </h2>
                       <div style={{ display: "flex" }}>
                         {product && product.owner._id !== user._id && (
                           <Button onClick={openInbox}>Contact User</Button>
@@ -157,8 +158,25 @@ const ProductDetail = () => {
                         >
                           Go to user Profile
                         </Button>
+                        <Button
+                          // onClick={openUserProfile}
+                          style={{ backgroundColor: "Brown" }}
+                        >
+                          Delete Product
+                        </Button>
+                        {product && product.owner._id === user._id && (
+                          <Link to={`/editproduct/${product && product._id}`}>
+                            <Button
+                              // onClick={openUserProfile}
+                              style={{ backgroundColor: "orange" }}
+                            >
+                              Edit Product
+                            </Button>
+                          </Link>
+                        )}
                       </div>
                     </Col>
+                    <Col></Col>
                   </Row>
                 </Card>
               </div>

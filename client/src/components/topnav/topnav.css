@@ -57,6 +57,14 @@ i {
   box-shadow: none !important;
   padding: 0px;
 }
+.my-profile-card {
+  border-radius: 15px !important;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  margin: 10px;
+  max-height: 530px !important;
+  min-height: 530px !important;
+  max-width: 320px;
+}
 
 .my-card:hover {
   box-shadow: rgba(88, 171, 226, 0.5) 0px 8px 24px;
@@ -68,7 +76,7 @@ i {
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin: 10px;
   max-height: 500px !important;
-  min-height: 500px !important;
+  min-height: 550px !important;
   max-width: 320px;
 }
 

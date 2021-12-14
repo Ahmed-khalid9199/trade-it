@@ -6,6 +6,7 @@ import ImageUploader from "react-images-upload";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
+import MySelect from "../components/UI/MySelect";
 
 const style = {
   margin: "3% 20%",
@@ -14,7 +15,7 @@ const style = {
 
 function Post() {
   const [title, setTitle] = useState("");
-  // const [city, setCity] = useState("");
+  const [pcity, setPCity] = useState("");
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
   const [pictures, setPictures] = useState([]);
@@ -58,6 +59,7 @@ function Post() {
 
     if (form.checkValidity() === false) {
       event.stopPropagation();
+      console.log("issue", pcity);
       return;
     }
 
@@ -71,6 +73,7 @@ function Post() {
       description,
       images: urls,
       owner: user._id,
+      city: pcity.value,
     };
     await axios.post(`${process.env.REACT_APP_SERVER_URL}/post`, Product);
 
@@ -99,23 +102,25 @@ function Post() {
           <Card.Body>
             <Form noValidate validated={validated} onSubmit={handleSubmit}>
               <center>
-                <h3>POST YOUR ADD</h3>
+                <h2>POST YOUR ADD</h2>
               </center>
               <hr />
               <Card.Title>Product Info</Card.Title>
-              {/* <MySelect
-                label="City:"
-                isMulti={false}
-                value={lstatus}
-                defaultValue={{ label: "Booked ", value: "booked" }}
-                onChange={setLstatus}
-                options={[
-                  { label: "Booked ", value: "booked" },
-                  { label: "Ongoing ", value: "ongoing" },
-                  { label: "Delivered ", value: "delivered" },
-                  { label: "Canceled", value: "canceled" },
-                ]}
-              /> */}
+              <h5> Add product location:</h5>
+              <div style={{ marginLeft: "-30px" }}>
+                <MySelect
+                  isMulti={false}
+                  value={pcity}
+                  defaultValue={{ label: "Lahore ", value: "lahore" }}
+                  onChange={setPCity}
+                  options={[
+                    { label: "Lahore ", value: "lahore" },
+                    { label: "Karachi ", value: "karachi" },
+                    { label: "Islamabad ", value: "islamabad" },
+                  ]}
+                />
+              </div>
+
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Add title *</Form.Label>
                 <Form.Control
@@ -157,41 +162,6 @@ function Post() {
               <Row>
                 <Col md>
                   <Form.Group as={Col} md="6">
-                    <Form.Label>First Name </Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="First Name"
-                      aria-describedby="inputGroupPrepend"
-                      value={firstName}
-                      defaultValue={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please choose a username.
-                    </Form.Control.Feedback>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col md>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Phone #</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid Email.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col md>
-                  <Form.Group as={Col} md="6">
                     <Form.Label>Street</Form.Label>
                     <Form.Control
                       type="text"
@@ -219,6 +189,24 @@ function Post() {
                     />
                     <Form.Control.Feedback type="invalid">
                       Please provide a valid City.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Phone #</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please provide a valid Email.
                     </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
