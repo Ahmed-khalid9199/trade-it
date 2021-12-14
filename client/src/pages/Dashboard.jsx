@@ -58,15 +58,18 @@ const Dashboard = () => {
 
   const queryParams = new URLSearchParams(location.search);
   const locationFilter = queryParams.get("location");
+  const searchQuery = queryParams.get("search");
 
   const [selectedLocation, setSelectedLocation] = useState(
     makeValue(queryParams.get("location"))
   );
   useEffect(() => {
-    if (locationFilter) {
+    if (locationFilter || searchQuery) {
       axios
         .get(
-          `${process.env.REACT_APP_SERVER_URL}/getfilteredproducts/${selectedLocation.value}`
+          `${process.env.REACT_APP_SERVER_URL}/gettestfilter/${
+            locationFilter ? locationFilter : "null"
+          }/${searchQuery ? searchQuery : "null"} `
         )
         .then((result) => {
           console.log("data", result.data);
@@ -76,6 +79,18 @@ const Dashboard = () => {
         .catch((err) => {
           console.log(err);
         });
+      // axios
+      //   .get(
+      //     `${process.env.REACT_APP_SERVER_URL}/getfilteredproducts/${selectedLocation.value}`
+      //   )
+      //   .then((result) => {
+      //     console.log("data", result.data);
+      //     console.log("locationFilter", locationFilter);
+      //     dispatch(productsActions.setFilteredProducts(result.data));
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     } else {
       axios
         .get(
@@ -83,7 +98,6 @@ const Dashboard = () => {
         )
         .then((result) => {
           console.log("data", result.data);
-          console.log("locationFilter", locationFilter);
           dispatch(productsActions.setProducts(result.data.products));
           setShowLoadMore(result.data.remainingProducts !== 0);
         })
@@ -91,7 +105,7 @@ const Dashboard = () => {
           console.log(err);
         });
     }
-  }, [loadMore, locationFilter]);
+  }, [loadMore, locationFilter, searchQuery]);
 
   return (
     <>

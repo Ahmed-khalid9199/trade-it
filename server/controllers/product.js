@@ -50,30 +50,60 @@ const getProducts = async (req, res, next) => {
   }
 };
 
-const getFilteredProducts = async (req, res, next) => {
-  try {
-    console.log("get Filtered Products", req.params.city);
+// const getFilteredProducts = async (req, res, next) => {
+//   try {
+//     console.log("get Filtered Products", req.params.city);
 
-    const filteredProducts = await product
-      .find({ city: req.params.city })
-      .populate("owner")
-      .sort({ createdAt: -1 });
-    console.log("filtered Products", { filteredProducts });
-    res.status(200).send(filteredProducts);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ msg: err.message });
-  }
-};
+//     const filteredProducts = await product
+//       .find({ city: req.params.city })
+//       .populate("owner")
+//       .sort({ createdAt: -1 });
+
+//     console.log("filtered Products", { filteredProducts });
+//     res.status(200).send(filteredProducts);
+//   } catch (err) {
+//     console.log(err);
+//     res.status(500).send({ msg: err.message });
+//   }
+// };
 
 const getTestFilter = async (req, res, next) => {
   try {
+    const s = req.params.search;
+    const regex = new RegExp(s, "i"); // i for case insensitive
     console.log("get Filtered Products", req.params.city);
+    let filteredProducts;
+    if (req.params.city === "null") {
+      filteredProducts = await product
 
-    const filteredProducts = await product
-      .find({ city: req.params.city })
-      .populate("owner")
-      .sort({ createdAt: -1 });
+        .find({
+          $or: [
+            { title: { $regex: regex } },
+            { description: { $regex: regex } },
+          ],
+        })
+        .populate("owner")
+        .sort({ createdAt: -1 });
+    } else if (req.params.search === "null") {
+      filteredProducts = await product
+        .find({
+          city: req.params.city,
+        })
+        .populate("owner")
+        .sort({ createdAt: -1 });
+    } else {
+      filteredProducts = await product
+        .find({
+          city: req.params.city,
+          $or: [
+            { title: { $regex: regex } },
+            { description: { $regex: regex } },
+          ],
+        })
+        .populate("owner")
+        .sort({ createdAt: -1 });
+    }
+
     console.log("filtered Products", { filteredProducts });
     res.status(200).send(filteredProducts);
   } catch (err) {
@@ -136,7 +166,7 @@ module.exports = {
   addProduct,
   getProduct,
   getProducts,
-  getFilteredProducts,
+  // getFilteredProducts,
   getMyProducts,
   updateProduct,
   getSearchedProducts,
