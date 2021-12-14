@@ -102,11 +102,11 @@ const Chat = () => {
     }
 
     // check profanity\
-    // const { data } = await axios.post("http://localhost:8081/", {
-    //   text,
-    // });
-    // const { blocked, tag } = data;
-    const { blocked, tag } = { blocked: false, tag: "not offensive" };
+    const { data } = await axios.post("http://localhost:8081/", {
+      text,
+    });
+    const { blocked, tag } = data;
+    // const { blocked, tag } = { blocked: false, tag: "not offensive" };
 
     const tempMessage = {
       text: text,
