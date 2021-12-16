@@ -14,6 +14,7 @@ route.get("/getchats/:user", chatController.getChats);
 route.get("/getchat/:chatid", chatController.getChat);
 route.put("/updatechat/:chatid", chatController.updateChat);
 route.post("/sendmessage", chatController.newMessage);
+route.put("/offerad/:chatid", chatController.offerAd);
 
 route.post("/post", productController.addProduct);
 route.get("/getproducts/:offset", productController.getProducts);

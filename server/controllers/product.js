@@ -158,6 +158,7 @@ const getMyProducts = async (req, res, next) => {
     res.status(200).send(myProducts);
   } catch (err) {
     console.log(err);
+    console.log("search");
     res.status(500).send({ msg: err.message });
   }
 };

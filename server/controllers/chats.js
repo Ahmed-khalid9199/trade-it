@@ -43,10 +43,7 @@ const getChat = async (req, res, next) => {
   try {
     const chatId = req.params.chatid;
     console.log("get chat", chatId);
-    var chat = await Chat.findById(chatId).populate("members", {
-      username: 1,
-      imgSrc: 1,
-    });
+    var chat = await Chat.findById(chatId).populate("members products");
     const messages = await Message.find({ chat: chatId })
       .sort({
         createdAt: -1,
@@ -72,5 +69,26 @@ const updateChat = async (req, res, next) => {
     res.status(500).send(err.message);
   }
 };
+const offerAd = async (req, res, next) => {
+  try {
+    const chatId = req.params.chatid;
+    const productId = req.body.productId;
+    console.log("offerAd", chatId);
+    const chat = await Chat.findByIdAndUpdate(chatId, {
+      $push: { products: productId },
+    });
+    res.status(200).send(chat.products);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send(err.message);
+  }
+};
 
-module.exports = { newChat, newMessage, getChats, getChat, updateChat };
+module.exports = {
+  newChat,
+  newMessage,
+  getChats,
+  getChat,
+  updateChat,
+  offerAd,
+};

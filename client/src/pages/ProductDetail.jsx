@@ -30,7 +30,6 @@ const ProductDetail = () => {
         products: [params.productid],
       }
     );
-    console.log("new chat", data);
     // redirect to inbox
     history.push(`/inbox/${data._id}`);
   };
