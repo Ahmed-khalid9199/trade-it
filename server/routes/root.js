@@ -14,6 +14,7 @@ route.get("/getchats/:user", chatController.getChats);
 route.get("/getchat/:chatid", chatController.getChat);
 route.put("/updatechat/:chatid", chatController.updateChat);
 route.post("/sendmessage", chatController.newMessage);
+route.put("/offerad/:chatid", chatController.offerAd);
 
 route.post("/post", productController.addProduct);
 route.get("/getproducts/:offset", productController.getProducts);
@@ -26,13 +27,6 @@ route.get(
   "/getSearchedProducts/:search",
   productController.getSearchedProducts
 );
-
-route.get("/test/:param1/:param2", (req, res) => {
-  console.log(req.params.param1, req.params.param2);
-  res.send({
-    p1: req.params.param1,
-    p2: req.params.param2,
-  });
-});
+route.put("/likeproduct/:productid/:userid", productController.likeProduct);
 
 module.exports = route;

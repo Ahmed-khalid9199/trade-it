@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Form, Button, Card, Row, Col } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
@@ -13,9 +13,19 @@ const style = {
   padding: "25px",
 };
 
+const makeValue = (string) => {
+  if (string) {
+    return {
+      value: string.toLowerCase(),
+      label: string.charAt(0).toUpperCase() + string.slice(1),
+    };
+  }
+  return null;
+};
+
 function Post() {
   const [title, setTitle] = useState("");
-  const [pcity, setPCity] = useState("");
+  const [pcity, setPCity] = useState(null);
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
   const [pictures, setPictures] = useState([]);
@@ -25,9 +35,7 @@ function Post() {
   let history = useHistory();
 
   const { user } = useSelector((state) => state.user);
-  const [firstName, setFirstName] = useState(user ? user.firstName : "");
   const [phone, setPhone] = useState(user ? user.phoneNumber : "");
-  const [city, setCity] = useState(user ? user.city : "");
   const [street, setStreet] = useState(user ? user.street : "");
 
   const onDrop = (picture) => {
@@ -35,6 +43,10 @@ function Post() {
       return prev.concat(picture);
     });
   };
+
+  useEffect(() => {
+    setPCity(makeValue(user.city));
+  }, [user]);
 
   const uploadImages = async (files) => {
     var urls = [];
@@ -80,10 +92,9 @@ function Post() {
     await axios
       .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
         id: user._id,
-        firstName: firstName,
         phoneNumber: phone,
         street: street,
-        city: city,
+        city: pcity.value,
       })
       .then((response) => {
         let data = response.data;
@@ -106,20 +117,6 @@ function Post() {
               </center>
               <hr />
               <Card.Title>Product Info</Card.Title>
-              <h5> Add product location:</h5>
-              <div style={{ marginLeft: "-30px" }}>
-                <MySelect
-                  isMulti={false}
-                  value={pcity}
-                  defaultValue={{ label: "Lahore ", value: "lahore" }}
-                  onChange={setPCity}
-                  options={[
-                    { label: "Lahore ", value: "lahore" },
-                    { label: "Karachi ", value: "karachi" },
-                    { label: "Islamabad ", value: "islamabad" },
-                  ]}
-                />
-              </div>
 
               <Form.Group className="mb-3" controlId="title">
                 <Form.Label>Add title *</Form.Label>
@@ -158,58 +155,52 @@ function Post() {
               </Form.Group>
               <hr />
               <Card.Title>REVIEW YOUR DETAILS</Card.Title>
-
               <Row>
-                <Col md>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Street</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Street"
-                      defaultValue={street}
-                      value={street}
-                      onChange={(e) => setStreet(e.target.value)}
-                      required
+                <Form.Group as={Col} md="6">
+                  <Form.Label>Street</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Street"
+                    defaultValue={street}
+                    value={street}
+                    onChange={(e) => setStreet(e.target.value)}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a valid Street.
+                  </Form.Control.Feedback>
+                </Form.Group>
+                <Form.Group as={Col} md="6">
+                  <Form.Label>City</Form.Label>
+
+                  <div style={{ marginTop: "-10px" }}>
+                    <MySelect
+                      isMulti={false}
+                      value={pcity}
+                      onChange={setPCity}
+                      options={[
+                        { label: "Lahore ", value: "lahore" },
+                        { label: "Karachi ", value: "karachi" },
+                        { label: "Islamabad ", value: "islamabad" },
+                      ]}
                     />
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid Street.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col md>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>City</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="City"
-                      defaultValue={city}
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid City.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
+                  </div>
+                </Form.Group>
               </Row>
-
               <Row>
-                <Col md>
-                  <Form.Group as={Col} md="6">
-                    <Form.Label>Phone #</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Phone"
-                      value={phone}
-                      onChange={(e) => setPhone(e.target.value)}
-                      required
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      Please provide a valid Email.
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
+                <Form.Group as={Col} md="6">
+                  <Form.Label>Phone #</Form.Label>
+                  <Form.Control
+                    type="text"
+                    placeholder="Phone"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                  />
+                  <Form.Control.Feedback type="invalid">
+                    Please provide a valid Email.
+                  </Form.Control.Feedback>
+                </Form.Group>
               </Row>
               <hr />
               <Row className="d-flex justify-content-end">
