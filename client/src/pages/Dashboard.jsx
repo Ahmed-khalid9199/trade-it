@@ -10,22 +10,11 @@ import { productsActions } from "../store/products";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
 
-// const searchByLocation = (products) => {
-//   setSelectedLocation(products);
-//   if (products.length !== 0) {
-//     const filters = products.map((item) => item.value);
-//     setSelectedLocation(
-//       getLoads.filter((item) => filters.includes(item.l_status))
-//     );
-//   } else {
-//     setSelectedLocation(null);
-//   }
-// };
-
 const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(null);
   const [showLoadMore, setShowLoadMore] = useState(false);
   const products = useSelector((state) => state.products);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -42,13 +31,10 @@ const Dashboard = () => {
 
   const searchByLocation = (value) => {
     if (value) {
-      // history.push(`/?location=${value.value}`);
-      // console.log("location", value.value);
       const queryParams = qs.parse(location.search);
       const newQuery = { ...queryParams, location: value.value };
       history.push(`/?${qs.stringify(newQuery)}`);
     } else {
-      // history.push("/");
       const queryParams = qs.parse(location.search);
       delete queryParams.location;
       history.push(`/?${qs.stringify(queryParams)}`);
@@ -79,22 +65,23 @@ const Dashboard = () => {
         .catch((err) => {
           console.log(err);
         });
-      // axios
-      //   .get(
-      //     `${process.env.REACT_APP_SERVER_URL}/getfilteredproducts/${selectedLocation.value}`
-      //   )
-      //   .then((result) => {
-      //     console.log("data", result.data);
-      //     console.log("locationFilter", locationFilter);
-      //     dispatch(productsActions.setFilteredProducts(result.data));
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
-    } else {
+    } else if (user.isAuthenticated) {
       axios
         .get(
           `${process.env.REACT_APP_SERVER_URL}/getproducts/${products.length}`
+        )
+        .then((result) => {
+          console.log("data", result.data);
+          dispatch(productsActions.setProducts(result.data.products));
+          setShowLoadMore(result.data.remainingProducts !== 0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      axios
+        .get(
+          `${process.env.REACT_APP_SERVER_URL}/getrec/${user.user._id}/${products.length}`
         )
         .then((result) => {
           console.log("data", result.data);

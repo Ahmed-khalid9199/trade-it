@@ -152,8 +152,10 @@
   cursor: pointer;
 }
 .my-prod-modal-img {
-  width: 95px;
+  width: 100px;
+  height: 100px;
   margin-top: -10px;
+  object-fit: contain;
 }
 
 .my-prod-modal-container {

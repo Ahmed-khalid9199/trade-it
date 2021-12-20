@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from "react";
 import "./EditProduct.css";
-import { Form, Button, Card, Row, Col } from "react-bootstrap";
+import { Form, Button, Card, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import ImageUploader from "react-images-upload";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { userActions } from "../store/user";
 import MySelect from "../components/UI/MySelect";
 import { useParams } from "react-router";
-import { propTypes } from "react-bootstrap/esm/Image";
 
 const makeValue = (string) => {
   if (string) {

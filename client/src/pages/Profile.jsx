@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
 import { Row, Col, Button, Form, InputGroup, Card } from "react-bootstrap";
@@ -14,6 +14,13 @@ import PreviewImage from "../components/preview/PreviewImage";
 import { toast } from "react-toastify";
 
 import { useHistory } from "react-router";
+
+import Select from "react-select";
+import TAGS from "../assets/JsonData/tags.json";
+
+const makeStrArr = (valueArr) => {
+  return valueArr.map((item) => item.value);
+};
 
 const Profile = () => {
   const { user } = useSelector((state) => state.user);
@@ -33,6 +40,16 @@ const Profile = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(false);
+
+  const [tags, setTags] = useState("");
+  const [tagOptions, setTagOptions] = useState(TAGS);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/gettags`)
+      .then(({ data }) => {
+        setTagOptions(data);
+      });
+  }, []);
 
   const [uploadImg, setUploadImg] = useState(
     user && user.imgSrc ? user.imgSrc : null
@@ -105,6 +122,7 @@ const Profile = () => {
           province: province,
           city: city,
           imgSrc,
+          preferences: makeStrArr(tags),
         })
         .then((response) => {
           let data = response.data;
@@ -131,203 +149,195 @@ const Profile = () => {
   return (
     <>
       <Row>
-        <h2> Edit Profile </h2>
-        <br />
         <Col>
-          <Card>
-            <Form noValidate validated={validated} onSubmit={handleSubmit}>
-              <Row className="m-3">
-                <h3>Personal Info</h3>
-                <PreviewImage setUploadImg={setUploadImg} img={user.imgSrc} />
-                <Form.Group as={Col} md="6">
-                  <Form.Label>First Name </Form.Label>
-                  <InputGroup hasValidation>
+          <h2 style={{ paddingLeft: "10%" }}> Edit Profile </h2>
+          <br />
+          <Card className="edit-profile">
+            <Card.Body>
+              <Form noValidate validated={validated} onSubmit={handleSubmit}>
+                <Row className="m-3">
+                  <h3>Personal Info</h3>
+                  <PreviewImage setUploadImg={setUploadImg} img={user.imgSrc} />
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>First Name </Form.Label>
+                    <InputGroup hasValidation>
+                      <Form.Control
+                        type="text"
+                        placeholder="First Name"
+                        aria-describedby="inputGroupPrepend"
+                        value={firstName}
+                        defaultValue={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Last Name</Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="First Name"
-                      aria-describedby="inputGroupPrepend"
-                      value={firstName}
-                      defaultValue={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
+                      placeholder="Last Name"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
                       required
                     />
-                    <Form.Control.Feedback type="invalid">
-                      Please choose a username.
-                    </Form.Control.Feedback>
-                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                  </InputGroup>
-                </Form.Group>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid password.
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Row>
-              <Row className="m-3">
-                <Form.Group as={Col} md="6">
-                  <Form.Label>Date of Birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={dateOfBirth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid password.
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Row>
-              <hr />
-
-              <Row className="m-3">
-                <h3>Contact Info</h3>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>Phone #</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Phone"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid Email.
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>Street</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Street"
-                    defaultValue={street}
-                    value={street}
-                    onChange={(e) => setStreet(e.target.value)}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid Street.
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>Province</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Province"
-                    defaultValue={province}
-                    value={province}
-                    onChange={(e) => setProvince(e.target.value)}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid Province.
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group as={Col} md="6">
-                  <Form.Label>City</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="City"
-                    defaultValue={city}
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    Please provide a valid City.
-                  </Form.Control.Feedback>
-                </Form.Group>
-
-                <Row className="justify-content-center mt-5">
-                  <Col md={3}>
-                    <p
-                      style={{
-                        color: "blue",
-                        textDecoration: "underline",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => setShowModal(true)}
-                    >
-                      Change Password
-                    </p>
-                  </Col>
-                  <MyModal
-                    size="md"
-                    show={showModal}
-                    heading="Change Password"
-                    onClose={closeCloseModel}
-                  >
-                    <Row className="justify-content-center">
-                      <Row className="mt-3">
-                        {error && <Message>{error}</Message>}
-                        <Form.Group as={Col}>
-                          <Form.Label>Old Password</Form.Label>
-                          <Form.Control
-                            type="password"
-                            placeholder="Old Password"
-                            value={oldPassword}
-                            onChange={(e) => setOldPassword(e.target.value)}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Please provide a valid Email.
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Row>
-                      <Row className="mt-3">
-                        <Form.Group as={Col}>
-                          <Form.Label>New Password</Form.Label>
-                          <Form.Control
-                            type="password"
-                            placeholder="New Password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Please provide a valid Email.
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Row>
-                      <Row className="mt-3">
-                        <Form.Group as={Col}>
-                          <Form.Label>Confirm Password</Form.Label>
-                          <Form.Control
-                            type="password"
-                            placeholder="Confirm Password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                            required
-                          />
-                          <Form.Control.Feedback type="invalid">
-                            Please provide a valid Email.
-                          </Form.Control.Feedback>
-                        </Form.Group>
-                      </Row>
-                    </Row>
-                    <Row className="mx-5 mt-3">
-                      <Button onClick={passwordChangeHandler}>
-                        Change Password
-                      </Button>
-                    </Row>
-                  </MyModal>
+                  </Form.Group>
                 </Row>
-              </Row>
-              <hr />
-              <hr />
-              <div className="edit-button">
-                <Button type="submit" className="edit-button-1">
-                  Edit Profile
-                </Button>
-              </div>
-            </Form>
+                <Row className="m-3">
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Date of Birth</Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={dateOfBirth}
+                      onChange={(e) => setDateOfBirth(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                </Row>
+                <Row style={{ paddingLeft: "30px" }}>
+                  <Form.Group as={Col} md="5">
+                    <Form.Label>Preferences</Form.Label>
+
+                    <Select
+                      options={tagOptions}
+                      value={tags}
+                      onChange={setTags}
+                      isSearchable={true}
+                      isMulti={true}
+                    />
+                  </Form.Group>
+                </Row>
+                <hr />
+
+                <Row className="m-3">
+                  <h3>Contact Info</h3>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Phone #</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Street</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Street"
+                      defaultValue={street}
+                      value={street}
+                      onChange={(e) => setStreet(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>Province</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Province"
+                      defaultValue={province}
+                      value={province}
+                      onChange={(e) => setProvince(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group as={Col} md="6">
+                    <Form.Label>City</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="City"
+                      defaultValue={city}
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+
+                  <Row className="justify-content-center mt-5">
+                    <Col md={3}>
+                      <p
+                        style={{
+                          color: "blue",
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setShowModal(true)}
+                      >
+                        Change Password
+                      </p>
+                    </Col>
+                    <MyModal
+                      size="md"
+                      show={showModal}
+                      heading="Change Password"
+                      onClose={closeCloseModel}
+                    >
+                      <Row className="justify-content-center">
+                        <Row className="mt-3">
+                          {error && <Message>{error}</Message>}
+                          <Form.Group as={Col}>
+                            <Form.Label>Old Password</Form.Label>
+                            <Form.Control
+                              type="password"
+                              placeholder="Old Password"
+                              value={oldPassword}
+                              onChange={(e) => setOldPassword(e.target.value)}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Please provide a valid Email.
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                        </Row>
+                        <Row className="mt-3">
+                          <Form.Group as={Col}>
+                            <Form.Label>New Password</Form.Label>
+                            <Form.Control
+                              type="password"
+                              placeholder="New Password"
+                              value={newPassword}
+                              onChange={(e) => setNewPassword(e.target.value)}
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Please provide a valid Email.
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                        </Row>
+                        <Row className="mt-3">
+                          <Form.Group as={Col}>
+                            <Form.Label>Confirm Password</Form.Label>
+                            <Form.Control
+                              type="password"
+                              placeholder="Confirm Password"
+                              value={confirmPassword}
+                              onChange={(e) =>
+                                setConfirmPassword(e.target.value)
+                              }
+                              required
+                            />
+                            <Form.Control.Feedback type="invalid">
+                              Please provide a valid Email.
+                            </Form.Control.Feedback>
+                          </Form.Group>
+                        </Row>
+                      </Row>
+                      <Row className="mx-5 mt-3">
+                        <Button onClick={passwordChangeHandler}>
+                          Change Password
+                        </Button>
+                      </Row>
+                    </MyModal>
+                  </Row>
+                </Row>
+                <hr />
+                <Row className="edit-button">
+                  <Button type="submit">Edit Profile</Button>
+                </Row>
+              </Form>
+            </Card.Body>
           </Card>
         </Col>
       </Row>

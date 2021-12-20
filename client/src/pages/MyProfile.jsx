@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Card, Button, Row, Col } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import "./MyProfile.css";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
-import { productsActions } from "../store/products";
 import Cards from "../components/card/Cards";
 
 import avatar from "../assets/images/avatar.png";
@@ -15,7 +14,6 @@ const MyProfile = () => {
   const { user } = useSelector((state) => state.user);
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     axios
@@ -88,9 +86,12 @@ const MyProfile = () => {
               <div class="row justify-content-center">
                 <div class="col-lg-3 order-lg-2">
                   <div class="caard-profile-image">
-                    <a href="#">
-                      <img src={avatar} class="rounded-circle" />
-                    </a>
+                    {currUser && (
+                      <img
+                        src={currUser.imgSrc ? currUser.imgSrc : avatar}
+                        class="rounded-circle profileImg"
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -113,7 +114,7 @@ const MyProfile = () => {
                         <span class="description">Friends</span>
                       </div>
                       <div>
-                        <span class="heading">10</span>
+                        <span class="heading">{myProducts.length}</span>
                         <span class="description">Products</span>
                       </div>
                       <div>

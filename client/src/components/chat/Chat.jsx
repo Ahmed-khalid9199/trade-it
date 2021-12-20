@@ -187,8 +187,8 @@ const Chat = () => {
     if (searchProducts) {
       const newList = myProducts.filter(
         (item) =>
-          item.title.includes(searchProducts) ||
-          item.description.includes(searchProducts)
+          item.title.toLowerCase().includes(searchProducts.toLowerCase()) ||
+          item.description.toLowerCase().includes(searchProducts.toLowerCase())
       );
       console.log("searching my products", newList);
       setMyProducts(newList);
@@ -215,7 +215,7 @@ const Chat = () => {
       history.push(`/detail/${product._id}`);
     }
   };
-
+  console.log(currentChat);
   return (
     <div className="test">
       <Row>
@@ -344,7 +344,7 @@ const Chat = () => {
             </Row>
           </Card>
         </Col>{" "}
-        {params.chatid !== "thread" && currentChat && (
+        {currentChat && (
           <Col lg={2} className="chat-col">
             {currentChat.products.map((item, index) => (
               <Card

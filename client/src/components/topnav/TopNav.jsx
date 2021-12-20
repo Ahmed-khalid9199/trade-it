@@ -25,7 +25,11 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const [selectedSearch, setSelectedSearch] = useState();
+  const queryParams = qs.parse(location.search);
+
+  const [selectedSearch, setSelectedSearch] = useState(
+    queryParams.search ? queryParams.search : ""
+  );
 
   const logoutHandler = () => {
     dispatch(
@@ -41,11 +45,9 @@ const Navbar = () => {
   const SearchProducts = (event) => {
     if (event.key === "Enter") {
       if (selectedSearch) {
-        const queryParams = qs.parse(location.search);
         const newQuery = { ...queryParams, search: selectedSearch };
         history.push(`/?${qs.stringify(newQuery)}`);
       } else {
-        const queryParams = qs.parse(location.search);
         delete queryParams.search;
         history.push(`/?${qs.stringify(queryParams)}`);
       }
@@ -85,7 +87,16 @@ const Navbar = () => {
               <i class="bx bx-search"></i>
             </div>
           </div>
-          <div>
+          <div class="d-flex justify-content-end">
+            {user && !user.isAuthenticated && (
+              <div>
+                {user.firstName ? (
+                  <h3 className="user-name">{`${user.firstName} ${user.lastName}`}</h3>
+                ) : (
+                  <h3 className="username">{user.username}</h3>
+                )}
+              </div>
+            )}
             <div className="dropdown">
               {user && !user.isAuthenticated && (
                 <Dropdown className="user-dropdown">

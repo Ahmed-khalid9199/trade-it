@@ -57,33 +57,6 @@ i {
   box-shadow: none !important;
   padding: 0px;
 }
-.my-profile-card {
-  border-radius: 15px !important;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  margin: 10px;
-  max-height: 530px !important;
-  min-height: 530px !important;
-  max-width: 320px;
-}
-
-.my-card:hover {
-  box-shadow: rgba(88, 171, 226, 0.5) 0px 8px 24px;
-  transform: scale(1.01);
-  transition: transform 0.5s ease 0.1s;
-}
-.my-card {
-  border-radius: 15px !important;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-  margin: 10px;
-  max-height: 500px !important;
-  min-height: 550px !important;
-  max-width: 320px;
-}
-
-.card-img {
-  border-top-left-radius: 15px !important;
-  border-top-right-radius: 15px !important;
-}
 
 .top-flex {
   display: flex;
@@ -94,4 +67,14 @@ i {
 .icon {
   z-index: 1;
   margin-left: 750px !important;
+}
+
+.user-name {
+  color: white;
+  padding: 10px;
+  text-transform: capitalize;
+}
+.username {
+  color: white;
+  padding: 10px;
 }

@@ -1,4 +1,5 @@
 const product = require("../models/product");
+const User = require("../models/user");
 
 const addProduct = async (req, res, next) => {
   try {
@@ -50,24 +51,60 @@ const getProducts = async (req, res, next) => {
   }
 };
 
-// const getFilteredProducts = async (req, res, next) => {
-//   try {
-//     console.log("get Filtered Products", req.params.city);
+const getRec = async (req, res, next) => {
+  try {
+    console.log("get recommendations Products", req.params);
 
-//     const filteredProducts = await product
-//       .find({ city: req.params.city })
-//       .populate("owner")
-//       .sort({ createdAt: -1 });
+    const userId = req.params.userId;
+    const offset = parseInt(req.params.offset);
+    const limit = 50;
 
-//     console.log("filtered Products", { filteredProducts });
-//     res.status(200).send(filteredProducts);
-//   } catch (err) {
-//     console.log(err);
-//     res.status(500).send({ msg: err.message });
-//   }
-// };
+    var user = await User.findOne({
+      _id: userId,
+      preferences: { $exists: true, $not: { $size: 0 } },
+    });
 
-const getTestFilter = async (req, res, next) => {
+    if (user) {
+      const pref = user.preferences;
+      const allRec = await product.aggregate([
+        { $match: { tags: { $in: pref } } },
+        { $unwind: "$tags" },
+        { $match: { tags: { $in: pref } } },
+        { $sort: { matches: -1 } },
+      ]);
+      const rec = await product
+        .aggregate([
+          { $match: { tags: { $in: pref } } },
+          { $unwind: "$tags" },
+          { $match: { tags: { $in: pref } } },
+          { $sort: { matches: -1 } },
+        ])
+        .limit(limit)
+        .skip(offset);
+      User.populate(rec, { path: "owner" });
+      let products = [];
+      if (allRec.length < limit) {
+        let skip = rec.length === 0 ? offset - allRec.length : 0;
+        const recIdList = rec.map((item) => item._id);
+        products = await product
+          .find({ _id: { $nin: recIdList } })
+          .populate("owner")
+          .sort({ createdAt: -1 })
+          .limit(limit - rec.length)
+          .skip(skip);
+      }
+
+      res.status(200).send([...rec, ...products]);
+    } else {
+      res.status(404).send(null);
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: err.message });
+  }
+};
+
+const getFilter = async (req, res, next) => {
   try {
     const s = req.params.search;
     const regex = new RegExp(s, "i"); // i for case insensitive
@@ -200,10 +237,10 @@ module.exports = {
   addProduct,
   getProduct,
   getProducts,
-  // getFilteredProducts,
+  getRec,
   getMyProducts,
   updateProduct,
   getSearchedProducts,
-  getTestFilter,
+  getFilter,
   likeProduct,
 };
