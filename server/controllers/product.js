@@ -57,7 +57,7 @@ const getRec = async (req, res, next) => {
 
     const userId = req.params.userId;
     const offset = parseInt(req.params.offset);
-    const limit = 50;
+    const limit = 1;
 
     var user = await User.findOne({
       _id: userId,
@@ -70,6 +70,7 @@ const getRec = async (req, res, next) => {
         { $match: { tags: { $in: pref } } },
         { $unwind: "$tags" },
         { $match: { tags: { $in: pref } } },
+        { $group: { _id: "$_id" } },
         { $sort: { matches: -1 } },
       ]);
       const rec = await product
@@ -77,6 +78,19 @@ const getRec = async (req, res, next) => {
           { $match: { tags: { $in: pref } } },
           { $unwind: "$tags" },
           { $match: { tags: { $in: pref } } },
+          {
+            $group: {
+              _id: "$_id",
+              title: { $first: "$title" },
+              images: { $first: "$images" },
+              tags: { $first: "$tags" },
+              description: { $first: "$description" },
+              likes: { $first: "$likes" },
+              city: { $first: "$city" },
+              owner: { $first: "$owner" },
+              count: { $sum: 1 },
+            },
+          },
           { $sort: { matches: -1 } },
         ])
         .limit(limit)
@@ -85,7 +99,8 @@ const getRec = async (req, res, next) => {
       let products = [];
       if (allRec.length < limit) {
         let skip = rec.length === 0 ? offset - allRec.length : 0;
-        const recIdList = rec.map((item) => item._id);
+        const recIdList = allRec.map((item) => item._id);
+        console.log("recIdList", recIdList);
         products = await product
           .find({ _id: { $nin: recIdList } })
           .populate("owner")
@@ -93,8 +108,11 @@ const getRec = async (req, res, next) => {
           .limit(limit - rec.length)
           .skip(skip);
       }
-
-      res.status(200).send([...rec, ...products]);
+      const bothProducts = [...rec, ...products];
+      const allProducts = await product.find();
+      const remainingProducts =
+        allProducts.length - offset - bothProducts.length;
+      res.status(200).send({ products: bothProducts, remainingProducts });
     } else {
       res.status(404).send(null);
     }

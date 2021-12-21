@@ -7,10 +7,10 @@ const productsSlice = createSlice({
   initialState,
   reducers: {
     setProducts(state, action) {
-      return [...state, ...action.payload];
-    },
-    setFilteredProducts(state, action) {
       return [...action.payload];
+    },
+    appendProducts(state, action) {
+      return [...state, ...action.payload];
     },
   },
 });

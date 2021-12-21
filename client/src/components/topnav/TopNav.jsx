@@ -82,10 +82,6 @@ const Navbar = () => {
                 setSelectedSearch(e.target.value);
               }}
             />
-
-            <div className="icon">
-              <i class="bx bx-search"></i>
-            </div>
           </div>
           <div class="d-flex justify-content-end">
             {user && !user.isAuthenticated && (

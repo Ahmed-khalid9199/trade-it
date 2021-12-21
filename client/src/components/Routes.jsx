@@ -14,20 +14,18 @@ import PrivateRoute from "./PrivateRoute";
 const Routes = () => {
   return (
     <Switch>
-      <Route path="/" exact component={Dashboard} />
-      <Route path="/detail/:productid" exact component={ProductDetail} />
-      <Route path="/profile/:userid" exact component={MyProfile} />
-
       <PrivateRoute path="/">
+        <Route path="/" exact component={Dashboard} />
+        <Route path="/detail/:productid" exact component={ProductDetail} />
+        <Route path="/profile/:userid" exact component={MyProfile} />
         <Route path="/post" exact component={Post} />
         <Route path="/editprofile" exact component={Profile} />
         <Route path="/editproduct/:productid" exact component={EditProduct} />
         <Route path="/inbox/:chatid" component={Chat} />
+        <Route path="*">
+          <h1>Not found</h1>
+        </Route>
       </PrivateRoute>
-
-      <Route path="*">
-        <h1>Not found</h1>
-      </Route>
     </Switch>
   );
 };

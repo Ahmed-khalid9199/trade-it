@@ -26,6 +26,11 @@ import moment from "moment";
 
 import Modal from "../modals/MyModal";
 
+import aes256 from "aes256";
+var key = "my passphrase";
+
+var cipher = aes256.createCipher(key);
+
 let socket = null;
 
 const otherImg = "https://bootdey.com/img/Content/avatar/avatar5.png";
@@ -52,6 +57,7 @@ const Chat = () => {
   useEffect(() => {
     socket = io(`${process.env.REACT_APP_SERVER_URL}`);
     socket.on("getMessage", (message) => {
+      message.text = cipher.decrypt(message.text);
       setNewMessage(message);
     });
   }, [user.username]);
@@ -87,7 +93,11 @@ const Chat = () => {
             title: other.username,
             imgSrc: other.imgSrc ? other.imgSrc : otherImg,
           });
-          setMessages(data.messages);
+          const decryptedMessages = data.messages.map((item) => ({
+            ...item,
+            text: cipher.decrypt(item.text),
+          }));
+          setMessages(decryptedMessages);
         })
         .catch((err) => console.log(err));
     }
@@ -123,7 +133,7 @@ const Chat = () => {
     // const { blocked, tag } = data;
     const { blocked, tag } = { blocked: false, tag: "not offensive" };
 
-    const tempMessage = {
+    var tempMessage = {
       text: text,
       sender: user._id,
       chat: currentChat._id,
@@ -131,9 +141,21 @@ const Chat = () => {
       tag,
     };
     // send req (save in database) and emit on socket.
-    axios.post(`${process.env.REACT_APP_SERVER_URL}/sendmessage`, tempMessage);
     setText("");
-    setMessages((prev) => [...prev, tempMessage]);
+    setMessages((prev) => [
+      ...prev,
+      {
+        text: text,
+        sender: user._id,
+        chat: currentChat._id,
+        blocked,
+        tag,
+      },
+    ]);
+    var encryptedText = await cipher.encrypt(text);
+    tempMessage.text = encryptedText;
+    axios.post(`${process.env.REACT_APP_SERVER_URL}/sendmessage`, tempMessage);
+
     if (!blocked) {
       socket.emit("sendMessage", {
         receiverId: currentChat.members.find((member) => {
@@ -215,7 +237,6 @@ const Chat = () => {
       history.push(`/detail/${product._id}`);
     }
   };
-  console.log(currentChat);
   return (
     <div className="test">
       <Row>

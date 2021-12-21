@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { productsActions } from "../store/products";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
+import { Button } from "react-bootstrap";
 
 const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(null);
@@ -60,20 +61,7 @@ const Dashboard = () => {
         .then((result) => {
           console.log("data", result.data);
           console.log("locationFilter", locationFilter);
-          dispatch(productsActions.setFilteredProducts(result.data));
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else if (user.isAuthenticated) {
-      axios
-        .get(
-          `${process.env.REACT_APP_SERVER_URL}/getproducts/${products.length}`
-        )
-        .then((result) => {
-          console.log("data", result.data);
-          dispatch(productsActions.setProducts(result.data.products));
-          setShowLoadMore(result.data.remainingProducts !== 0);
+          dispatch(productsActions.setProducts(result.data));
         })
         .catch((err) => {
           console.log(err);
@@ -81,11 +69,16 @@ const Dashboard = () => {
     } else {
       axios
         .get(
-          `${process.env.REACT_APP_SERVER_URL}/getrec/${user.user._id}/${products.length}`
+          `${process.env.REACT_APP_SERVER_URL}/getrec/${user.user._id}/${
+            loadMore ? products.length : 0
+          }`
         )
         .then((result) => {
-          console.log("data", result.data);
-          dispatch(productsActions.setProducts(result.data.products));
+          if (loadMore) {
+            dispatch(productsActions.appendProducts(result.data.products));
+          } else {
+            dispatch(productsActions.setProducts(result.data.products));
+          }
           setShowLoadMore(result.data.remainingProducts !== 0);
         })
         .catch((err) => {
@@ -119,13 +112,14 @@ const Dashboard = () => {
       {showLoadMore && (
         <div>
           <center>
-            <button
+            <Button
+              variant="secondary"
               onClick={() => {
-                setLoadMore(Math.random());
+                setLoadMore((prev) => (prev ? prev + 1 : 1));
               }}
             >
               Load More
-            </button>
+            </Button>
           </center>
         </div>
       )}
