@@ -88,6 +88,7 @@ const getRec = async (req, res, next) => {
               likes: { $first: "$likes" },
               city: { $first: "$city" },
               owner: { $first: "$owner" },
+              createdAt: { $first: "$createdAt" },
               count: { $sum: 1 },
             },
           },

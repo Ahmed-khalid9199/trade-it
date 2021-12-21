@@ -109,7 +109,7 @@ const Dashboard = () => {
 
         <Cards list={products} />
       </div>
-      {showLoadMore && (
+      {showLoadMore && !(locationFilter || searchQuery) && (
         <div>
           <center>
             <Button

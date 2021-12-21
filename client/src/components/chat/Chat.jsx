@@ -357,7 +357,7 @@ const Chat = () => {
                 <Col className="col-9">
                   <div className="welcome-box py-2 px-4 d-none d-lg-block">
                     <center>
-                      <h1 className="welcome-chat">Welcom to your Inbox</h1>
+                      <h1 className="welcome-chat">Welcome to your Inbox</h1>
                     </center>
                   </div>
                 </Col>
