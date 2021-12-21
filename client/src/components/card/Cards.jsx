@@ -1,17 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Card } from "react-bootstrap";
-import axios from "axios";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import "./card.css";
 
 const Cards = ({ list }) => {
-  // const history = useHistory();
-  // const location = useLocation();
-
-  // const querPrams = URLSearchParams();
-
-  // console.log(products);
   const location = useLocation();
 
   return (
@@ -30,14 +24,8 @@ const Cards = ({ list }) => {
                   ? "my-profile-card"
                   : "my-card"
               }`}
-              style={{
-                width: "auto",
-                height: "auto",
-                border: "dark",
-                textDecoration: "none",
-              }}
             >
-              <Card.Img className="card-img" src={product.images[0]} />
+              <Card.Img className="cardImg" src={product.images[0]} />
 
               <Card.Body>
                 <Card.Title>{product.title}</Card.Title>
@@ -48,7 +36,7 @@ const Cards = ({ list }) => {
                 <Card.Text style={{ color: "black" }}>
                   {`${product.description.substring(
                     0,
-                    Math.min(125, product.description.length)
+                    Math.min(70, product.description.length)
                   )}...`}
                 </Card.Text>
                 <Card.Text

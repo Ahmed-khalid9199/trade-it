@@ -33,6 +33,7 @@ const userSchema = new mongoose.Schema(
       rating: Number,
       writer_id: mongoose.Schema.Types.ObjectId,
     },
+    preferences: [String],
   },
   {
     timestamps: true,

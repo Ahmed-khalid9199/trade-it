@@ -7,10 +7,17 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { userActions } from "../store/user";
 import MySelect from "../components/UI/MySelect";
+import CreatableSelect from "react-select/creatable";
+
+import TAGS from "../assets/JsonData/tags.json";
 
 const style = {
   margin: "3% 20%",
   padding: "25px",
+};
+
+const makeStrArr = (valueArr) => {
+  return valueArr.map((item) => item.value);
 };
 
 const makeValue = (string) => {
@@ -29,6 +36,8 @@ function Post() {
   const [description, setDescription] = useState("");
   const [validated, setValidated] = useState(false);
   const [pictures, setPictures] = useState([]);
+  const [tags, setTags] = useState("");
+  const [tagOptions, setTagOptions] = useState(TAGS);
 
   const dispatch = useDispatch();
 
@@ -47,6 +56,14 @@ function Post() {
   useEffect(() => {
     setPCity(makeValue(user.city));
   }, [user]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/gettags`)
+      .then(({ data }) => {
+        setTagOptions(data);
+      });
+  }, []);
 
   const uploadImages = async (files) => {
     var urls = [];
@@ -69,9 +86,8 @@ function Post() {
     setValidated(true);
     event.preventDefault();
 
-    if (form.checkValidity() === false) {
+    if (form.checkValidity() === false || !tags) {
       event.stopPropagation();
-      console.log("issue", pcity);
       return;
     }
 
@@ -86,6 +102,7 @@ function Post() {
       images: urls,
       owner: user._id,
       city: pcity.value,
+      tags: makeStrArr(tags),
     };
     await axios.post(`${process.env.REACT_APP_SERVER_URL}/post`, Product);
 
@@ -105,7 +122,18 @@ function Post() {
     console.log("edit submit");
     history.replace("/");
   };
-
+  const handleTagsChange = async (newValue, actionMeta) => {
+    console.log(newValue, actionMeta.action);
+    setTags(newValue);
+    if (actionMeta.action === "create-option") {
+      setTagOptions((prev) => [...prev, newValue[newValue.length - 1]]);
+      await axios.post(
+        `${process.env.REACT_APP_SERVER_URL}/newtag`,
+        newValue[newValue.length - 1]
+      );
+    }
+  };
+  console.log(tagOptions);
   return (
     <>
       <div style={style}>
@@ -127,6 +155,7 @@ function Post() {
                   }}
                   type="text"
                   placeholder="Enter Title"
+                  required
                 />
               </Form.Group>
 
@@ -140,8 +169,19 @@ function Post() {
                   type="text"
                   placeholder="Enter Description"
                   style={{ height: "100px" }}
+                  required
                 />
               </Form.Group>
+
+              <Form.Label>Tags *</Form.Label>
+              <CreatableSelect
+                options={tagOptions}
+                value={tags}
+                onChange={handleTagsChange}
+                isSearchable={true}
+                isMulti={true}
+              />
+              <br />
               <Form.Group controlId="producImages" className="mb-3">
                 <Form.Label>Product Images</Form.Label>
                 <ImageUploader

@@ -74,9 +74,13 @@ const offerAd = async (req, res, next) => {
     const chatId = req.params.chatid;
     const productId = req.body.productId;
     console.log("offerAd", chatId);
-    const chat = await Chat.findByIdAndUpdate(chatId, {
-      $push: { products: productId },
-    });
+    const chat = await Chat.findByIdAndUpdate(
+      chatId,
+      {
+        $push: { products: productId },
+      },
+      { new: true }
+    ).populate("products");
     res.status(200).send(chat.products);
   } catch (err) {
     console.log(err.message);

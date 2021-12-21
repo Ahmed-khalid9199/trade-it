@@ -9,23 +9,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { productsActions } from "../store/products";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
-
-// const searchByLocation = (products) => {
-//   setSelectedLocation(products);
-//   if (products.length !== 0) {
-//     const filters = products.map((item) => item.value);
-//     setSelectedLocation(
-//       getLoads.filter((item) => filters.includes(item.l_status))
-//     );
-//   } else {
-//     setSelectedLocation(null);
-//   }
-// };
+import { Button } from "react-bootstrap";
 
 const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(null);
   const [showLoadMore, setShowLoadMore] = useState(false);
   const products = useSelector((state) => state.products);
+  const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
@@ -42,13 +32,10 @@ const Dashboard = () => {
 
   const searchByLocation = (value) => {
     if (value) {
-      // history.push(`/?location=${value.value}`);
-      // console.log("location", value.value);
       const queryParams = qs.parse(location.search);
       const newQuery = { ...queryParams, location: value.value };
       history.push(`/?${qs.stringify(newQuery)}`);
     } else {
-      // history.push("/");
       const queryParams = qs.parse(location.search);
       delete queryParams.location;
       history.push(`/?${qs.stringify(queryParams)}`);
@@ -74,31 +61,24 @@ const Dashboard = () => {
         .then((result) => {
           console.log("data", result.data);
           console.log("locationFilter", locationFilter);
-          dispatch(productsActions.setFilteredProducts(result.data));
+          dispatch(productsActions.setProducts(result.data));
         })
         .catch((err) => {
           console.log(err);
         });
-      // axios
-      //   .get(
-      //     `${process.env.REACT_APP_SERVER_URL}/getfilteredproducts/${selectedLocation.value}`
-      //   )
-      //   .then((result) => {
-      //     console.log("data", result.data);
-      //     console.log("locationFilter", locationFilter);
-      //     dispatch(productsActions.setFilteredProducts(result.data));
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   });
     } else {
       axios
         .get(
-          `${process.env.REACT_APP_SERVER_URL}/getproducts/${products.length}`
+          `${process.env.REACT_APP_SERVER_URL}/getrec/${user.user._id}/${
+            loadMore ? products.length : 0
+          }`
         )
         .then((result) => {
-          console.log("data", result.data);
-          dispatch(productsActions.setProducts(result.data.products));
+          if (loadMore) {
+            dispatch(productsActions.appendProducts(result.data.products));
+          } else {
+            dispatch(productsActions.setProducts(result.data.products));
+          }
           setShowLoadMore(result.data.remainingProducts !== 0);
         })
         .catch((err) => {
@@ -132,13 +112,14 @@ const Dashboard = () => {
       {showLoadMore && (
         <div>
           <center>
-            <button
+            <Button
+              variant="secondary"
               onClick={() => {
-                setLoadMore(Math.random());
+                setLoadMore((prev) => (prev ? prev + 1 : 1));
               }}
             >
               Load More
-            </button>
+            </Button>
           </center>
         </div>
       )}

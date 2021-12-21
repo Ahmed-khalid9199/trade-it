@@ -125,7 +125,7 @@
   padding-right: 45px;
   margin-top: -20px;
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .chat-img {
@@ -152,8 +152,10 @@
   cursor: pointer;
 }
 .my-prod-modal-img {
-  width: 95px;
+  width: 100px;
+  height: 100px;
   margin-top: -10px;
+  object-fit: contain;
 }
 
 .my-prod-modal-container {

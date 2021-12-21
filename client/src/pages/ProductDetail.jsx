@@ -86,44 +86,40 @@ const ProductDetail = () => {
               </div>
 
               <div class="preview col-md-6">
-                <Row>
-                  <Col>
-                    <h1 class="product-title">{product && product.title}</h1>
-
-                    <button class="btn like-btn" onClick={likeHandler}>
-                      {product && product.likes.includes(user._id) ? (
-                        <i class="bx bxs-heart like-icon"></i>
-                      ) : (
-                        <i class="bx bx-heart like-icon"></i>
-                      )}
-                    </button>
-                    <span class="review-no">
-                      {product && product.likes.length} likes
-                    </span>
-                  </Col>
-                </Row>
-
-                <br />
                 <Card
                   style={{
                     backgroundColor: "rgb(201, 213, 224)",
                     padding: "10px",
                   }}
                 >
-                  <h4 class="price">
-                    Seen rate: <span> 40%</span>
-                  </h4>
+                  <div>
+                    <Row>
+                      <Col className="space-between">
+                        <h1 class="product-title">
+                          {product && product.title}
+                        </h1>
+                        <div>
+                          <button class="btn like-btn" onClick={likeHandler}>
+                            {product && product.likes.includes(user._id) ? (
+                              <i class="bx bxs-heart like-icon"></i>
+                            ) : (
+                              <i class="bx bx-heart like-icon"></i>
+                            )}
+                          </button>
+                          {product && (
+                            <span class="review-no">
+                              {product.likes.length}
+                              {product.likes.length === 1 ? " like" : " likes"}
+                            </span>
+                          )}
 
-                  <div className="space-between">
-                    <div>
-                      <h6>{product && product.city}</h6>
-                    </div>
-                    <div>
-                      <h6>
-                        {product &&
-                          moment(product.createdAt).format("MMMM D, YYYY")}
-                      </h6>
-                    </div>
+                          <h6>
+                            {product &&
+                              moment(product.createdAt).format("MMMM D, YYYY")}
+                          </h6>
+                        </div>
+                      </Col>
+                    </Row>
                   </div>
                 </Card>
                 <br />
@@ -152,14 +148,16 @@ const ProductDetail = () => {
                     </Col>
                     <br />
                     <Col>
-                      {product && product.owner.firstName ? (
-                        <h1>
-                          {`${product && product.owner.firstName} ${
-                            product && product.owner.lastName
-                          }`}
-                        </h1>
-                      ) : (
-                        <h1>{product && product.owner.username}</h1>
+                      {product && (
+                        <div>
+                          {product.owner.firstName ? (
+                            <h1>
+                              {`${product.owner.firstName} ${product.owner.lastName}`}
+                            </h1>
+                          ) : (
+                            <h1>{product.owner.username}</h1>
+                          )}
+                        </div>
                       )}
 
                       <h2>Member Since:</h2>
@@ -171,29 +169,31 @@ const ProductDetail = () => {
                       </h2>
                       <div style={{ display: "flex" }}>
                         {product && product.owner._id !== user._id && (
-                          <Button onClick={openInbox}>Contact User</Button>
-                        )}
-                        <Button
-                          onClick={openUserProfile}
-                          style={{ backgroundColor: "Red" }}
-                        >
-                          Go to user Profile
-                        </Button>
-                        <Button
-                          // onClick={openUserProfile}
-                          style={{ backgroundColor: "Brown" }}
-                        >
-                          Delete Product
-                        </Button>
-                        {product && product.owner._id === user._id && (
-                          <Link to={`/editproduct/${product && product._id}`}>
+                          <>
                             <Button
-                              // onClick={openUserProfile}
-                              style={{ backgroundColor: "orange" }}
+                              onClick={openUserProfile}
+                              style={{ backgroundColor: "Red" }}
                             >
-                              Edit Product
+                              Go to user Profile
+                            </Button>{" "}
+                            <Button onClick={openInbox}>Contact User</Button>
+                          </>
+                        )}
+
+                        {product && product.owner._id === user._id && (
+                          <>
+                            <Link to={`/editproduct/${product && product._id}`}>
+                              <Button
+                                // onClick={openUserProfile}
+                                style={{ backgroundColor: "orange" }}
+                              >
+                                Edit Product
+                              </Button>
+                            </Link>
+                            <Button style={{ backgroundColor: "Brown" }}>
+                              Delete Product
                             </Button>
-                          </Link>
+                          </>
                         )}
                       </div>
                     </Col>
