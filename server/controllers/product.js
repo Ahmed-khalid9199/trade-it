@@ -88,6 +88,7 @@ const getRec = async (req, res, next) => {
               likes: { $first: "$likes" },
               city: { $first: "$city" },
               owner: { $first: "$owner" },
+              createdAt: { $first: "$createdAt" },
               count: { $sum: 1 },
             },
           },
@@ -97,8 +98,15 @@ const getRec = async (req, res, next) => {
         .skip(offset);
       User.populate(rec, { path: "owner" });
       let products = [];
-      if (allRec.length < limit) {
+      if (rec.length < limit) {
+        console.log(
+          "rec.length",
+          parseInt(rec.length) === 0,
+          "all rec",
+          allRec.length
+        );
         let skip = rec.length === 0 ? offset - allRec.length : 0;
+        console.log("skip", skip);
         const recIdList = allRec.map((item) => item._id);
         console.log("recIdList", recIdList);
         products = await product
@@ -113,6 +121,11 @@ const getRec = async (req, res, next) => {
       const remainingProducts =
         allProducts.length - offset - bothProducts.length;
       res.status(200).send({ products: bothProducts, remainingProducts });
+      // res.status(200).send({
+      //   rec: rec.length,
+      //   products: products.length,
+      //   remainingProducts,
+      // });
     } else {
       res.status(404).send(null);
     }
@@ -251,10 +264,23 @@ const likeProduct = async (req, res, next) => {
   }
 };
 
+const getLikes = async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    console.log("Get Likes", userId);
+    const result = await product.find({ likes: [userId] }).populate("owner");
+    res.status(200).send(result);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: err.message });
+  }
+};
+
 module.exports = {
   addProduct,
   getProduct,
   getProducts,
+  getLikes,
   getRec,
   getMyProducts,
   updateProduct,

@@ -1370,3 +1370,10 @@ p {
 .caard-profile-image img:hover {
   transform: translate(-80%, 3%);
 }
+
+.user-ads {
+  z-index: 1;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  padding-top: 5px;
+}

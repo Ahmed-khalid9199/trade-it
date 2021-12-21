@@ -19,6 +19,7 @@ route.put("/offerad/:chatid", chatController.offerAd);
 
 route.post("/post", productController.addProduct);
 route.get("/getproducts/:offset", productController.getProducts);
+route.get("/getlikes/:userId", productController.getLikes);
 route.get("/getrec/:userId/:offset", productController.getRec);
 route.get("/getproduct/:productid", productController.getProduct);
 route.get("/getmyproducts/:_id", productController.getMyProducts);

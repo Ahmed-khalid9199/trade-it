@@ -19,6 +19,7 @@ const ProductDetail = () => {
 
   const params = useParams();
   const [product, setProduct] = useState(null);
+  const [activeImg, setActiveImg] = useState(0);
 
   const history = useHistory();
   const openInbox = async () => {
@@ -60,23 +61,37 @@ const ProductDetail = () => {
 
   return (
     <Row>
-      <div class="container">
-        <div class="product_card">
-          <div class="container-fliud">
-            <div class="wrapper row">
-              <div class="preview col-md-6">
-                <div class="preview-pic tab-content">
-                  <div class="tab-pane active" id="pic-1">
-                    <img src={product && product.images[0]} alt="product" />
+      <div className="container">
+        <div className="product_card">
+          <div className="container-fliud">
+            <div className="wrapper row">
+              <div className="preview col-md-6">
+                <div className="preview-pic tab-content">
+                  <div className="tab-pane active" id="pic-1">
+                    <img
+                      src={product && product.images[activeImg]}
+                      className="previewImg"
+                      alt="product"
+                    />
                   </div>
                 </div>
                 {product && product.images.length > 1 && (
-                  <ul class="preview-thumbnail nav nav-tabs">
+                  <ul className="preview-thumbnail nav nav-tabs">
                     {product.images.map((item, index) => {
                       return (
-                        <li class="active">
+                        <li
+                          onClick={() => {
+                            setActiveImg(index);
+                          }}
+                        >
                           <div data-target={`#pic-${index}`} data-toggle="tab">
-                            <img src={item} alt="item" />
+                            <img
+                              className={`${
+                                activeImg === index ? "active-preview" : ""
+                              }`}
+                              src={item}
+                              alt="item"
+                            />
                           </div>
                         </li>
                       );
@@ -85,7 +100,7 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              <div class="preview col-md-6">
+              <div className="preview col-md-6">
                 <Card
                   style={{
                     backgroundColor: "rgb(201, 213, 224)",
@@ -95,19 +110,22 @@ const ProductDetail = () => {
                   <div>
                     <Row>
                       <Col className="space-between">
-                        <h1 class="product-title">
+                        <h1 className="product-title">
                           {product && product.title}
                         </h1>
                         <div>
-                          <button class="btn like-btn" onClick={likeHandler}>
+                          <button
+                            className="btn like-btn"
+                            onClick={likeHandler}
+                          >
                             {product && product.likes.includes(user._id) ? (
-                              <i class="bx bxs-heart like-icon"></i>
+                              <i className="bx bxs-heart like-icon"></i>
                             ) : (
-                              <i class="bx bx-heart like-icon"></i>
+                              <i className="bx bx-heart like-icon"></i>
                             )}
                           </button>
                           {product && (
-                            <span class="review-no">
+                            <span className="review-no">
                               {product.likes.length}
                               {product.likes.length === 1 ? " like" : " likes"}
                             </span>
@@ -132,7 +150,7 @@ const ProductDetail = () => {
                   <Row>
                     <Col>
                       <div
-                        class="tab-pane active product-owner-img-container"
+                        className="tab-pane active product-owner-img-container"
                         id="pic-1"
                       >
                         <img
@@ -182,7 +200,10 @@ const ProductDetail = () => {
 
                         {product && product.owner._id === user._id && (
                           <>
-                            <Link to={`/editproduct/${product && product._id}`}>
+                            <Link
+                              style={{ marginRight: "5px" }}
+                              to={`/editproduct/${product && product._id}`}
+                            >
                               <Button
                                 // onClick={openUserProfile}
                                 style={{ backgroundColor: "orange" }}
@@ -211,8 +232,8 @@ const ProductDetail = () => {
                 }}
               />
 
-              <div class="details" col-md-6>
-                <p class="product-description">
+              <div className="details" col-md-6>
+                <p className="product-description">
                   <h2>Description:</h2>
                   {product && product.description}
                   {/* Suspendisse quos? Tempus cras iure temporibus? Eu laudantium
@@ -220,13 +241,36 @@ const ProductDetail = () => {
                   sociosqu delectus posuere. */}
                 </p>
 
-                <p class="vote">
+                <p className="vote">
                   <strong>91%</strong> of buyers enjoyed this product!{" "}
                   <strong>(87 votes)</strong>
                 </p>
+                <h2>Tags:</h2>
+                {product && (
+                  <h5 className="tag-box">
+                    {product.tags.map((item, index) => {
+                      if ((index % 10 === 0) & (index !== 0)) {
+                        return (
+                          <>
+                            <span key={index} className="tag">
+                              {item}
+                            </span>
+                            <br />
+                          </>
+                        );
+                      } else {
+                        return (
+                          <span key={index} className="tag">
+                            {item}
+                          </span>
+                        );
+                      }
+                    })}
+                  </h5>
+                )}
               </div>
 
-              <div class="details col-md-6"></div>
+              <div className="details col-md-6"></div>
             </div>
           </div>
         </div>

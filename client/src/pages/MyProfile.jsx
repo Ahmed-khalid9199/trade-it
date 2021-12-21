@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button } from "react-bootstrap";
+import { Button, Tabs, Tab } from "react-bootstrap";
 import "./MyProfile.css";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
@@ -10,6 +10,7 @@ import avatar from "../assets/images/avatar.png";
 import { useSelector } from "react-redux";
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState("");
+  const [myLikes, setMyLikes] = useState("");
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
   const user = useSelector((state) => state.user);
@@ -32,6 +33,14 @@ const MyProfile = () => {
       .then(({ data }) => {
         console.log("get user", data);
         setCurrUser(data[0]);
+      })
+      .catch((err) => {
+        console.log("get user crashed", err);
+      });
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/getLikes/${params.userid}`)
+      .then(({ data }) => {
+        setMyLikes(data);
       })
       .catch((err) => {
         console.log("get user crashed", err);
@@ -160,18 +169,21 @@ const MyProfile = () => {
               </div>
             </div>
           </div>
-          <div class="col-xl-8 order-xl-1">
-            <div class="caard bg-secondary shadow">
-              <div class="caard-header bg-white border-0">
-                <div class="row align-items-center">
-                  <div class="col-8">
-                    <h3 class="mb-0">My Ads</h3>
-                  </div>
+          <div class="col-xl-8 order-xl-1 user-ads">
+            <Tabs
+              defaultActiveKey="profile"
+              id="uncontrolled-tab-example"
+              className="mb-3"
+            >
+              <Tab eventKey="home" title="My Ads">
+                <div class="caard bg-secondary shadow">
+                  <Cards list={myProducts} />
                 </div>
-              </div>
-              <br />
-              <Cards list={myProducts} />
-            </div>
+              </Tab>
+              <Tab eventKey="profile" title="My Likes">
+                <Cards list={myLikes} />
+              </Tab>
+            </Tabs>
           </div>
         </div>
       </div>

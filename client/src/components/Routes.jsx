@@ -22,10 +22,10 @@ const Routes = () => {
         <Route path="/editprofile" exact component={Profile} />
         <Route path="/editproduct/:productid" exact component={EditProduct} />
         <Route path="/inbox/:chatid" component={Chat} />
-        {/* <Route path="*">
-          <h1>Not found hello</h1>
-        </Route> */}
       </PrivateRoute>
+      <Route path="*">
+        <h1>Not found</h1>
+      </Route>
     </Switch>
   );
 };
