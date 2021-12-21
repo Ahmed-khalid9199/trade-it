@@ -95,7 +95,11 @@ const Login = () => {
                 />
                 {noUser && (
                   <Form.Text style={{ color: "red" }}>
-                    No such user exists!
+                    No such user exists!{" "}
+                    <Card.Link className="link" href="/register">
+                      Register
+                    </Card.Link>{" "}
+                    Now!
                   </Form.Text>
                 )}
               </Form.Group>

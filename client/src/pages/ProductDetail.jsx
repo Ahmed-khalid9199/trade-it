@@ -116,7 +116,7 @@ const ProductDetail = () => {
 
                   <div className="space-between">
                     <div>
-                      <h6>Shah Aalam Market</h6>
+                      <h6>{product && product.city}</h6>
                     </div>
                     <div>
                       <h6>
@@ -154,10 +154,12 @@ const ProductDetail = () => {
                     <Col>
                       {product && product.owner.firstName ? (
                         <h1>
-                          {`${product.owner.firstName} ${product.owner.lastName}`}
+                          {`${product && product.owner.firstName} ${
+                            product && product.owner.lastName
+                          }`}
                         </h1>
                       ) : (
-                        <h1>product.owner.username</h1>
+                        <h1>{product && product.owner.username}</h1>
                       )}
 
                       <h2>Member Since:</h2>
@@ -222,22 +224,6 @@ const ProductDetail = () => {
                   <strong>91%</strong> of buyers enjoyed this product!{" "}
                   <strong>(87 votes)</strong>
                 </p>
-                <h2>Details:</h2>
-                <h5 class="sizes">
-                  sizes:
-                  <span class="size" data-toggle="tooltip" title="small">
-                    s
-                  </span>
-                  <span class="size" data-toggle="tooltip" title="medium">
-                    m
-                  </span>
-                  <span class="size" data-toggle="tooltip" title="large">
-                    l
-                  </span>
-                  <span class="size" data-toggle="tooltip" title="xtra large">
-                    xl
-                  </span>
-                </h5>
               </div>
 
               <div class="details col-md-6"></div>
