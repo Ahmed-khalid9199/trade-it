@@ -34,10 +34,15 @@ const Cards = ({ list }) => {
                 </Card.Title>
                 <hr />
                 <Card.Text style={{ color: "black" }}>
-                  {`${product.description.substring(
-                    0,
-                    Math.min(70, product.description.length)
-                  )}...`}
+                  {location.pathname.includes("profile")
+                    ? `${product.description.substring(
+                        0,
+                        Math.min(20, product.description.length)
+                      )}...`
+                    : `${product.description.substring(
+                        0,
+                        Math.min(70, product.description.length)
+                      )}...`}
                 </Card.Text>
                 <Card.Text
                   style={{ color: "black", fontWeight: "bold" }}

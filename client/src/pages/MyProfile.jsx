@@ -75,7 +75,7 @@ const MyProfile = () => {
           <div class="container-fluid d-flex align-items-center">
             <div class="row">
               <div>
-                <Link to="/editprofile">
+                <Link to="/profile">
                   {" "}
                   <Button>Edit profile</Button>
                 </Link>
@@ -117,17 +117,17 @@ const MyProfile = () => {
                 <div class="row">
                   <div class="col">
                     <div class="caard-profile-stats d-flex justify-content-center mt-md-5">
-                      <div>
+                      {/* <div>
                         <span class="heading">22</span>
                         <span class="description">Friends</span>
-                      </div>
+                      </div> */}
                       <div>
                         <span class="heading">{myProducts.length}</span>
                         <span class="description">Products</span>
                       </div>
                       <div>
-                        <span class="heading">89</span>
-                        <span class="description">Comments</span>
+                        <span class="heading">{currUser.likes.length}</span>
+                        <span class="description">Likes</span>
                       </div>
                     </div>
                   </div>
