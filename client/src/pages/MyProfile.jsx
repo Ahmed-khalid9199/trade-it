@@ -7,11 +7,12 @@ import axios from "axios";
 import Cards from "../components/card/Cards";
 
 import avatar from "../assets/images/avatar.png";
-
+import { useSelector } from "react-redux";
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState("");
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
     axios
@@ -36,7 +37,6 @@ const MyProfile = () => {
         console.log("get user crashed", err);
       });
   }, [params.userid]);
-
   return (
     <div class="main-content">
       {/* <!-- Top navbar --> */}
@@ -62,11 +62,11 @@ const MyProfile = () => {
         {/* <!-- Mask --> */}
         <span class="mask bg-gradient-default opacity-8"></span>
         {/* <!-- Header container --> */}
-        {currUser && params.userid === currUser._id && (
+        {currUser && params.userid === user.user._id && (
           <div class="container-fluid d-flex align-items-center">
             <div class="row">
               <div>
-                <Link to="/profile">
+                <Link to="/editprofile">
                   {" "}
                   <Button>Edit profile</Button>
                 </Link>
@@ -117,7 +117,9 @@ const MyProfile = () => {
                         <span class="description">Products</span>
                       </div>
                       <div>
-                        <span class="heading">{currUser.likes.length}</span>
+                        <span class="heading">
+                          {currUser && currUser.likes.length}
+                        </span>
                         <span class="description">Likes</span>
                       </div>
                     </div>
