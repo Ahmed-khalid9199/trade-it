@@ -57,7 +57,7 @@ const getRec = async (req, res, next) => {
 
     const userId = req.params.userId;
     const offset = parseInt(req.params.offset);
-    const limit = 50;
+    const limit = 3;
 
     var user = await User.findOne({
       _id: userId,
@@ -99,7 +99,14 @@ const getRec = async (req, res, next) => {
       User.populate(rec, { path: "owner" });
       let products = [];
       if (rec.length < limit) {
+        console.log(
+          "rec.length",
+          parseInt(rec.length) === 0,
+          "all rec",
+          allRec.length
+        );
         let skip = rec.length === 0 ? offset - allRec.length : 0;
+        console.log("skip", skip);
         const recIdList = allRec.map((item) => item._id);
         console.log("recIdList", recIdList);
         products = await product
@@ -114,6 +121,11 @@ const getRec = async (req, res, next) => {
       const remainingProducts =
         allProducts.length - offset - bothProducts.length;
       res.status(200).send({ products: bothProducts, remainingProducts });
+      // res.status(200).send({
+      //   rec: rec.length,
+      //   products: products.length,
+      //   remainingProducts,
+      // });
     } else {
       res.status(404).send(null);
     }
