@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import "./MyProfile.css";
-import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
@@ -11,7 +10,6 @@ import avatar from "../assets/images/avatar.png";
 
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState("");
-  const { user } = useSelector((state) => state.user);
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
 
@@ -37,7 +35,7 @@ const MyProfile = () => {
       .catch((err) => {
         console.log("get user crashed", err);
       });
-  }, []);
+  }, [params.userid]);
 
   return (
     <div class="main-content">
@@ -90,6 +88,7 @@ const MyProfile = () => {
                       <img
                         src={currUser.imgSrc ? currUser.imgSrc : avatar}
                         class="rounded-circle profileImg"
+                        alt="profile"
                       />
                     )}
                   </div>
@@ -97,10 +96,10 @@ const MyProfile = () => {
               </div>
               <div class="caard-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
                 <div class="d-flex justify-content-between">
-                  <a href="#" class="btn btn-sm btn-info mr-4">
+                  <a href="/" class="btn btn-sm btn-info mr-4">
                     Connect
                   </a>
-                  <a href="#" class="btn btn-sm btn-default float-right">
+                  <a href="/" class="btn btn-sm btn-default float-right">
                     Message
                   </a>
                 </div>

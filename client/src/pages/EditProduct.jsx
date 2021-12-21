@@ -3,7 +3,6 @@ import "./EditProduct.css";
 import { Form, Button, Card, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 import MySelect from "../components/UI/MySelect";
 import { useParams } from "react-router";
 
@@ -23,13 +22,11 @@ const EditProduct = () => {
     padding: "25px",
   };
   const [product, setProduct] = useState("");
-  const [user, setUser] = useState("");
 
   const [pcity, setPCity] = useState(null);
   const [validated, setValidated] = useState(false);
   const params = useParams();
 
-  const dispatch = useDispatch();
   let history = useHistory();
 
   const handleSubmit = async (event) => {
@@ -52,7 +49,6 @@ const EditProduct = () => {
         { ...formDataObj, city: pcity.value }
       )
       .then((response) => {
-        let data = response.data;
         console.log("updated product", response.data);
       });
     console.log("edit submit");
@@ -65,7 +61,6 @@ const EditProduct = () => {
         console.log("get data", data);
         setProduct(data);
         setPCity(makeValue(data.city));
-        setUser(data.owner);
       })
       .catch((err) => {
         console.log("get product crashed", err);
