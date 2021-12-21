@@ -57,7 +57,7 @@ const getRec = async (req, res, next) => {
 
     const userId = req.params.userId;
     const offset = parseInt(req.params.offset);
-    const limit = 1;
+    const limit = 10;
 
     var user = await User.findOne({
       _id: userId,
