@@ -52,7 +52,9 @@ class las extends Component {
                   <li id="ftli">
                     <h4>ABOUT US</h4>
                   </li>
-                  <li id="ftli">About trade up </li>
+                  <li id="ftli">
+                    <>About trade up </>
+                  </li>
                   <li id="ftli">trade up Blog</li>
                   <li id="ftli">Contact Us</li>
                   <li id="ftli">trade up for Businesses</li>
