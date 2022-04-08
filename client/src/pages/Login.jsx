@@ -100,9 +100,9 @@ const Login = () => {
                   placeholder="Enter email/username"
                 />
                 {noUser && (
-                  <Form.Text style={{ color: "red" }}>
+                  <Form.Text className="text-danger">
                     No such user... Want to{" "}
-                    <Card.Link className="link" href="/register">
+                    <Card.Link className="alert-link" href="/register">
                       Register
                     </Card.Link>{" "}
                     ?
