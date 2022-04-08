@@ -16,13 +16,7 @@ const updateProduct = async (req, res) => {
   try {
     console.log("update product:", req.body);
     product
-      .findByIdAndUpdate(
-        req.params._id,
-        {
-          $set: req.body,
-        },
-        { new: true }
-      )
+      .findByIdAndUpdate(req.params._id, req.body, { new: true })
       .then((result) => {
         console.log(result);
         res.status(200).send(result);
@@ -35,16 +29,29 @@ const getProducts = async (req, res, next) => {
   try {
     console.log("get products", req.params.offset);
     const offset = parseInt(req.params.offset);
+    const limit = parseInt(req.params.limit);
+    const { search } = req.body;
+
     const products = await product
-      .find()
+      .find({
+        ...req.query,
+        $or: [
+          { title: { $regex: search, $options: "i" } },
+          // { email: { $regex: search, $options: "i" } },
+        ],
+      })
       .populate("owner")
       .sort({ createdAt: -1 })
-      .limit(50)
+      .limit(limit)
       .skip(offset);
+
     const allProducts = await product.find();
-    const remainingProducts = allProducts.length - offset - products.length;
-    console.log({ products, remainingProducts });
-    res.status(200).send({ products, remainingProducts });
+
+    response = {
+      products,
+      totalProducts: allProducts.length,
+    };
+    res.status(200).send(response);
   } catch (err) {
     console.log(err);
     res.status(500).send({ msg: err.message });
@@ -61,8 +68,9 @@ const getRec = async (req, res, next) => {
 
     var user = await User.findOne({
       _id: userId,
-      preferences: { $exists: true, $not: { $size: 0 } },
+      preferences: { $exists: true },
     });
+    console.log(user);
 
     if (user) {
       const pref = user.preferences;
@@ -121,11 +129,6 @@ const getRec = async (req, res, next) => {
       const remainingProducts =
         allProducts.length - offset - bothProducts.length;
       res.status(200).send({ products: bothProducts, remainingProducts });
-      // res.status(200).send({
-      //   rec: rec.length,
-      //   products: products.length,
-      //   remainingProducts,
-      // });
     } else {
       res.status(404).send(null);
     }

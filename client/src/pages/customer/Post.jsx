@@ -5,11 +5,11 @@ import axios from "axios";
 import ImageUploader from "react-images-upload";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { userActions } from "../store/user";
-import MySelect from "../components/UI/MySelect";
+import { userActions } from "../../store/user";
+import MySelect from "../../components/UI/MySelect";
 import CreatableSelect from "react-select/creatable";
 
-import TAGS from "../assets/JsonData/tags.json";
+import TAGS from "../../assets/JsonData/tags.json";
 
 const style = {
   margin: "3% 20%",
@@ -107,8 +107,7 @@ function Post() {
     await axios.post(`${process.env.REACT_APP_SERVER_URL}/post`, Product);
 
     await axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
-        id: user._id,
+      .put(`${process.env.REACT_APP_SERVER_URL}/updateuser/${user._id}`, {
         phoneNumber: phone,
         street: street,
         city: pcity.value,

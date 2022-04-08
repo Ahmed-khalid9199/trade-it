@@ -1,25 +1,28 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { userActions } from "../store/user";
+import { userActions } from "../../store/user";
 import { Row, Col, Button, Form, InputGroup, Card } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Message from "../components/UI/Message";
-import MyModal from "../components/modals/MyModal";
+import Message from "../../components/UI/Message";
+import MyModal from "../../components/modals/MyModal";
 import moment from "moment";
 import "./Profile.css";
 import bcrypt from "bcryptjs";
-import PreviewImage from "../components/preview/PreviewImage";
+import PreviewImage from "../../components/preview/PreviewImage";
 
 import { toast } from "react-toastify";
 
 import { useHistory } from "react-router";
 
 import Select from "react-select";
-import TAGS from "../assets/JsonData/tags.json";
+import TAGS from "../../assets/JsonData/tags.json";
 
 const makeStrArr = (valueArr) => {
-  return valueArr.map((item) => item.value);
+  if (valueArr) {
+    return valueArr.map((item) => item.value);
+  }
+  return [];
 };
 
 const Profile = () => {
@@ -72,8 +75,7 @@ const Profile = () => {
       setShowModal(false);
       const hash = await bcrypt.hash(newPassword, 8);
       await axios
-        .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
-          id: user._id,
+        .put(`${process.env.REACT_APP_SERVER_URL}/updateuser/${user._id}`, {
           password: hash,
         })
         .then((response) => {
@@ -112,8 +114,7 @@ const Profile = () => {
       console.log("value", firstName, lastName, dateOfBirth, phone);
       const imgSrc = await uploadImgHandler();
       await axios
-        .post(`${process.env.REACT_APP_SERVER_URL}/updateuser`, {
-          id: user._id,
+        .put(`${process.env.REACT_APP_SERVER_URL}/updateuser/${user._id}`, {
           firstName: firstName,
           lastName: lastName,
           dob: dateOfBirth,
@@ -129,15 +130,7 @@ const Profile = () => {
           dispatch(userActions.login(data));
           localStorage.setItem("user", JSON.stringify(data));
           console.log("updated User", response.data);
-          toast.success("User updated", {
-            position: "bottom-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-          });
+          toast.success("User updated");
           history.push("/");
         });
     }
@@ -194,19 +187,21 @@ const Profile = () => {
                     />
                   </Form.Group>
                 </Row>
-                <Row style={{ paddingLeft: "30px" }}>
-                  <Form.Group as={Col} md="5">
-                    <Form.Label>Preferences</Form.Label>
+                {user.type === "customer" && (
+                  <Row style={{ paddingLeft: "30px" }}>
+                    <Form.Group as={Col} md="5">
+                      <Form.Label>Preferences</Form.Label>
 
-                    <Select
-                      options={tagOptions}
-                      value={tags}
-                      onChange={setTags}
-                      isSearchable={true}
-                      isMulti={true}
-                    />
-                  </Form.Group>
-                </Row>
+                      <Select
+                        options={tagOptions}
+                        value={tags}
+                        onChange={setTags}
+                        isSearchable={true}
+                        isMulti={true}
+                      />
+                    </Form.Group>
+                  </Row>
+                )}
                 <hr />
 
                 <Row className="m-3">

@@ -70,18 +70,20 @@ const Navbar = () => {
                 <img src={logo} width="74px" height="52px" alt="olx-logo" />
               </IconButton>
             </Link>
-            <Form.Control
-              size="md"
-              type="email"
-              placeholder="Search anything"
-              className="top-search"
-              value={selectedSearch}
-              onKeyDown={SearchProducts}
-              onChange={(e) => {
-                SearchProducts(e.target.value);
-                setSelectedSearch(e.target.value);
-              }}
-            />
+            {user.type === "customer" && (
+              <Form.Control
+                size="md"
+                type="email"
+                placeholder="Search anything"
+                className="top-search"
+                value={selectedSearch}
+                onKeyDown={SearchProducts}
+                onChange={(e) => {
+                  SearchProducts(e.target.value);
+                  setSelectedSearch(e.target.value);
+                }}
+              />
+            )}
           </div>
           <div class="d-flex justify-content-end">
             {user && !user.isAuthenticated && (
@@ -105,28 +107,31 @@ const Navbar = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item
-                      onClick={() => {
-                        history.push(`/profile/${user._id}`);
-                      }}
-                    >
-                      Profile
-                    </Dropdown.Item>
-
-                    <Dropdown.Item
-                      onClick={() => {
-                        history.push("/post");
-                      }}
-                    >
-                      Post new Ad
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      onClick={() => {
-                        history.push("/inbox/thread");
-                      }}
-                    >
-                      Inbox
-                    </Dropdown.Item>
+                    {user.type === "customer" && (
+                      <>
+                        <Dropdown.Item
+                          onClick={() => {
+                            history.push(`/profile/${user._id}`);
+                          }}
+                        >
+                          Profile
+                        </Dropdown.Item>
+                        <Dropdown.Item
+                          onClick={() => {
+                            history.push("/post");
+                          }}
+                        >
+                          Post new Ad
+                        </Dropdown.Item>{" "}
+                        <Dropdown.Item
+                          onClick={() => {
+                            history.push("/inbox/thread");
+                          }}
+                        >
+                          Inbox
+                        </Dropdown.Item>
+                      </>
+                    )}
 
                     <Dropdown.Item
                       onClick={() => {

@@ -3,5 +3,15 @@
     "display_name": "Dashboard",
     "route": "/dashboard",
     "icon": "bx bx-category-alt"
+  },
+  {
+    "display_name": "Users",
+    "route": "/users",
+    "icon": "bx bxs-user-pin"
+  },
+  {
+    "display_name": "Products",
+    "route": "/products",
+    "icon": "bx bxs-package"
   }
 ]

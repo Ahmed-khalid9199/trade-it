@@ -12,9 +12,9 @@
   justify-content: space-arround;
 }
 
-.dropdown {
-  width: 50px;
-}
+/* .dropdown {
+  width: 100px;
+} */
 
 .top-search {
   width: 800px !important;
@@ -25,12 +25,6 @@
   margin-top: 15px;
 }
 
-i {
-  color: black;
-  position: absolute;
-  margin-top: 10px;
-  margin-left: 220px;
-}
 .cover {
   object-fit: fill !important;
   width: 100rem;
@@ -40,10 +34,9 @@ i {
 }
 
 .avatar {
-  max-width: 100%;
-  width: 100%;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 50px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
 }
 
 .dropdown-toggle::after {

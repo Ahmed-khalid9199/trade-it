@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import picture from "../assets/images/trade-up.jpg";
-import Cards from "../components/card/Cards";
-import Footer from "../components/UI/footer";
+import picture from "../../assets/images/trade-up.jpg";
+import Cards from "../../components/card/Cards";
+import Footer from "../../components/UI/footer";
 import { Link } from "react-router-dom";
-import MySelect from "../components/UI/MySelect";
+import MySelect from "../../components/UI/MySelect";
 import { useSelector, useDispatch } from "react-redux";
-import { productsActions } from "../store/products";
+import { productsActions } from "../../store/products";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
 import { Button } from "react-bootstrap";

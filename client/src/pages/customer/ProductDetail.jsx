@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 
 import { useHistory } from "react-router-dom";
 
-import avatar from "../assets/images/avatar.png";
+import avatar from "../../assets/images/avatar.png";
 
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -59,10 +59,45 @@ const ProductDetail = () => {
     setProduct((prev) => ({ ...prev, likes: result.data.likes }));
   };
 
+  const removeProductHandler = () => {
+    axios
+      .put(
+        `${process.env.REACT_APP_SERVER_URL}/updateproduct/${params.productid}`,
+        {
+          activityStatus:
+            product.activityStatus === "active"
+              ? "removed"
+              : product.activityStatus === "removed"
+              ? "active"
+              : product.activityStatus,
+        }
+      )
+      .then(({ data }) => {
+        history.replace("/products");
+      })
+      .catch((err) => {
+        console.log("update product crashed", err);
+      });
+  };
   return (
     <Row>
       <div className="container">
         <div className="product_card">
+          {user.type === "admin" && (
+            <div className="d-flex justify-content-end pb-2">
+              <Button
+                onClick={removeProductHandler}
+                variant={
+                  product?.activityStatus === "active" ? "danger" : "success"
+                }
+              >
+                {product?.activityStatus === "active"
+                  ? "Remove this product"
+                  : "Allow this product"}
+              </Button>
+            </div>
+          )}
+
           <div className="container-fliud">
             <div className="wrapper row">
               <div className="preview col-md-6">
@@ -117,6 +152,7 @@ const ProductDetail = () => {
                           <button
                             className="btn like-btn"
                             onClick={likeHandler}
+                            disabled={user.type === "admin"}
                           >
                             {product && product.likes.includes(user._id) ? (
                               <i className="bx bxs-heart like-icon"></i>
@@ -191,10 +227,16 @@ const ProductDetail = () => {
                             <Button
                               onClick={openUserProfile}
                               style={{ backgroundColor: "Red" }}
+                              disabled={user.type === "admin"}
                             >
                               Go to user Profile
-                            </Button>{" "}
-                            <Button onClick={openInbox}>Contact User</Button>
+                            </Button>
+                            <Button
+                              onClick={openInbox}
+                              disabled={user.type === "admin"}
+                            >
+                              Contact User
+                            </Button>
                           </>
                         )}
 
@@ -222,6 +264,7 @@ const ProductDetail = () => {
                   </Row>
                 </Card>
               </div>
+
               <div>
                 <br />
               </div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Form, Button, Card } from "react-bootstrap";
+import { Row, Form, Button, Card, Alert } from "react-bootstrap";
 
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ import background from "../assets/images/background1.jpg";
 
 const Login = () => {
   const [noUser, setNoUser] = useState(false);
+  const [isDeactivated, setIsDeactivated] = useState(false);
   const [username, setUsername] = useState("");
   const [usernameIsValid, setUsernameIsValid] = useState(true);
   const [password, setPassword] = useState("");
@@ -35,17 +36,19 @@ const Login = () => {
     setPassIsValid(password ? true : false);
     setPassIsCorrect(true);
     setNoUser(false);
+    setIsDeactivated(false);
 
     if (username && password) {
-      const result = await axios.post(
+      const { data: user } = await axios.post(
         `${process.env.REACT_APP_SERVER_URL}/login`,
         { username }
       );
-      if (result.data[0]) {
-        const passCheck = await bcrypt.compare(
-          password,
-          result.data[0].password
-        );
+      if (user) {
+        if (user.status !== "active") {
+          setIsDeactivated(true);
+          return;
+        }
+        const passCheck = await bcrypt.compare(password, user.password);
         console.log(passCheck);
         setPassIsCorrect(passCheck);
         if (passCheck) {
@@ -53,9 +56,9 @@ const Login = () => {
             `${process.env.REACT_APP_SERVER_URL}/getuser`,
             { username }
           );
-          if (data[0]) {
-            dispatch(userActions.login(data[0]));
-            localStorage.setItem("user", JSON.stringify(data[0]));
+          if (data) {
+            dispatch(userActions.login(data));
+            localStorage.setItem("user", JSON.stringify(data));
             history.replace(from);
           }
         }
@@ -71,7 +74,10 @@ const Login = () => {
         className="background"
       ></div>
       <div className="slogan">
-        <h1>Trade what you have, for what you need.</h1>
+        <h1>
+          <span style={{ color: "white" }}>Trade what you have, </span>
+          for what you need.
+        </h1>
       </div>
 
       <Row className="justify-content-center align-items-center vh-100 vw-100">
@@ -95,11 +101,11 @@ const Login = () => {
                 />
                 {noUser && (
                   <Form.Text style={{ color: "red" }}>
-                    No such user exists!{" "}
+                    No such user... Want to{" "}
                     <Card.Link className="link" href="/register">
                       Register
                     </Card.Link>{" "}
-                    Now!
+                    ?
                   </Form.Text>
                 )}
               </Form.Group>
@@ -126,7 +132,10 @@ const Login = () => {
                 <Button size="lg" variant="primary" type="submit">
                   Login
                 </Button>
-                <Card.Subtitle className="mb-2 text-muted">
+                <Card.Subtitle
+                  className="mb-2 text-muted"
+                  style={{ fontSize: "13px" }}
+                >
                   New User?{" "}
                   <Card.Link className="link" href="/register">
                     register
@@ -137,6 +146,11 @@ const Login = () => {
           </Card.Body>
         </Card>
       </Row>
+      {isDeactivated && (
+        <Alert variant="danger">
+          Seems like your account is banned. Please contact support.
+        </Alert>
+      )}
     </>
   );
 };

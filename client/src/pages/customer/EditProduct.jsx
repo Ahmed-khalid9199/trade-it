@@ -3,7 +3,7 @@ import "./EditProduct.css";
 import { Form, Button, Card, Row } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
-import MySelect from "../components/UI/MySelect";
+import MySelect from "../../components/UI/MySelect";
 import { useParams } from "react-router";
 
 const makeValue = (string) => {
@@ -15,12 +15,11 @@ const makeValue = (string) => {
   }
   return null;
 };
-
+const style = {
+  margin: "3% 20%",
+  padding: "25px",
+};
 const EditProduct = () => {
-  const style = {
-    margin: "3% 20%",
-    padding: "25px",
-  };
   const [product, setProduct] = useState("");
 
   const [pcity, setPCity] = useState(null);
@@ -44,7 +43,7 @@ const EditProduct = () => {
     console.log({ ...formDataObj, city: pcity.value });
 
     await axios
-      .post(
+      .put(
         `${process.env.REACT_APP_SERVER_URL}/updateproduct/${params.productid}`,
         { ...formDataObj, city: pcity.value }
       )

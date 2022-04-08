@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema(
     password: String,
     type: {
       type: String,
-      require: true,
+      required: true,
       enum: ["customer", "admin"],
+      default: "customer",
     },
     imgSrc: String,
     dob: {
@@ -34,6 +35,11 @@ const userSchema = new mongoose.Schema(
       writer_id: mongoose.Schema.Types.ObjectId,
     },
     preferences: [String],
+    status: {
+      type: String,
+      enum: ["active", "deactivated"],
+      default: "active",
+    },
   },
   {
     timestamps: true,

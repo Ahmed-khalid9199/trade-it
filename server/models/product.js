@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
     activityStatus: {
       type: String,
       required: true,
-      enum: ["active", "deactive", "traded"],
+      enum: ["active", "inactive", "removed", "traded"],
       default: "active",
     },
     category: {

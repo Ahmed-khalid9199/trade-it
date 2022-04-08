@@ -10,6 +10,7 @@ import "./app.css";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PrivateRoute from "./components/PrivateRoute";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -26,7 +27,9 @@ const App = () => {
       <Switch>
         <Route path="/login" exact component={Login} />
         <Route path="/register" exact component={Register} />
-        <Layout />
+        <PrivateRoute path="/">
+          <Layout />
+        </PrivateRoute>
       </Switch>
       <ToastContainer
         position="bottom-right"

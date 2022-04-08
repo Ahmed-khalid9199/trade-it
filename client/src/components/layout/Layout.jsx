@@ -1,17 +1,23 @@
 import React from "react";
-import "./layout.css";
-import { Navbar, Mininav } from "../topnav/TopNav";
-import Routes from "../Routes";
 import { Route } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import "./layout.css";
+import { Navbar } from "../topnav/TopNav";
+import Routes from "../Routes";
+import Sidebar from "../sidebar/Sidebar";
 
 const Layout = () => {
+  const { type } = useSelector((state) => state.user.user);
+  const isAdmin = type === "admin";
   return (
     <Route
       render={(props) => (
         <div className={`layout`}>
-          <div className="layout__content">
+          {isAdmin && <Sidebar />}
+
+          <div className={`${isAdmin ? "layout__content" : ""}`}>
             <Navbar />
-            {/* <Mininav /> */}
 
             <div className="layout__content__main">
               <Routes />

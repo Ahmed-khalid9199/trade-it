@@ -1,0 +1,5 @@
+.flip {
+  transform: rotateY(360deg);
+  transform-style: preserve-3d;
+  transition: all 1s ease-in-out;
+}

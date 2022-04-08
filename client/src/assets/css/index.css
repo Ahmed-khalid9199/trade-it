@@ -60,11 +60,6 @@ a:hover {
   color: inherit;
 }
 
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
 button {
   cursor: pointer;
   border: 0;
@@ -115,7 +110,7 @@ input {
 
 .slogan {
   margin-left: 5vw;
-  margin-top: 40vh;
+  margin-top: 30vh;
   width: 500px;
   color: rgb(0, 0, 0);
   z-index: 1;
@@ -126,9 +121,21 @@ input {
   font-size: 70px;
   z-index: 1;
   color: #572e00;
+  -webkit-text-stroke: 0.1px #572e00;
 }
 
 a {
-  text-decoration: underline;
-  color: rgb(4, 0, 255);
+  text-decoration: none;
+  color: #5e72e4;
+  background-color: transparent;
+  -webkit-text-decoration-skip: objects;
+}
+
+.alert {
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
 }

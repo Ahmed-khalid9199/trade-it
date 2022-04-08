@@ -4,9 +4,9 @@ import "./MyProfile.css";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
-import Cards from "../components/card/Cards";
+import Cards from "../../components/card/Cards";
 
-import avatar from "../assets/images/avatar.png";
+import avatar from "../../assets/images/avatar.png";
 import { useSelector } from "react-redux";
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState("");
@@ -32,7 +32,7 @@ const MyProfile = () => {
       })
       .then(({ data }) => {
         console.log("get user", data);
-        setCurrUser(data[0]);
+        setCurrUser(data);
       })
       .catch((err) => {
         console.log("get user crashed", err);
@@ -123,7 +123,9 @@ const MyProfile = () => {
                       </div> */}
                       <div>
                         <span class="heading">{myProducts.length}</span>
-                        <span class="description">Products</span>
+                        <span class="description">
+                          {myProducts.length === 1 ? "Product" : "Products"}
+                        </span>
                       </div>
                       <div>
                         <span class="heading">

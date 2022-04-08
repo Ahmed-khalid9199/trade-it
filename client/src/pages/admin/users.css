@@ -1,0 +1,8 @@
+.bx-shadow {
+  box-shadow: var(--box-shadow);
+}
+
+.hvr-scale:hover {
+  transform: scale(1.07);
+  transition: all 0.2s ease-in-out;
+}
