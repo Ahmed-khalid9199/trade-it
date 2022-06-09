@@ -179,7 +179,7 @@ const MyProfile = () => {
             >
               <Tab eventKey="home" title="My Ads">
                 <div class="caard bg-secondary shadow">
-                  <Cards list={myProducts} />
+                  <Cards list={myProducts} displayBadge={true} />
                 </div>
               </Tab>
               <Tab eventKey="profile" title="My Likes">

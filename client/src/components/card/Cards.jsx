@@ -3,10 +3,14 @@ import { Card } from "react-bootstrap";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Badge from "../../components/UI/Badge";
+import activityStatusMapping from "../../assets/JsonData/products.json";
 import "./card.css";
 
-const Cards = ({ list }) => {
+const Cards = ({ list, displayBadge }) => {
   const location = useLocation();
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div
@@ -28,7 +32,16 @@ const Cards = ({ list }) => {
               <Card.Img className="cardImg" src={product.images[0]} />
 
               <Card.Body>
-                <Card.Title>{product.title}</Card.Title>
+                <Card.Title>
+                  {product.title}{" "}
+                  {displayBadge && (
+                    <Badge
+                      className="ml-2"
+                      type={activityStatusMapping[product?.activityStatus]}
+                      text={product?.activityStatus}
+                    />
+                  )}
+                </Card.Title>
                 <Card.Title style={{ color: "grey" }}>
                   {product.category}
                 </Card.Title>

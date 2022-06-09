@@ -5,6 +5,7 @@ const compression = require("compression");
 const mongoose = require("mongoose");
 const { createServer } = require("http");
 const rootRoutes = require("./routes/root");
+const adminRoutes = require("./routes/admin");
 
 const { Server } = require("socket.io");
 const { getUser, removeUser, addUser, getUsers } = require("./util/chatUsers");
@@ -14,7 +15,7 @@ const httpServer = createServer(app);
 
 mongoose
   .connect(
-    "mongodb+srv://admin:9FzZrhjv5U9cWFP@cluster0.wqyck.mongodb.net/tradeit_db?retryWrites=true&w=majority",
+    "mongodb://admin:jEnvTg5NyNkA3Ecq@cluster0-shard-00-00.wqyck.mongodb.net:27017,cluster0-shard-00-01.wqyck.mongodb.net:27017,cluster0-shard-00-02.wqyck.mongodb.net:27017/?ssl=true&replicaSet=atlas-tf9mpg-shard-0&authSource=admin&retryWrites=true&w=majority",
     {
       useUnifiedTopology: true,
       useNewUrlParser: true,
@@ -40,6 +41,7 @@ app.use(
 );
 
 // routes
+app.use("/admin", adminRoutes);
 app.use("/", rootRoutes);
 
 // sockets

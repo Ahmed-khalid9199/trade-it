@@ -1,8 +1,8 @@
 import React from "react";
 import "./badge.css";
-const Badge = ({ type, text }) => {
+const Badge = ({ type, text, className }) => {
   return (
-    <div className={`badge ${type ? type : "bdg-default"}`}>
+    <div className={`badge ${type ? type : "bdg-default"} ${className}`}>
       <center>{`${text}`}</center>
     </div>
   );

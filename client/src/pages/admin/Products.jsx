@@ -10,13 +10,7 @@ import moment from "moment";
 
 import "./products.css";
 import { Link } from "react-router-dom";
-
-const activityStatusMapping = {
-  active: "bg-primary",
-  traded: "bg-success",
-  inactive: "bg-warning",
-  removed: "bg-danger",
-};
+import activityStatusMapping from "../../assets/JsonData/products.json";
 
 const itemsPerPage = 20;
 

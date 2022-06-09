@@ -75,7 +75,7 @@ const getRec = async (req, res, next) => {
     if (user) {
       const pref = user.preferences;
       const allRec = await product.aggregate([
-        { $match: { tags: { $in: pref } } },
+        { $match: { tags: { $in: pref }, activityStatus: "active" } },
         { $unwind: "$tags" },
         { $match: { tags: { $in: pref } } },
         { $group: { _id: "$_id" } },
@@ -83,7 +83,7 @@ const getRec = async (req, res, next) => {
       ]);
       const rec = await product
         .aggregate([
-          { $match: { tags: { $in: pref } } },
+          { $match: { tags: { $in: pref }, activityStatus: "active" } },
           { $unwind: "$tags" },
           { $match: { tags: { $in: pref } } },
           {
@@ -279,6 +279,17 @@ const getLikes = async (req, res, next) => {
   }
 };
 
+const getTotal = async (req, res, next) => {
+  try {
+    console.log("get total");
+    const products = await product.find();
+
+    res.status(200).send({ total: products.length });
+  } catch (err) {
+    res.status(500).send({ msg: err.message });
+  }
+};
+
 module.exports = {
   addProduct,
   getProduct,
@@ -290,4 +301,5 @@ module.exports = {
   getSearchedProducts,
   getFilter,
   likeProduct,
+  getTotal,
 };

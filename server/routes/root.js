@@ -10,6 +10,7 @@ route.post("/verify", userController.verify);
 route.post("/register", userController.registerUser);
 route.post("/getuser", userController.getUser);
 route.post("/getusers/:limit/:offset", userController.getUsers);
+route.get("/users/gettotal", userController.getTotal);
 route.post("/login", userController.login);
 route.put("/updateuser/:id", userController.updateUser);
 
@@ -25,6 +26,8 @@ route.post("/getproducts/:limit/:offset", productController.getProducts);
 route.get("/getlikes/:userId", productController.getLikes);
 route.get("/getrec/:userId/:offset", productController.getRec);
 route.get("/getproduct/:productid", productController.getProduct);
+route.get("/products/gettotal", productController.getTotal);
+
 route.get("/getmyproducts/:_id", productController.getMyProducts);
 route.put("/updateproduct/:_id", productController.updateProduct);
 route.get("/gettestfilter/:city/:search", productController.getFilter);

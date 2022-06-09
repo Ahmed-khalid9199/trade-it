@@ -13,6 +13,8 @@ import avatar from "../../assets/images/avatar.png";
 
 import moment from "moment";
 import { Link } from "react-router-dom";
+import Badge from "../../components/UI/Badge";
+import activityStatusMapping from "../../assets/JsonData/products.json";
 
 const ProductDetail = () => {
   const { user } = useSelector((state) => state.user);
@@ -147,6 +149,15 @@ const ProductDetail = () => {
                       <Col className="space-between">
                         <h1 className="product-title">
                           {product && product.title}
+                          {product && product.owner._id === user._id && (
+                            <Badge
+                              className="ml-2"
+                              type={
+                                activityStatusMapping[product?.activityStatus]
+                              }
+                              text={product?.activityStatus}
+                            />
+                          )}
                         </h1>
                         <div>
                           <button

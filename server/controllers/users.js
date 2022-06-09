@@ -135,7 +135,19 @@ const verify = async (req, res, next) => {
   }
 };
 
+const getTotal = async (req, res, next) => {
+  try {
+    console.log("get total");
+    const users = await User.find();
+
+    res.status(200).send({ total: users.length });
+  } catch (err) {
+    res.status(500).send({ msg: err.message });
+  }
+};
+
 module.exports = {
+  getTotal,
   registerUser,
   getUser,
   getUsers,
