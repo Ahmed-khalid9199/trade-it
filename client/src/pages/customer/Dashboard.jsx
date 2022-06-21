@@ -112,9 +112,6 @@ const Dashboard = () => {
 
   return (
     <>
-      <Navbar />
-      <div style={{ marginTop: "80px" }}> </div>
-
       <div style={{ width: "100vw" }}>
         <img src={picture} alt="trade it" className="cover" />
       </div>
