@@ -10,13 +10,16 @@ import { productsActions } from "../../store/products";
 import { useHistory, useLocation } from "react-router-dom";
 import qs from "query-string";
 import { Button } from "react-bootstrap";
+import { Navbar } from "../../components/topnav/TopNav";
 
 const Dashboard = () => {
   const [loadMore, setLoadMore] = useState(null);
   const [showLoadMore, setShowLoadMore] = useState(false);
+
   const products = useSelector((state) => state.products);
   const user = useSelector((state) => state.user);
   const dispatch = useDispatch();
+
   const history = useHistory();
   const location = useLocation();
 
@@ -53,9 +56,6 @@ const Dashboard = () => {
     makeValue(queryParams.get("location"))
   );
   useEffect(() => {
-    if (!user) {
-      return;
-    }
     if (locationFilter || searchQuery) {
       axios
         .get(
@@ -71,7 +71,7 @@ const Dashboard = () => {
         .catch((err) => {
           console.log(err);
         });
-    } else {
+    } else if (user?.user) {
       axios
         .get(
           `${process.env.REACT_APP_SERVER_URL}/getrec/${user.user._id}/${
@@ -89,11 +89,32 @@ const Dashboard = () => {
         .catch((err) => {
           console.log(err);
         });
+    } else {
+      axios
+        .get(
+          `${process.env.REACT_APP_SERVER_URL}/getanonproducts/30/${
+            loadMore ? products.length : 0
+          }`
+        )
+        .then(({ data }) => {
+          if (loadMore) {
+            dispatch(productsActions.appendProducts(data.products));
+          } else {
+            dispatch(productsActions.setProducts(data.products));
+          }
+          setShowLoadMore(data.remainingProducts !== 0);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [loadMore, locationFilter, searchQuery]);
 
   return (
     <>
+      <Navbar />
+      <div style={{ marginTop: "80px" }}> </div>
+
       <div style={{ width: "100vw" }}>
         <img src={picture} alt="trade it" className="cover" />
       </div>

@@ -37,10 +37,7 @@ const getProducts = async (req, res, next) => {
     const products = await product
       .find({
         ...req.query,
-        $or: [
-          { title: { $regex: search, $options: "i" } },
-          // { email: { $regex: search, $options: "i" } },
-        ],
+        $or: [{ title: { $regex: search, $options: "i" } }],
       })
       .populate("owner")
       .sort({ createdAt: -1 })
@@ -52,6 +49,38 @@ const getProducts = async (req, res, next) => {
     response = {
       products,
       totalProducts: allProducts.length,
+      remainingProducts: allProducts.length - offset - products.length,
+    };
+    res.status(200).send(response);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: err.message });
+  }
+};
+
+const getAnonProducts = async (req, res, next) => {
+  try {
+    console.log("get products", req.params.offset);
+    const offset = parseInt(req.params.offset);
+    const limit = parseInt(req.params.limit);
+
+    const products = await product
+      .find({
+        activityStatus: "active",
+      })
+      .populate("owner")
+      .sort({ createdAt: -1 })
+      .limit(limit)
+      .skip(offset);
+
+    const allProducts = await product.find({
+      activityStatus: "active",
+    });
+
+    response = {
+      products,
+      totalProducts: allProducts.length,
+      remainingProducts: allProducts.length - offset - products.length,
     };
     res.status(200).send(response);
   } catch (err) {
@@ -349,4 +378,5 @@ module.exports = {
   likeProduct,
   getTotal,
   getProductsInChats,
+  getAnonProducts,
 };

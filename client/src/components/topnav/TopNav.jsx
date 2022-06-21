@@ -30,7 +30,6 @@ const Navbar = () => {
   const [selectedSearch, setSelectedSearch] = useState(
     queryParams.search ? queryParams.search : ""
   );
-
   const logoutHandler = () => {
     dispatch(
       userActions.logout({
@@ -70,20 +69,19 @@ const Navbar = () => {
                 <img src={logo} width="74px" height="52px" alt="olx-logo" />
               </IconButton>
             </Link>
-            {user.type === "customer" && (
-              <Form.Control
-                size="md"
-                type="email"
-                placeholder="Search anything"
-                className="top-search"
-                value={selectedSearch}
-                onKeyDown={SearchProducts}
-                onChange={(e) => {
-                  SearchProducts(e.target.value);
-                  setSelectedSearch(e.target.value);
-                }}
-              />
-            )}
+            {/* {user?.type === "customer" && ( */}
+            <Form.Control
+              size="md"
+              type="email"
+              placeholder="Search anything"
+              className="top-search"
+              value={selectedSearch}
+              onKeyDown={SearchProducts}
+              onChange={(e) => {
+                SearchProducts(e.target.value);
+                setSelectedSearch(e.target.value);
+              }}
+            />
           </div>
           <div class="d-flex justify-content-end">
             {user && !user.isAuthenticated && (
@@ -146,10 +144,6 @@ const Navbar = () => {
                   </Dropdown.Menu>
                 </Dropdown>
               )}
-
-              {/* <Link to="./post">
-                  <Button variant="outline-success">+Post New Product</Button>
-                </Link> */}
             </div>
             {!user && (
               <Link to="/login">

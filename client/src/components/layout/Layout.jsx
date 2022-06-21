@@ -8,8 +8,8 @@ import Routes from "../Routes";
 import Sidebar from "../sidebar/Sidebar";
 
 const Layout = () => {
-  const { type } = useSelector((state) => state.user.user);
-  const isAdmin = type === "admin";
+  const { user } = useSelector((state) => state.user);
+  const isAdmin = user?.type === "admin";
   return (
     <Route
       render={(props) => (
