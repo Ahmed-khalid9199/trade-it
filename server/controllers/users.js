@@ -1,6 +1,7 @@
+const bcrypt = require("bcryptjs");
 const Otp = require("../models/otp");
 const User = require("../models/user");
-const sendTo = require("../util/email");
+const { sendVerificationEmail } = require("../util/email");
 
 const registerUser = async (req, res, next) => {
   try {
@@ -56,16 +57,12 @@ const getUsers = async (req, res, next) => {
 const updateUser = async (req, res) => {
   try {
     console.log("update user:", req.body);
-    User.findOneAndUpdate(
-      { _id: req.params.id },
-
-      req.body,
-
-      { new: true }
-    ).then((result) => {
-      console.log(result);
-      res.status(200).send(result);
-    });
+    User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }).then(
+      (result) => {
+        console.log(result);
+        res.status(200).send(result);
+      }
+    );
   } catch (error) {
     console.log(error);
   }
@@ -96,7 +93,7 @@ const sendEmail = async (req, res, next) => {
       // generate 4 digit random number
       const code = Math.floor(1000 + Math.random() * 9000);
       console.log("sending email");
-      sendTo(email, code);
+      sendVerificationEmail(email, code);
 
       await Otp.findOneAndUpdate(
         { email },
@@ -106,6 +103,28 @@ const sendEmail = async (req, res, next) => {
     }
 
     res.status(200).send(user);
+  } catch (err) {
+    res.status(500).send({ msg: err.message });
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    console.log("resetPassword", req.body);
+    const { email } = req.body;
+
+    var resetPassword = Math.random().toString(36).slice(-8);
+    const hashPassword = await bcrypt.hash(resetPassword, 8);
+    const user = await User.findOneAndUpdate(
+      { email },
+      { password: hashPassword }
+    );
+    console.log(user);
+    if (user) {
+      console.log("sending email");
+      sendVerificationEmail(email, resetPassword);
+    }
+    res.status(200).send({ user });
   } catch (err) {
     res.status(500).send({ msg: err.message });
   }
@@ -154,5 +173,6 @@ module.exports = {
   login,
   updateUser,
   sendEmail,
+  resetPassword,
   verify,
 };

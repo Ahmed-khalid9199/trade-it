@@ -46,10 +46,10 @@ const Navbar = () => {
     if (event.key === "Enter") {
       if (selectedSearch) {
         const newQuery = { ...queryParams, search: selectedSearch };
-        history.push(`/?${qs.stringify(newQuery)}`);
+        history.push(`/dashboard/?${qs.stringify(newQuery)}`);
       } else {
         delete queryParams.search;
-        history.push(`/?${qs.stringify(queryParams)}`);
+        history.push(`/dashboard/?${qs.stringify(queryParams)}`);
       }
     }
   };

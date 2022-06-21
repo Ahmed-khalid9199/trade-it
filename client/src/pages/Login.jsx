@@ -111,7 +111,12 @@ const Login = () => {
               </Form.Group>
 
               <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
+                <div class="d-flex justify-content-between">
+                  <Form.Label>Password</Form.Label>
+                  <Card.Link className="link" href="/forgot-password">
+                    Forgot Password?
+                  </Card.Link>
+                </div>
                 <Form.Control
                   value={password}
                   onChange={(e) => {

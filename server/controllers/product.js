@@ -1,5 +1,7 @@
 const product = require("../models/product");
 const User = require("../models/user");
+const Chat = require("../models/chat");
+const mongoose = require("mongoose");
 
 const addProduct = async (req, res, next) => {
   try {
@@ -83,7 +85,8 @@ const getRec = async (req, res, next) => {
       ]);
       const rec = await product
         .aggregate([
-          { $match: { tags: { $in: pref }, activityStatus: "active" } },
+          { $match: { activityStatus: "active" } },
+          { $match: { tags: { $in: pref } } },
           { $unwind: "$tags" },
           { $match: { tags: { $in: pref } } },
           {
@@ -105,7 +108,9 @@ const getRec = async (req, res, next) => {
         .limit(limit)
         .skip(offset);
       User.populate(rec, { path: "owner" });
+
       let products = [];
+
       if (rec.length < limit) {
         console.log(
           "rec.length",
@@ -118,14 +123,14 @@ const getRec = async (req, res, next) => {
         const recIdList = allRec.map((item) => item._id);
         console.log("recIdList", recIdList);
         products = await product
-          .find({ _id: { $nin: recIdList } })
+          .find({ _id: { $nin: recIdList }, activityStatus: "active" })
           .populate("owner")
           .sort({ createdAt: -1 })
           .limit(limit - rec.length)
           .skip(skip);
       }
       const bothProducts = [...rec, ...products];
-      const allProducts = await product.find();
+      const allProducts = await product.find({ activityStatus: "active" });
       const remainingProducts =
         allProducts.length - offset - bothProducts.length;
       res.status(200).send({ products: bothProducts, remainingProducts });
@@ -148,6 +153,7 @@ const getFilter = async (req, res, next) => {
       filteredProducts = await product
 
         .find({
+          activityStatus: "active",
           $or: [
             { title: { $regex: regex } },
             { description: { $regex: regex } },
@@ -159,6 +165,7 @@ const getFilter = async (req, res, next) => {
       filteredProducts = await product
         .find({
           city: req.params.city,
+          activityStatus: "active",
         })
         .populate("owner")
         .sort({ createdAt: -1 });
@@ -166,6 +173,7 @@ const getFilter = async (req, res, next) => {
       filteredProducts = await product
         .find({
           city: req.params.city,
+          activityStatus: "active",
           $or: [
             { title: { $regex: regex } },
             { description: { $regex: regex } },
@@ -220,19 +228,55 @@ const getProduct = async (req, res, next) => {
 const getMyProducts = async (req, res, next) => {
   try {
     console.log("get My Products", req.params._id);
+    var query = require("url").parse(req.url, true).query;
 
     const myProducts = await product
-      .find({ owner: req.params._id })
-      .populate("owner")
+      .find({ owner: req.params._id, ...query })
+      .populate("owner tradedWith")
       .sort({ createdAt: -1 });
     console.log("my Products", { myProducts });
     res.status(200).send(myProducts);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ msg: err.message });
+  }
+};
+
+const getProductsInChats = async (req, res, next) => {
+  try {
+    console.log("get Products in chats", req.params._id);
+
+    const userId = req.params._id;
+
+    const chats = await Chat.find({
+      members: userId,
+    });
+
+    let userProducts = await product.find({ owner: userId }).distinct("_id");
+    userProducts = userProducts.map((up) => up.toString());
+
+    let allProductsInChats = [];
+    chats.map((c) => {
+      allProductsInChats.push(...c.products);
+    });
+
+    let difference = allProductsInChats.filter(
+      (x) => !userProducts.includes(x.toString())
+    );
+
+    const products = await product
+      .find({ _id: { $in: difference } })
+      .populate("owner")
+      .sort({ createdAt: -1 });
+
+    res.status(200).send(products);
   } catch (err) {
     console.log(err);
     console.log("search");
     res.status(500).send({ msg: err.message });
   }
 };
+
 const likeProduct = async (req, res, next) => {
   try {
     console.log("like product", req.params.productid);
@@ -271,7 +315,9 @@ const getLikes = async (req, res, next) => {
   try {
     const userId = req.params.userId;
     console.log("Get Likes", userId);
-    const result = await product.find({ likes: [userId] }).populate("owner");
+    const result = await product
+      .find({ likes: userId, activityStatus: "active" })
+      .populate("owner");
     res.status(200).send(result);
   } catch (err) {
     console.log(err);
@@ -302,4 +348,5 @@ module.exports = {
   getFilter,
   likeProduct,
   getTotal,
+  getProductsInChats,
 };

@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import ReactDOM from "react-dom";
-import { Modal } from "react-bootstrap";
-import Button from "../UI/Button";
+import { Modal, Button } from "react-bootstrap";
+// import Button from "../UI/Button";
 import "./modal.css";
 
 const portalElement = document.getElementById("overlays");
@@ -23,12 +23,7 @@ const MyModal = (props) => {
           {props.onConfirm && (
             <Modal.Footer>
               {" "}
-              <Button
-                buttonText="Submit"
-                color="inherit"
-                onClick={props.onConfirm}
-                className="button__class"
-              />
+              <Button onClick={props.onConfirm}>Submit</Button>
             </Modal.Footer>
           )}
         </Modal>,

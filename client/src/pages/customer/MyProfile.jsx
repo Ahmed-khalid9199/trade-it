@@ -5,22 +5,35 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router";
 import axios from "axios";
 import Cards from "../../components/card/Cards";
+import TradeHistory from "../../components/tradehistory/TradeHistory";
 
 import avatar from "../../assets/images/avatar.png";
 import { useSelector } from "react-redux";
 const MyProfile = () => {
-  const [myProducts, setMyProducts] = useState("");
-  const [myLikes, setMyLikes] = useState("");
+  const [myProducts, setMyProducts] = useState(null);
+  const [myHistory, setMyHistory] = useState(null);
+  const [myLikes, setMyLikes] = useState(null);
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
   const user = useSelector((state) => state.user);
-
+  console.log(myHistory);
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getmyproducts/${params.userid}`)
       .then((result) => {
         console.log("user products", result.data);
         setMyProducts(result.data);
+        setMyHistory(
+          result.data
+            .filter((p) => p.activityStatus === "traded")
+            .map((p) => ({
+              img: p.images[0],
+              title: p.title,
+              tradeProdImg: p.tradedWith.images[0],
+              tradeProdTitle: p.tradedWith.title,
+              tradedAt: p.tradedAt,
+            }))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -37,6 +50,7 @@ const MyProfile = () => {
       .catch((err) => {
         console.log("get user crashed", err);
       });
+
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getLikes/${params.userid}`)
       .then(({ data }) => {
@@ -122,9 +136,9 @@ const MyProfile = () => {
                         <span class="description">Friends</span>
                       </div> */}
                       <div>
-                        <span class="heading">{myProducts.length}</span>
+                        <span class="heading">{myProducts?.length}</span>
                         <span class="description">
-                          {myProducts.length === 1 ? "Product" : "Products"}
+                          {myProducts?.length === 1 ? "Product" : "Products"}
                         </span>
                       </div>
                       <div>
@@ -173,17 +187,24 @@ const MyProfile = () => {
           </div>
           <div class="col-xl-8 order-xl-1 user-ads">
             <Tabs
-              defaultActiveKey="profile"
-              id="uncontrolled-tab-example"
+              defaultActiveKey="myads"
+              id="uncontrolled-tab"
               className="mb-3"
             >
-              <Tab eventKey="home" title="My Ads">
+              <Tab eventKey="myads" title="My Ads">
                 <div class="caard bg-secondary shadow">
                   <Cards list={myProducts} displayBadge={true} />
                 </div>
               </Tab>
-              <Tab eventKey="profile" title="My Likes">
-                <Cards list={myLikes} />
+              <Tab eventKey="likes" title="My Likes">
+                <div class="caard bg-secondary shadow">
+                  <Cards list={myLikes} />
+                </div>
+              </Tab>
+              <Tab eventKey="history" title="My History">
+                <div class="caard bg-secondary shadow">
+                  <TradeHistory list={myHistory} />
+                </div>
               </Tab>
             </Tabs>
           </div>

@@ -34,11 +34,13 @@ const Dashboard = () => {
     if (value) {
       const queryParams = qs.parse(location.search);
       const newQuery = { ...queryParams, location: value.value };
-      history.push(`/?${qs.stringify(newQuery)}`);
+      console.log(`/dashboard/?${qs.stringify(newQuery)}`);
+
+      history.push(`/dashboard/?${qs.stringify(newQuery)}`);
     } else {
       const queryParams = qs.parse(location.search);
       delete queryParams.location;
-      history.push(`/?${qs.stringify(queryParams)}`);
+      history.push(`/dashboard/?${qs.stringify(queryParams)}`);
     }
     setSelectedLocation(value);
   };
@@ -51,10 +53,13 @@ const Dashboard = () => {
     makeValue(queryParams.get("location"))
   );
   useEffect(() => {
+    if (!user) {
+      return;
+    }
     if (locationFilter || searchQuery) {
       axios
         .get(
-          `${process.env.REACT_APP_SERVER_URL}/gettestfilter/${
+          `${process.env.REACT_APP_SERVER_URL}/getfilterdproducts/${
             locationFilter ? locationFilter : "null"
           }/${searchQuery ? searchQuery : "null"} `
         )

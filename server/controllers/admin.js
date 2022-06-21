@@ -70,4 +70,27 @@ const productsAndUsersByMonth = async (req, res, next) => {
   }
 };
 
-module.exports = { productsAndUsersByMonth };
+const getTopFiveTags = async (req, res) => {
+  try {
+    const topTags = await Product.aggregate([
+      { $unwind: "$tags" },
+      { $group: { _id: "$tags", count: { $count: {} } } },
+      { $project: { _id: 0, tag: "$_id", count: "$count" } },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+      {
+        $group: {
+          _id: "",
+          tags: { $push: "$tag" },
+          series: { $push: "$count" },
+        },
+      },
+      { $project: { _id: 0, tags: 1, series: 1 } },
+    ]);
+    res.status(200).send(topTags[0]);
+  } catch (err) {
+    res.status(500).send({ msg: err.message });
+  }
+};
+
+module.exports = { productsAndUsersByMonth, getTopFiveTags };

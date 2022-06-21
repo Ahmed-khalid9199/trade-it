@@ -78,6 +78,7 @@ function Post() {
       );
       urls = [...urls, data.data.secure_url];
     }
+    console.log(urls);
     return urls;
   };
 

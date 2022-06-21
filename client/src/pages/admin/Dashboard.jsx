@@ -6,12 +6,31 @@ import StatusCard from "../../components/status-card/StatusCard";
 
 const Dashboard = () => {
   const [statusCards, setStatusCards] = useState({ products: 0, users: 0 });
+  const [pieChart, setPieChart] = useState({
+    series: [],
+    options: {
+      labels: [],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200,
+            },
+            legend: {
+              position: "bottom",
+            },
+          },
+        },
+      ],
+    },
+  });
   const [lineChart, setLineChart] = useState({
     productsByMonth: [],
     usersByMonth: [],
     months: [],
   });
-  const series = [
+  const lineSeries = [
     {
       name: "Products",
       data: lineChart.productsByMonth,
@@ -21,7 +40,7 @@ const Dashboard = () => {
       data: lineChart.usersByMonth,
     },
   ];
-  const options = {
+  const lineOptions = {
     chart: {
       height: 350,
       type: "line",
@@ -66,35 +85,26 @@ const Dashboard = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/admin/linechart`)
       .then(({ data }) => setLineChart(data));
-    // setLineChart({
-    //   productsByMonth: [10, 41, 35, 51, 49, 62, 69, 91, 100, 110, 109, 120],
-    //   usersByMonth: [15, 50, 30, 51, 49, 70, 80, 100, 150, 200, 210, 200],
-    //   months: [
-    //     "Jan",
-    //     "Feb",
-    //     "Mar",
-    //     "Apr",
-    //     "May",
-    //     "Jun",
-    //     "Jul",
-    //     "Aug",
-    //     "Sep",
-    //     "Oct",
-    //     "Nov",
-    //     "Dec",
-    //   ],
-    // });
+
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/admin/topfivetags`)
+      .then(({ data }) =>
+        setPieChart((prev) => ({
+          series: data.series,
+          options: { ...prev.options, labels: data.tags },
+        }))
+      );
   }, []);
 
   return (
     <div className="container-fliud">
       <Row>
-        <Col lg="6">
+        <Col lg="6" md="12">
           <Card className="bx-shadow">
             <Card.Body>
               <Chart
-                options={options}
-                series={series}
+                options={lineOptions}
+                series={lineSeries}
                 type="line"
                 height={350}
               />
@@ -117,6 +127,23 @@ const Dashboard = () => {
                 count={statusCards.products}
               />
             </Col>
+          </Row>
+          <Row>
+            <Col>
+              <Card className="bx-shadow">
+                <Card.Header>
+                  <center>Top Tags</center>
+                </Card.Header>
+                <Chart
+                  options={pieChart.options}
+                  series={pieChart.series}
+                  type="pie"
+                  width={380}
+                  // height={170}
+                />
+              </Card>
+            </Col>
+            <Col> </Col>
           </Row>
         </Col>
       </Row>

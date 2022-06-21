@@ -6,6 +6,7 @@ const productController = require("../controllers/product");
 const tagController = require("../controllers/tags");
 
 route.post("/sendemail", userController.sendEmail);
+route.post("/resetpassword", userController.resetPassword);
 route.post("/verify", userController.verify);
 route.post("/register", userController.registerUser);
 route.post("/getuser", userController.getUser);
@@ -29,8 +30,9 @@ route.get("/getproduct/:productid", productController.getProduct);
 route.get("/products/gettotal", productController.getTotal);
 
 route.get("/getmyproducts/:_id", productController.getMyProducts);
+route.get("/getproductsinchats/:_id", productController.getProductsInChats);
 route.put("/updateproduct/:_id", productController.updateProduct);
-route.get("/gettestfilter/:city/:search", productController.getFilter);
+route.get("/getfilterdproducts/:city/:search", productController.getFilter);
 route.get(
   "/getSearchedProducts/:search",
   productController.getSearchedProducts

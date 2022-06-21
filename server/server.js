@@ -15,7 +15,7 @@ const httpServer = createServer(app);
 
 mongoose
   .connect(
-    "mongodb://admin:jEnvTg5NyNkA3Ecq@cluster0-shard-00-00.wqyck.mongodb.net:27017,cluster0-shard-00-01.wqyck.mongodb.net:27017,cluster0-shard-00-02.wqyck.mongodb.net:27017/?ssl=true&replicaSet=atlas-tf9mpg-shard-0&authSource=admin&retryWrites=true&w=majority",
+    "mongodb+srv://admin:jEnvTg5NyNkA3Ecq@cluster0.wqyck.mongodb.net/tradeit_db?retryWrites=true&w=majority",
     {
       useUnifiedTopology: true,
       useNewUrlParser: true,

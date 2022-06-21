@@ -27,6 +27,7 @@ import moment from "moment";
 import Modal from "../modals/MyModal";
 
 import aes256 from "aes256";
+
 var key = "my passphrase";
 
 var cipher = aes256.createCipher(key);

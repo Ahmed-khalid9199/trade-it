@@ -11,7 +11,7 @@ const productSchema = new mongoose.Schema(
     activityStatus: {
       type: String,
       required: true,
-      enum: ["active", "inactive", "removed", "traded"],
+      enum: ["active", "removed", "banned", "traded"],
       default: "active",
     },
     category: {
@@ -26,7 +26,8 @@ const productSchema = new mongoose.Schema(
       default: "lahore",
     },
     owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-    tradedWith: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    tradedWith: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+    tradedAt: Date,
     yearOfManufacture: Date,
   },
   {

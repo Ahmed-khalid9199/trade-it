@@ -65,8 +65,6 @@ const Profile = () => {
     const passCheck = await bcrypt.compare(oldPassword, user.password);
     if (!oldPassword && !newPassword && !confirmPassword) {
       setError("Please fill all fields");
-      // } else if (oldPassword !== user.password) {
-      //   setError("Old Password is Not Correct");
     } else if (!passCheck) {
       setError("Old Password is Not Correct");
     } else if (newPassword !== confirmPassword) {
