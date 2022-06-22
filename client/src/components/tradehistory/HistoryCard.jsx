@@ -45,7 +45,7 @@ const HistoryCard = ({ item }) => {
       </Row>
       <Row>
         <Card.Text style={{ marginLeft: "1%" }}>
-          Traded at: {moment(new Date(item.createdAt)).format("lll")}
+          Traded at: {moment(new Date(item.tradedAt)).format("ll")}
         </Card.Text>
       </Row>
     </Card>

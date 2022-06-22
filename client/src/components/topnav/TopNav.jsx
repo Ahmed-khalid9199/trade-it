@@ -86,15 +86,22 @@ const Navbar = () => {
           <div class="d-flex justify-content-end">
             {user && !user.isAuthenticated && (
               <>
-                <Link to="/post">
-                  <i
-                    style={{ fontSize: "2rem", color: "green" }}
-                    class="bx bx-plus-circle p-2"
-                  ></i>
-                </Link>
-                <Link to="/inbox/thread">
-                  <i style={{ fontSize: "2rem" }} class="bx bx-chat p-2"></i>
-                </Link>
+                {user.type === "customer" && (
+                  <>
+                    <Link to="/post">
+                      <i
+                        style={{ fontSize: "2rem", color: "green" }}
+                        class="bx bx-plus-circle p-2"
+                      ></i>
+                    </Link>
+                    <Link to="/inbox/thread">
+                      <i
+                        style={{ fontSize: "2rem" }}
+                        class="bx bx-chat p-2"
+                      ></i>
+                    </Link>
+                  </>
+                )}
 
                 <div>
                   {user.firstName ? (
@@ -123,23 +130,8 @@ const Navbar = () => {
                           >
                             My Profile
                           </Dropdown.Item>
-                          {/* <Dropdown.Item
-                            onClick={() => {
-                              history.push("/post");
-                            }}
-                          >
-                            Post new Ad
-                          </Dropdown.Item>{" "} */}
-                          {/* <Dropdown.Item
-                            onClick={() => {
-                              history.push("/inbox/thread");
-                            }}
-                          >
-                            Inbox
-                          </Dropdown.Item> */}
                         </>
                       )}
-
                       <Dropdown.Item
                         onClick={() => {
                           history.push("/editprofile");
