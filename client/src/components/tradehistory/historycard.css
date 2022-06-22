@@ -1,0 +1,26 @@
+.title {
+  margin-left: 3rem;
+}
+.image-box {
+  display: flex;
+}
+.arrow-icon {
+  text-align: center;
+  align-self: center;
+}
+.hcontainer {
+  width: 100%;
+  padding: 1%;
+  height: 200px !important;
+  border-radius: 0.375rem;
+}
+.wrapper {
+  justify-content: flex-start;
+  padding: 1%;
+}
+
+.himage {
+  width: 140px !important;
+  height: 140px;
+  object-fit: contain;
+}

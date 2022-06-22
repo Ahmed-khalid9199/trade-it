@@ -1,14 +1,14 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 
+import HistoryCard from "./HistoryCard";
+
 const TradeHistory = ({ list }) => {
+  console.log("list", list);
   return (
     <div>
       {list?.map((item, index) => (
-        <Card key={index}>
-          <Card.Img className="cardImg" src="" />
-          <Card.Img className="cardImg" src="" />
-        </Card>
+        <HistoryCard item={item} />
       ))}
     </div>
   );

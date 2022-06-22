@@ -85,66 +85,76 @@ const Navbar = () => {
           </div>
           <div class="d-flex justify-content-end">
             {user && !user.isAuthenticated && (
-              <div>
-                {user.firstName ? (
-                  <h3 className="user-name">{`${user.firstName} ${user.lastName}`}</h3>
-                ) : (
-                  <h3 className="username">{user.username}</h3>
-                )}
-              </div>
+              <>
+                <Link to="/post">
+                  <i
+                    style={{ fontSize: "2rem", color: "green" }}
+                    class="bx bx-plus-circle p-2"
+                  ></i>
+                </Link>
+                <Link to="/inbox/thread">
+                  <i style={{ fontSize: "2rem" }} class="bx bx-chat p-2"></i>
+                </Link>
+
+                <div>
+                  {user.firstName ? (
+                    <h3 className="user-name">{`${user.firstName} ${user.lastName}`}</h3>
+                  ) : (
+                    <h3 className="username">{user.username}</h3>
+                  )}
+                </div>
+                <div className="dropdown">
+                  <Dropdown className="user-dropdown">
+                    <Dropdown.Toggle>
+                      <img
+                        src={user.imgSrc ? user.imgSrc : avatar}
+                        className="avatar"
+                        alt=""
+                      />
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      {user.type === "customer" && (
+                        <>
+                          <Dropdown.Item
+                            onClick={() => {
+                              history.push(`/profile/${user._id}`);
+                            }}
+                          >
+                            My Profile
+                          </Dropdown.Item>
+                          {/* <Dropdown.Item
+                            onClick={() => {
+                              history.push("/post");
+                            }}
+                          >
+                            Post new Ad
+                          </Dropdown.Item>{" "} */}
+                          {/* <Dropdown.Item
+                            onClick={() => {
+                              history.push("/inbox/thread");
+                            }}
+                          >
+                            Inbox
+                          </Dropdown.Item> */}
+                        </>
+                      )}
+
+                      <Dropdown.Item
+                        onClick={() => {
+                          history.push("/editprofile");
+                        }}
+                      >
+                        Edit Profile
+                      </Dropdown.Item>
+                      <Dropdown.Item onClick={logoutHandler}>
+                        Logout
+                      </Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </div>
+              </>
             )}
-            <div className="dropdown">
-              {user && !user.isAuthenticated && (
-                <Dropdown className="user-dropdown">
-                  <Dropdown.Toggle>
-                    <img
-                      src={user.imgSrc ? user.imgSrc : avatar}
-                      className="avatar"
-                      alt=""
-                    />
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    {user.type === "customer" && (
-                      <>
-                        <Dropdown.Item
-                          onClick={() => {
-                            history.push(`/profile/${user._id}`);
-                          }}
-                        >
-                          Profile
-                        </Dropdown.Item>
-                        <Dropdown.Item
-                          onClick={() => {
-                            history.push("/post");
-                          }}
-                        >
-                          Post new Ad
-                        </Dropdown.Item>{" "}
-                        <Dropdown.Item
-                          onClick={() => {
-                            history.push("/inbox/thread");
-                          }}
-                        >
-                          Inbox
-                        </Dropdown.Item>
-                      </>
-                    )}
-
-                    <Dropdown.Item
-                      onClick={() => {
-                        history.push("/editprofile");
-                      }}
-                    >
-                      Edit Profile
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={logoutHandler}>
-                      Logout
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
-            </div>
             {!user && (
               <Link to="/login">
                 <Button variant="primary">Log in</Button>{" "}

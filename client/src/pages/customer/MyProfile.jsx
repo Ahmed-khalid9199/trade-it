@@ -16,24 +16,27 @@ const MyProfile = () => {
   const params = useParams();
   const [currUser, setCurrUser] = useState(null);
   const user = useSelector((state) => state.user);
-  console.log(myHistory);
+
   useEffect(() => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getmyproducts/${params.userid}`)
       .then((result) => {
-        console.log("user products", result.data);
         setMyProducts(result.data);
-        setMyHistory(
-          result.data
-            .filter((p) => p.activityStatus === "traded")
-            .map((p) => ({
-              img: p.images[0],
-              title: p.title,
-              tradeProdImg: p.tradedWith.images[0],
-              tradeProdTitle: p.tradedWith.title,
-              tradedAt: p.tradedAt,
-            }))
+
+        let tempHistory = result.data
+          .filter((p) => p.activityStatus === "traded")
+          .map((p) => ({
+            img: p.images[0],
+            title: p.title,
+            tradeProdImg: p.tradedWith.images[0],
+            tradeProdTitle: p.tradedWith.title,
+            tradedAt: p.tradedAt,
+          }));
+        tempHistory = tempHistory.sort(
+          (a, b) =>
+            new Date(b.tradedAt).getTime() - new Date(a.tradedAt).getTime()
         );
+        setMyHistory(tempHistory);
       })
       .catch((err) => {
         console.log(err);
@@ -44,7 +47,6 @@ const MyProfile = () => {
         _id: params.userid,
       })
       .then(({ data }) => {
-        console.log("get user", data);
         setCurrUser(data);
       })
       .catch((err) => {
@@ -185,29 +187,45 @@ const MyProfile = () => {
               </div>
             </div>
           </div>
-          <div class="col-xl-8 order-xl-1 user-ads">
-            <Tabs
-              defaultActiveKey="myads"
-              id="uncontrolled-tab"
-              className="mb-3"
-            >
-              <Tab eventKey="myads" title="My Ads">
-                <div class="caard bg-secondary shadow">
-                  <Cards list={myProducts} displayBadge={true} />
-                </div>
-              </Tab>
-              <Tab eventKey="likes" title="My Likes">
-                <div class="caard bg-secondary shadow">
-                  <Cards list={myLikes} />
-                </div>
-              </Tab>
-              <Tab eventKey="history" title="My History">
-                <div class="caard bg-secondary shadow">
-                  <TradeHistory list={myHistory} />
-                </div>
-              </Tab>
-            </Tabs>
-          </div>
+          {currUser && params.userid === user.user._id ? (
+            <div class="col-xl-8 order-xl-1 user-ads">
+              <Tabs
+                defaultActiveKey="myads"
+                id="uncontrolled-tab"
+                className="mb-3"
+              >
+                <Tab eventKey="myads" title="My Ads">
+                  <div class="caard bg-secondary shadow">
+                    <Cards list={myProducts} displayBadge={true} />
+                  </div>
+                </Tab>
+                <Tab eventKey="likes" title="My Likes">
+                  <div class="caard bg-secondary shadow">
+                    <Cards list={myLikes} />
+                  </div>
+                </Tab>
+                <Tab eventKey="history" title="My History">
+                  <div class="caard bg-secondary shadow p-2">
+                    <TradeHistory list={myHistory} />
+                  </div>
+                </Tab>
+              </Tabs>
+            </div>
+          ) : (
+            <div class="col-xl-8 order-xl-1 user-ads">
+              <Tabs
+                defaultActiveKey="myads"
+                id="uncontrolled-tab"
+                className="mb-3"
+              >
+                <Tab eventKey="myads" title="Ads">
+                  <div class="caard bg-secondary shadow">
+                    <Cards list={myProducts} displayBadge={true} />
+                  </div>
+                </Tab>
+              </Tabs>
+            </div>
+          )}
         </div>
       </div>
     </div>
