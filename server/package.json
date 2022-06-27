@@ -1,7 +1,7 @@
 {
-  "name": "xms",
+  "name": "tradeit",
   "version": "1.0.0",
-  "description": "Dispatch Management System",
+  "description": "new way to get things",
   "main": "server.js",
   "engines": {
     "node": "14.15.0"
@@ -25,6 +25,7 @@
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "handlebars": "^4.7.7",
     "helmet": "^4.6.0",
     "ipware": "^2.0.0",
     "mongodb": "^4.1.0",

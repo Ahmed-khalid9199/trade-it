@@ -128,7 +128,7 @@ const Chat = () => {
     }
 
     // check profanity\
-    // const { data } = await axios.post("http://localhost:8081/", {
+    // const { data } = await axios.post(process.env.REACT_APP_PROFANITY_URL, {
     //   text,
     // });
     // const { blocked, tag } = data;

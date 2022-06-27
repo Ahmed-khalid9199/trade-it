@@ -44,4 +44,9 @@ route.put("/likeproduct/:productid/:userid", productController.likeProduct);
 route.post("/newtag", tagController.postTag);
 route.get("/gettags", tagController.gatTags);
 
+// test
+route.get("/hello", (req, res) => {
+  res.status(200).send("hello");
+});
+
 module.exports = route;

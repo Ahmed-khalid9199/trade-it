@@ -67,7 +67,8 @@ function Post() {
 
   const uploadImages = async (files) => {
     var urls = [];
-    for (const file of Object.entries(files)) {
+    console.log("files", Object.entries(files));
+    for (const file of Object.entries(files).slice(1)) {
       console.log("file", file[1]);
       var productImages = new FormData();
       productImages.append("file", file[1]);
@@ -76,7 +77,7 @@ function Post() {
         "https://api.cloudinary.com/v1_1/dmwkic1oe/image/upload",
         productImages
       );
-      urls = [...urls, data.data.secure_url];
+      urls.push(data.data.secure_url);
     }
     console.log(urls);
     return urls;
