@@ -10,6 +10,7 @@ import TradeHistory from "../../components/tradehistory/TradeHistory";
 import avatar from "../../assets/images/avatar.png";
 import { useSelector } from "react-redux";
 import BarChart from "../../components/charts/BarChart";
+import Reviews from "../../components/reviews/Reviews";
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState(null);
   const [myHistory, setMyHistory] = useState(null);
@@ -174,7 +175,7 @@ const MyProfile = () => {
                     {currUser && currUser.phoneNumber}
                   </div>
                   <hr class="my-4" />
-                  {/* <BarChart /> */}
+                  <BarChart data={[21, 10, 5, 4, 10]} />
                 </div>
               </div>
             </div>
@@ -224,7 +225,7 @@ const MyProfile = () => {
                 </Tab>
                 <Tab eventKey="reviews" title="Reviews">
                   <div class="caard bg-secondary shadow p-4">
-                    <h2>Coming Soon!</h2>
+                    <Reviews />
                   </div>
                 </Tab>
               </Tabs>
@@ -247,9 +248,9 @@ const MyProfile = () => {
                     <h2>No ads yet.</h2>
                   </div>
                 )}
-                <Tab eventKey="myads" title="Reviews">
-                  <div class="caard bg-secondary shadow">
-                    <h2>Coming Soon!</h2>{" "}
+                <Tab eventKey="reviews" title="Reviews">
+                  <div class="caard bg-secondary shadow p-4">
+                    <Reviews />
                   </div>
                 </Tab>
               </Tabs>
