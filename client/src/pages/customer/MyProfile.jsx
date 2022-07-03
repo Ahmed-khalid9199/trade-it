@@ -9,6 +9,7 @@ import TradeHistory from "../../components/tradehistory/TradeHistory";
 
 import avatar from "../../assets/images/avatar.png";
 import { useSelector } from "react-redux";
+import BarChart from "../../components/charts/BarChart";
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState(null);
   const [myHistory, setMyHistory] = useState(null);
@@ -172,17 +173,8 @@ const MyProfile = () => {
                     <i class="ni business_briefcase-24 mr-2"></i>
                     {currUser && currUser.phoneNumber}
                   </div>
-                  <div style={{ color: "black" }}>
-                    Comsats University Project
-                  </div>
                   <hr class="my-4" />
-                  <p style={{ color: "black" }}>
-                    Ryan — the name taken by Melbourne-raised, Brooklyn-based
-                    Nick Murphy — writes, performs and records all of his own
-                    music.
-                    {currUser && currUser.reviews}
-                  </p>
-                  <p>Show more</p>
+                  {/* <BarChart /> */}
                 </div>
               </div>
             </div>
@@ -195,18 +187,44 @@ const MyProfile = () => {
                 className="mb-3"
               >
                 <Tab eventKey="myads" title="My Ads">
-                  <div class="caard bg-secondary shadow">
-                    <Cards list={myProducts} displayBadge={true} />
-                  </div>
+                  {myProducts?.length > 0 ? (
+                    <div class="caard bg-secondary shadow">
+                      <Cards list={myProducts} displayBadge={true} />
+                    </div>
+                  ) : (
+                    <div className="caard bg-secondary shadow p-4">
+                      <h2>
+                        Nothing here, try finding something you own but don't
+                        need.
+                      </h2>
+                    </div>
+                  )}
                 </Tab>
                 <Tab eventKey="likes" title="My Likes">
-                  <div class="caard bg-secondary shadow">
-                    <Cards list={myLikes} />
-                  </div>
+                  {myLikes?.length > 0 ? (
+                    <div class="caard bg-secondary shadow">
+                      <Cards list={myLikes} />
+                    </div>
+                  ) : (
+                    <div className="caard bg-secondary shadow p-4">
+                      <h2>No liked products, Why don't you browse more.</h2>
+                    </div>
+                  )}
                 </Tab>
                 <Tab eventKey="history" title="My History">
-                  <div class="caard bg-secondary shadow p-2">
-                    <TradeHistory list={myHistory} />
+                  {myHistory?.length > 0 ? (
+                    <div class="caard bg-secondary shadow p-2">
+                      <TradeHistory list={myHistory} />
+                    </div>
+                  ) : (
+                    <div className="caard bg-secondary shadow p-4">
+                      <h2>You haven't traded any products yet</h2>
+                    </div>
+                  )}
+                </Tab>
+                <Tab eventKey="reviews" title="Reviews">
+                  <div class="caard bg-secondary shadow p-4">
+                    <h2>Coming Soon!</h2>
                   </div>
                 </Tab>
               </Tabs>
@@ -218,9 +236,20 @@ const MyProfile = () => {
                 id="uncontrolled-tab"
                 className="mb-3"
               >
-                <Tab eventKey="myads" title="Ads">
+                {myProducts?.length > 0 ? (
+                  <Tab eventKey="myads" title="Ads">
+                    <div class="caard bg-secondary shadow">
+                      <Cards list={myProducts} displayBadge={true} />
+                    </div>
+                  </Tab>
+                ) : (
+                  <div className="caard bg-secondary shadow p-4">
+                    <h2>No ads yet.</h2>
+                  </div>
+                )}
+                <Tab eventKey="myads" title="Reviews">
                   <div class="caard bg-secondary shadow">
-                    <Cards list={myProducts} displayBadge={true} />
+                    <h2>Coming Soon!</h2>{" "}
                   </div>
                 </Tab>
               </Tabs>

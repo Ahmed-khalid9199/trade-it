@@ -23,7 +23,7 @@ import { Link } from "react-router-dom";
 import Badge from "../../components/UI/Badge";
 import activityStatusMapping from "../../assets/JsonData/products.json";
 import Modal from "../../components/modals/MyModal";
-import { Navbar } from "../../components/topnav/TopNav";
+import { toast } from "react-toastify";
 
 const options = [
   {
@@ -82,10 +82,12 @@ const ProductDetail = () => {
     axios
       .get(`${process.env.REACT_APP_SERVER_URL}/getproduct/${params.productid}`)
       .then(({ data }) => {
-        console.log("get product", data);
         setProduct(data);
       })
       .catch((err) => {
+        history.replace("/");
+        toast.error("Looks like the product doesn't exist anymore.");
+
         console.log("get product crashed", err);
       });
   }, [params.productid]);

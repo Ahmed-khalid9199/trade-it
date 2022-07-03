@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { userActions } from "../../store/user";
 import MySelect from "../../components/UI/MySelect";
 import CreatableSelect from "react-select/creatable";
+import { toast } from "react-toastify";
 
 import TAGS from "../../assets/JsonData/tags.json";
 
@@ -68,7 +69,7 @@ function Post() {
   const uploadImages = async (files) => {
     var urls = [];
     console.log("files", Object.entries(files));
-    for (const file of Object.entries(files).slice(1)) {
+    for (const file of Object.entries(files)) {
       console.log("file", file[1]);
       var productImages = new FormData();
       productImages.append("file", file[1]);
@@ -96,6 +97,11 @@ function Post() {
     console.log("picture", pictures);
     const urls = await uploadImages(pictures);
     console.log("urls", urls);
+
+    if (urls.length === 0) {
+      toast.error("Can not upload without any images.");
+      return;
+    }
 
     // send req
     const Product = {
