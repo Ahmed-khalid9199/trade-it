@@ -96,7 +96,6 @@ const getTopFiveTags = async (req, res) => {
 const productsPerLocation = async (req, res, next) => {
   try {
     console.log("productsPerLocation");
-    const today = new Date();
 
     const products = await Product.aggregate([
       {
@@ -116,7 +115,13 @@ const productsPerLocation = async (req, res, next) => {
       { $limit: 5 },
     ]);
 
-    res.status(200).send(products);
+    var response = { series: [], labels: [] };
+    products.map((p) => {
+      response.series.push(p.count);
+      response.labels.push(p.city);
+    });
+
+    res.status(200).send(response);
   } catch (err) {
     res.status(500).send({ msg: err.message });
   }
