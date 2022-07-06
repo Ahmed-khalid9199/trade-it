@@ -12,7 +12,7 @@ import "./products.css";
 import { Link } from "react-router-dom";
 import activityStatusMapping from "../../assets/JsonData/products.json";
 
-const itemsPerPage = 20;
+const itemsPerPage = 10;
 
 const ManageUsers = () => {
   const [products, setProducts] = useState([]);
@@ -28,13 +28,13 @@ const ManageUsers = () => {
         `${
           process.env.REACT_APP_SERVER_URL
         }/getproducts/${itemsPerPage}/${offset}${
-          filter ? "?status=" + filter.value : ""
+          filter ? "?activityStatus=" + filter.value : ""
         }`,
         { search }
       )
       .then(({ data }) => {
         setProducts(data.products);
-        setTotalItems(data.totalItems);
+        setTotalItems(data.totalProducts);
       })
       .catch((err) => {
         console.log(err);
