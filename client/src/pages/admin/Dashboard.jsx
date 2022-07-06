@@ -68,10 +68,10 @@ const Dashboard = () => {
       categories: lineChart.months,
     },
   };
-  const [barChar, setBarChat] = useState({
+  const [barChart, setBarChart] = useState({
     series: [
       {
-        data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
+        data: [],
       },
     ],
     options: {
@@ -90,18 +90,7 @@ const Dashboard = () => {
         enabled: false,
       },
       xaxis: {
-        categories: [
-          "South Korea",
-          "Canada",
-          "United Kingdom",
-          "Netherlands",
-          "Italy",
-          "France",
-          "Japan",
-          "United States",
-          "China",
-          "Germany",
-        ],
+        categories: [],
       },
     },
   });
@@ -129,6 +118,24 @@ const Dashboard = () => {
         setPieChart((prev) => ({
           series: data.series,
           options: { ...prev.options, labels: data.tags },
+        }))
+      );
+
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/admin/productsperlocation`)
+      .then(({ data }) =>
+        setBarChart((prev) => ({
+          series: [
+            {
+              data: data.series,
+            },
+          ],
+          options: {
+            ...prev.options,
+            xaxis: {
+              categories: data.labels,
+            },
+          },
         }))
       );
   }, []);
@@ -186,8 +193,8 @@ const Dashboard = () => {
         <Col>
           <Card.Body className="bx-shadow" style={{ marginTop: "-20px" }}>
             <Chart
-              options={barChar.options}
-              series={barChar.series}
+              options={barChart.options}
+              series={barChart.series}
               type="bar"
               width={500}
               height={200}
