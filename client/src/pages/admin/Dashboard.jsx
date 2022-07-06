@@ -89,6 +89,10 @@ const Dashboard = () => {
       dataLabels: {
         enabled: false,
       },
+      title: {
+        text: "Top cities",
+        align: "left",
+      },
       xaxis: {
         categories: [],
       },
@@ -191,15 +195,17 @@ const Dashboard = () => {
           </Row>
         </Col>
         <Col>
-          <Card.Body className="bx-shadow" style={{ marginTop: "-20px" }}>
-            <Chart
-              options={barChart.options}
-              series={barChart.series}
-              type="bar"
-              width={500}
-              height={200}
-            />
-          </Card.Body>
+          <Card className="bx-shadow" style={{ marginTop: "-20px" }}>
+            <Card.Body>
+              <Chart
+                options={barChart.options}
+                series={barChart.series}
+                type="bar"
+                width={500}
+                height={200}
+              />
+            </Card.Body>
+          </Card>
         </Col>
         <Col></Col>
       </Row>

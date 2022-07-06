@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button, Card, Row, Col } from "react-bootstrap";
+import { Form, Button, Card, Row, Col, Spinner } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ImageUploader from "react-images-upload";
@@ -32,6 +32,8 @@ const makeValue = (string) => {
 };
 
 function Post() {
+  const [loading, setLoading] = useState(false);
+
   const [title, setTitle] = useState("");
   const [pcity, setPCity] = useState(null);
   const [description, setDescription] = useState("");
@@ -88,9 +90,11 @@ function Post() {
     const form = event.currentTarget;
     setValidated(true);
     event.preventDefault();
-
+    setLoading(true);
     if (form.checkValidity() === false || !tags) {
       event.stopPropagation();
+      setLoading(false);
+
       return;
     }
 
@@ -100,6 +104,8 @@ function Post() {
 
     if (urls.length === 0) {
       toast.error("Can not upload without any images.");
+      setLoading(false);
+
       return;
     }
 
@@ -126,7 +132,8 @@ function Post() {
         localStorage.setItem("user", JSON.stringify(data));
         console.log("updated User", response.data);
       });
-    console.log("edit submit");
+    setLoading(false);
+
     history.replace("/");
   };
   const handleTagsChange = async (newValue, actionMeta) => {
@@ -251,7 +258,16 @@ function Post() {
               </Row>
               <hr />
               <Row className="d-flex justify-content-end">
-                <Button variant="primary" type="submit">
+                <Button disabled={loading} variant="primary" type="submit">
+                  {loading && (
+                    <Spinner
+                      as="span"
+                      animation="grow"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                    />
+                  )}
                   Submit
                 </Button>
               </Row>
