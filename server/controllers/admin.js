@@ -93,4 +93,37 @@ const getTopFiveTags = async (req, res) => {
   }
 };
 
-module.exports = { productsAndUsersByMonth, getTopFiveTags };
+const productsPerLocation = async (req, res, next) => {
+  try {
+    console.log("productsPerLocation");
+    const today = new Date();
+
+    const products = await Product.aggregate([
+      {
+        $group: {
+          _id: { city: "$city" },
+          count: { $count: {} },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          city: "$_id.city",
+          count: "$count",
+        },
+      },
+      { $sort: { count: -1 } },
+      { $limit: 5 },
+    ]);
+
+    res.status(200).send(products);
+  } catch (err) {
+    res.status(500).send({ msg: err.message });
+  }
+};
+
+module.exports = {
+  productsAndUsersByMonth,
+  getTopFiveTags,
+  productsPerLocation,
+};

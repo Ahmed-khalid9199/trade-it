@@ -68,6 +68,43 @@ const Dashboard = () => {
       categories: lineChart.months,
     },
   };
+  const [barChar, setBarChat] = useState({
+    series: [
+      {
+        data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380],
+      },
+    ],
+    options: {
+      chart: {
+        type: "bar",
+        height: 350,
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
+          labled: true,
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: [
+          "South Korea",
+          "Canada",
+          "United Kingdom",
+          "Netherlands",
+          "Italy",
+          "France",
+          "Japan",
+          "United States",
+          "China",
+          "Germany",
+        ],
+      },
+    },
+  });
 
   useEffect(() => {
     axios
@@ -111,7 +148,7 @@ const Dashboard = () => {
             </Card.Body>
           </Card>
         </Col>
-        <Col>
+        <Col lg="6" md="12">
           <Row>
             <Col>
               <StatusCard
@@ -143,9 +180,21 @@ const Dashboard = () => {
                 />
               </Card>
             </Col>
-            <Col> </Col>
+            <Col></Col>
           </Row>
         </Col>
+        <Col>
+          <Card.Body className="bx-shadow" style={{ marginTop: "-20px" }}>
+            <Chart
+              options={barChar.options}
+              series={barChar.series}
+              type="bar"
+              width={500}
+              height={200}
+            />
+          </Card.Body>
+        </Col>
+        <Col></Col>
       </Row>
     </div>
   );
