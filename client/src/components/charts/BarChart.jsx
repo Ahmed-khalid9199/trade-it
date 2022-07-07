@@ -9,9 +9,9 @@ const findAverageRating = (dataArray) => {
 
   var ratingArray = [];
   dataArray.map((item, index) => {
-    console.log(Array(item).fill(5 - index));
     ratingArray.push(...Array(item).fill(5 - index));
   });
+
   let avg =
     ratingArray.reduce((partialSum, a) => partialSum + a, 0) /
     ratingArray.length;
@@ -44,8 +44,6 @@ const BarChart = ({ data }) => {
     },
   };
 
-  const avgRating = findAverageRating(data);
-
   return (
     <div>
       <h3>User Ratings</h3>
@@ -64,10 +62,10 @@ const BarChart = ({ data }) => {
             ></i>
           }
           fractions={2}
-          initialRating={avgRating}
+          initialRating={findAverageRating(data)}
           readonly
         />
-        <h4 style={{ margin: "5px" }}>{avgRating}</h4>
+        <h4 style={{ margin: "5px" }}>{findAverageRating(data)}</h4>
       </div>
 
       <Chart options={options} series={series} type="bar" height={250} />

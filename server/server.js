@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const { createServer } = require("http");
 const rootRoutes = require("./routes/root");
 const adminRoutes = require("./routes/admin");
+const reviewRoutes = require("./routes/review");
 
 const { Server } = require("socket.io");
 const { getUser, removeUser, addUser, getUsers } = require("./util/chatUsers");
@@ -42,6 +43,7 @@ app.use(
 
 // routes
 app.use("/admin", adminRoutes);
+app.use("/reviews", reviewRoutes);
 app.use("/", rootRoutes);
 
 // sockets

@@ -13,6 +13,8 @@ import BarChart from "../../components/charts/BarChart";
 import Reviews from "../../components/reviews/Reviews";
 const MyProfile = () => {
   const [myProducts, setMyProducts] = useState(null);
+  const [reviewsData, setReviewsData] = useState([0, 0, 0, 0, 0]);
+  const [refresh, setRefresh] = useState(0);
   const [myHistory, setMyHistory] = useState(null);
   const [myLikes, setMyLikes] = useState(null);
   const params = useParams();
@@ -64,6 +66,17 @@ const MyProfile = () => {
         console.log("get user crashed", err);
       });
   }, [params.userid]);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_SERVER_URL}/reviews/barchart`)
+      .then(({ data }) => {
+        console.log(data);
+        setReviewsData(data);
+      })
+      .catch((err) => {
+        console.log("get user crashed", err);
+      });
+  }, [refresh]);
   return (
     <div class="main-content">
       {/* <!-- Top navbar --> */}
@@ -175,7 +188,7 @@ const MyProfile = () => {
                     {currUser && currUser.phoneNumber}
                   </div>
                   <hr class="my-4" />
-                  <BarChart data={[21, 10, 5, 4, 10]} />
+                  <BarChart data={reviewsData} />
                 </div>
               </div>
             </div>
@@ -250,7 +263,7 @@ const MyProfile = () => {
                 )}
                 <Tab eventKey="reviews" title="Reviews">
                   <div class="caard bg-secondary shadow p-4">
-                    <Reviews />
+                    <Reviews setRefresh={setRefresh} />
                   </div>
                 </Tab>
               </Tabs>
