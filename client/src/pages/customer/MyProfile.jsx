@@ -68,7 +68,9 @@ const MyProfile = () => {
   }, [params.userid]);
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_SERVER_URL}/reviews/barchart`)
+      .get(
+        `${process.env.REACT_APP_SERVER_URL}/reviews/barchart/${params.userid}`
+      )
       .then(({ data }) => {
         console.log(data);
         setReviewsData(data);
@@ -238,7 +240,7 @@ const MyProfile = () => {
                 </Tab>
                 <Tab eventKey="reviews" title="Reviews">
                   <div class="caard bg-secondary shadow p-4">
-                    <Reviews />
+                    <Reviews setRefresh={setRefresh} />
                   </div>
                 </Tab>
               </Tabs>

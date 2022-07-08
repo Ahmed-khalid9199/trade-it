@@ -51,7 +51,7 @@ const Reviews = ({ setRefresh }) => {
     // post review
     const res = await axios.post(
       `${process.env.REACT_APP_SERVER_URL}/reviews`,
-      { user: user.user._id, text, rating }
+      { user: user.user._id, reviewee: params.userid, text, rating }
     );
     if (res.status === 201) {
       toast.success("Review posted sucessfully");
@@ -67,7 +67,9 @@ const Reviews = ({ setRefresh }) => {
   useEffect(() => {
     // fetch reviews
     axios
-      .post(`${process.env.REACT_APP_SERVER_URL}/reviews/10000/0`, {})
+      .post(`${process.env.REACT_APP_SERVER_URL}/reviews/10000/0`, {
+        reviewee: params.userid,
+      })
       .then(({ data }) => {
         const tempReview = data.data;
         setReviews(tempReview);
@@ -140,6 +142,7 @@ const Reviews = ({ setRefresh }) => {
           />
         );
       })}
+      {reviews.length === 0 && <h2>No reviews yet.</h2>}
     </div>
   );
 };

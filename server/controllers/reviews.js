@@ -77,16 +77,16 @@ const listReviews = asyncHandler(async (req, res) => {
     console.log("listReviews", req.params.offset);
     const offset = parseInt(req.params.offset);
     const limit = parseInt(req.params.limit);
-    const {} = req.body;
-    let filter = {};
+    // const {} = req.body;
+    // let filter = {};
 
-    const reviews = await ReviewModal.find(filter)
+    const reviews = await ReviewModal.find(req.body)
       .populate("user")
       .sort({ createdAt: -1 })
       .limit(limit)
       .skip(offset);
 
-    const totalReviews = await ReviewModal.find(filter);
+    const totalReviews = await ReviewModal.find(req.body);
 
     res.status(200).json({ data: reviews, length: totalReviews.length });
   } catch (error) {
@@ -100,12 +100,13 @@ const listReviews = asyncHandler(async (req, res) => {
 // route: /reviews/barchart
 const reviewsBarchart = asyncHandler(async (req, res) => {
   try {
-    console.log("reviewsBarchart");
     const data = await ReviewModal.aggregate([
+      // { $match: { reviewee: mongoose.Schema.Types.ObjectId(req.params.id) } },
       { $group: { _id: "$rating", count: { $count: {} } } },
       { $project: { _id: 0, rating: "$_id", count: "$count" } },
       { $sort: { rating: -1 } },
     ]);
+
     const response = [0, 0, 0, 0, 0];
     data.map((d) => {
       response[5 - d.rating] = d.count;

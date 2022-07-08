@@ -10,7 +10,7 @@ const {
 const router = express.Router();
 
 router.post("/", createReview);
-router.get("/barchart", reviewsBarchart);
+router.get("/barchart/:id", reviewsBarchart);
 router.put("/:id", updateReview);
 router.get("/:id", getReview);
 router.post("/:limit/:offset", listReviews);

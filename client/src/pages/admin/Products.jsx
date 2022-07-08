@@ -70,7 +70,7 @@ const ManageUsers = () => {
       <div className="container-fluid">
         {/* Page Heading */}
         <div className="d-sm-flex align-items-center justify-content-between mb-4">
-          <h1 className="cont-hed">Manage Users</h1>
+          <h1 className="cont-hed">Manage Products</h1>
         </div>
         <Row>
           <Col xs lg="4">

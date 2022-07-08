@@ -1,6 +1,6 @@
 {
   "active": "bg-primary",
   "traded": "bg-success",
-  "inactive": "bg-warning",
+  "banned": "bg-warning",
   "removed": "bg-danger"
 }
